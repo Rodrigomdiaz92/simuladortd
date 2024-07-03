@@ -13,7 +13,6 @@ import "../../componentes/sheets/grafico";
 import "../../componentes/sheets/tabladinamica/tabladinamica";
 import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
 import "../../componentes/sheets/tabladinamica/data-controls";
-import "../../componentes/progressBar";
 import { App } from "../../clases/App";
 import { UserSettings } from "../../clases/UserSettings";
 import { appController } from "../../appController";
@@ -24,9 +23,9 @@ const BASE_SETTINGS = {
   graphEnabled: false,
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["NOMBRE_CORTO"],
+  filaSeleccionadaTD: ["ID_JUGADOR"],
   columnaSeleccionadaTD: ["PIE_HABIL"],
-  valorSeleccionadaTD: ["VALOR_EUR", "EDAD"],
+  valoresSeleccionadaTD: ["VALOR_EUR", "EDAD"],
   funcionesSeleccionadasTD: ["sum", "mean"],
 };
 let df;

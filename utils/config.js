@@ -43,15 +43,6 @@ export function llenarListas(seleccion) {
     });
     const selector = clonValor.querySelector("select");
     selector.value = Object.values(valor)[0];
-    selector.addEventListener("change", function (event) {
-      const padre = selector.parentElement.parentElement;
-      const valorSeleccionado = event.target.value;
-      state.agregarFuncionTD(
-        padre.querySelector(".column-text").textContent,
-        valorSeleccionado
-      );
-      state.armarTD();
-    });
     listValues.appendChild(clonValor);
   });
 }

@@ -1,5 +1,4 @@
 import { flatMap, isEmpty } from "lodash";
-import { castFunction } from "./text";
 export function transformData(data, filas, columnas, valores) {
   const flatteredValores = Object.fromEntries(
     valores.map((objeto) => [
@@ -244,12 +243,20 @@ function getUniqueRows(table, filas) {
   ]);
 }
 export function castResultName(input) {
+  const traducciones = {
+    sum: "Suma",
+    mean: "Promedio",
+    count: "Conteo",
+    min: "Mínimo",
+    max: "Máximo",
+    // Agrega más traducciones según sea necesario
+  };
   // Dividir la cadena por el carácter de subrayado
   let palabras = input.split("_");
 
   // Extraer la última palabra y traducirla
   let funcion = palabras.pop();
-  let funcionTraducida = castFunction(funcion) || funcion; // Usar la traducción si existe, sino usar la palabra original
+  let funcionTraducida = traducciones[funcion] || funcion; // Usar la traducción si existe, sino usar la palabra original
 
   // Reordenar las palabras colocando la función traducida al inicio
   palabras.unshift(funcionTraducida);

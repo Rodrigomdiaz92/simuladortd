@@ -1,6 +1,6 @@
 import { state } from "../../../state";
 import { find } from "lodash";
-import _ from "lodash";
+import _ from 'lodash';
 import { pgEvent } from "../../../utils/pgEvent";
 // Default SortableJS
 import Sortable from "sortablejs";
@@ -36,12 +36,10 @@ customElements.define(
             state.seleccionTablaDinamica.ejercicioCompletado ||
             state.editingBlocked;
         });
-        const selectores = document.querySelectorAll("select");
-        selectores.forEach((selector) => {
-          selector.disabled =
-            state.seleccionTablaDinamica.ejercicioCompletado ||
-            state.editingBlocked;
-        });
+          const selectores = document.querySelectorAll('select');
+          selectores.forEach(selector => {
+            selector.disabled = state.seleccionTablaDinamica.ejercicioCompletado || state.editingBlocked;
+          });
 
         // Obtén las instancias de Sortable para las listas de filas, columnas y valores
         const sortableListRows = Sortable.get(
@@ -109,10 +107,9 @@ customElements.define(
           }
         }
 
-        if (
-          state.editingBlocked &&
-          !state.seleccionTablaDinamica.ejercicioCompletado
-        ) {
+        if (state.editingBlocked && !state.seleccionTablaDinamica.ejercicioCompletado) {
+
+          
           if (!candadoBloqueadoSpan) {
             const span = document.createElement("span");
             span.id = "candado-bloqueado";
@@ -125,14 +122,12 @@ customElements.define(
             const checkSpinnerInterval = setInterval(() => {
               const spinner = document.getElementById("loading-spinner"); // Cambia el selector según tu implementación
               if (!spinner || spinner.style.display === "none") {
-                clearInterval(checkSpinnerInterval);
+          clearInterval(checkSpinnerInterval);
 
-                // Desbloquear después de que el spinner desaparezca
-                state.editingBlocked = false;
-                const event = new CustomEvent("stateUpdated", {
-                  detail: state,
-                });
-                window.dispatchEvent(event);
+          // Desbloquear después de que el spinner desaparezca
+          state.editingBlocked = false;
+          const event = new CustomEvent("stateUpdated", { detail: state });
+          window.dispatchEvent(event);
               }
             }, 100); // Verifica cada 100ms
           }, 5000);
@@ -191,7 +186,7 @@ customElements.define(
             const newItem = evt.item;
             state.ultimaVariableAgregada = {
               nombre: newItem,
-              tipo: "fila",
+              tipo: "fila"
               // newItem.querySelector(".column-text").textContent
             };
             newItem
@@ -237,7 +232,7 @@ customElements.define(
             const newItem = evt.item;
             state.ultimaVariableAgregada = {
               nombre: newItem,
-              tipo: "columna",
+              tipo: "columna"
               // newItem.querySelector(".column-text").textContent
             };
             newItem
@@ -246,7 +241,7 @@ customElements.define(
                 state.eliminarColumnaTD(columnName);
                 eliminarElemento(newItem);
               });
-            debouncedArmarTD();
+              debouncedArmarTD();
           }
         },
         onSort: function (evt) {
@@ -265,6 +260,7 @@ customElements.define(
         group: "shared", // set both lists to same group
         animation: 150,
         onAdd: function (evt) {
+          console.log("Entra al onAdd");
           const valuesName = evt.item.querySelector(".column-text").textContent;
           if (
             evt.srcElement.children.length > 2 ||
@@ -276,11 +272,11 @@ customElements.define(
           } else {
             const thisSelector = evt.item.querySelector("select");
             thisSelector.value = "sum";
-            state.valorSeleccionadaTD(valuesName, "sum");
+            state.valoresSeleccionadaTD(valuesName, "sum");
             const newItem = evt.item;
             state.ultimaVariableAgregada = {
               nombre: newItem,
-              tipo: "valor",
+              tipo: "valor"
               // newItem.querySelector(".column-text").textContent
             };
             // Agregar un event listener a cada selector
@@ -321,12 +317,8 @@ customElements.define(
         },
       });
       function eliminarElemento(item) {
-        if (item && item.parentNode) {
-          item.parentNode.removeChild(item); // Eliminar el elemento de la lista
-          debouncedArmarTD();
-        } else {
-          console.warn("Elimino un elemento sin nodo padre");
-        }
+        item.parentNode.removeChild(item); // Eliminar el elemento de la lista
+        debouncedArmarTD();
       }
 
       new Sortable(listNames, {
