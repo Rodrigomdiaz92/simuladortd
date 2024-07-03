@@ -1,0 +1,98 @@
+.sheets-bar__container {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: flex;
+  gap: 15px;
+  padding-left: 40px;
+  background-color: rgb(243, 243, 243);
+  left: 0px;
+  width: 100%;
+  position: relative;
+}
+
+.sheets-img {
+  height: 40px;
+}
+
+.options {
+  display: flex;
+  gap: 12px;
+  background-color: rgb(243, 243, 243);
+}
+.options > button {
+  position: relative;
+  border-style: none;
+  background-color: white;
+  cursor: pointer;
+  background-color: rgb(243, 243, 243);
+}
+
+.pages-bar__container {
+  padding-left: 35px;
+  border-top: 1px solid rgb(190, 186, 186);
+  border-bottom: 14px solid #CBCBCB;
+  position: relative;
+  background-color: white;
+}
+
+
+#menu {
+  position: relative;
+  display: inline-block;
+  background-color: white;
+}
+
+/* Estilos para el botón del menú */
+#menu button {
+  /* Color de fondo */
+  background-color: rgb(243, 243, 243);
+  text-align: left;
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 20px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cambia el cursor al pasar sobre él */
+}
+#menu button:hover {
+  background-color: #4caf50;
+}
+
+/* Estilos para el contenido del menú */
+#menu .contenido-menu {
+  display: none; /* Por defecto, oculto */
+  position: absolute; /* Posicionamiento absoluto */
+  background-color: #f9f9f9; /* Color de fondo */
+  min-width: 160px; /* Ancho mínimo */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* Sombra */
+  z-index: 99; /* Índice z para estar encima de otros elementos */
+}
+
+/* Estilos para las opciones del menú */
+#menu .contenido-menu button {
+  padding: 12px 16px; /* Espaciado interior */
+  text-decoration: none; /* Sin subrayado */
+  display: block; /* Bloque para ocupar todo el ancho */
+  background-color: white;
+}
+
+/* Cambia el color del enlace al pasar sobre él */
+#menu .contenido-menu button:hover {
+  background-color: #ddd; /* Color de fondo al pasar sobre el enlace */
+}
+
+/* Mostrar el contenido del menú cuando el botón se pasa por encima */
+/* #menu:hover .contenido-menu {
+  display: block; 
+} */
+
+/* Ajuste para que el contenido del menú se muestre debajo del botón */
+#menu .contenido-menu {
+  top: 100%; /* Aparece justo debajo del botón */
+  left: 0; /* Aparece pegado al borde izquierdo del botón */
+}
+.page-button.selected {
+  background-color: #ffc51a; /* Cambiar el color de fondo */
+  color: white; /* Cambiar el color del texto */
+}
+
+

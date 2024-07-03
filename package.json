@@ -1,0 +1,22 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "dev": "parcel serve index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "devDependencies": {
+    "dataframe-js": "^1.4.4",
+    "lodash": "^4.17.21",
+    "parcel": "^2.9.3",
+    "process": "^0.11.10",
+    "sortablejs": "^1.15.2",
+    "sweetalert": "^2.1.2"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "page": "^1.11.6",
+    "sweetalert2": "^11.10.8",
+    "vite": "^5.2.6"
+  }
+}
