@@ -12,7 +12,6 @@ import "../../componentes/sheets/grafico";
 import "../../componentes/sheets/tabladinamica/tabladinamica";
 import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
 import "../../componentes/sheets/tabladinamica/data-controls";
-import "../../componentes/progressBar";
 import { App } from "../../clases/App";
 import { UserSettings } from "../../clases/UserSettings";
 import { appController } from "../../appController";
@@ -23,10 +22,10 @@ const BASE_SETTINGS = {
   graphEnabled: false,
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["ID_JUGADOR"],
-  columnaSeleccionadaTD: ["NOMBRE_CORTO"],
-  valorSeleccionadaTD: ["VALOR_EUR"],
-  funcionesSeleccionadasTD: ["sum"],
+  filaSeleccionadaTD: ['ID_JUGADOR'],
+  columnaSeleccionadaTD: ['NOMBRE_CORTO'],
+  valoresSeleccionadaTD: ['VALOR_EUR'],
+  funcionesSeleccionadasTD: ['sum']
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -95,12 +94,7 @@ async function main() {
     ? JSON.parse(informacion)
     : {};
   //console.log(parsedJSONfromPG);
-  if (
-    parsedJSONfromPG.data !== "not-started" &&
-    parsedJSONfromPG.data !== "" &&
-    parsedJSONfromPG.data !== null &&
-    parsedJSONfromPG.data !== undefined
-  ) {
+  if (parsedJSONfromPG.data !== 'not-started' && parsedJSONfromPG.data !== '' && parsedJSONfromPG.data !== null && parsedJSONfromPG.data !== undefined) {
     appController.userSettings = new UserSettings(
       parsedJSONfromPG.data,
       dataTableView
@@ -114,7 +108,7 @@ async function main() {
       dataTableView
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
-    appController.userSettings.init();
+    appController.userSettings.initTD();
   }
 }
 main();

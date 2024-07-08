@@ -4,8 +4,8 @@ import { DataTableController } from "../../clases/DataTableController";
 import { pgEvent } from "../../utils/pgEvent"; // Importar PgEvent
 import "../../componentes/menu/menu";
 import "../../componentes/menu/archivo-menu";
-import "../../componentes/loader";
 import "../../componentes/menu/reloj";
+import "../../componentes/loader";
 import "../../componentes/sheets-tab/sheet";
 import "../../componentes/sheets-tab/sheet-button";
 import "../../componentes/sheets-tab/tab";
@@ -20,13 +20,13 @@ import { appController } from "../../appController";
 const BASE_SETTINGS = {
   datasetURL:
     "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
+  graphEnabled: true,
+  pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["NOMBRE_CORTO"],
-  columnaSeleccionadaTD: [],
-  valoresSeleccionadaTD: ["VALOR_EUR", "EDAD"],
-  funcionesSeleccionadasTD: ["mean", "sum"],
+  tipoGrafico: "barra",
+  ejeX: "ALTURA_CM",
+  serie: "",
+  columna: "",
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -87,7 +87,6 @@ async function main() {
     columnas: [],
     valores: [],
     conversationHistory: [],
-    ejercicioCompletado: false,
   };
   const parsedJSONfromPG = validateJson(informacion)
     ? JSON.parse(informacion)
@@ -103,7 +102,6 @@ async function main() {
     //console.log("vengo de PG");
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
-
     appController.userSettings = new UserSettings(
       parsedJSONfromPG.data,
       dataTableView
