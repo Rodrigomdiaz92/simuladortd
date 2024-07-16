@@ -43,6 +43,8 @@ export class UserSettings {
     }
 
     // Restablecer el estado
+    state.timer = false;
+    state.actualizarReloj();
     state.seleccionTablaDinamica.filas = [];
     state.seleccionTablaDinamica.columnas = [];
     state.seleccionTablaDinamica.valores = [];
@@ -54,6 +56,8 @@ export class UserSettings {
     appController.userSettings.settings.valores = [];
     appController.userSettings.settings.intervalo = "";
     appController.userSettings.settings.conversationHistory = [];
+    appController.userSettings.settings.currentProgress = 0;
+    appController.userSettings.settings.currentLevel = 0;
     tab.conversationHistory = [];
     tab.hasLoadedHistory = false;
     appController.userSettings.settings.conversationHistory = [];

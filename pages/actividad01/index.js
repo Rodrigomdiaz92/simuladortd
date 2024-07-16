@@ -12,6 +12,7 @@ import "../../componentes/sheets-tab/tab";
 import "../../componentes/sheets/grafico";
 import "../../componentes/sheets/tabladinamica/tabladinamica";
 import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "../../componentes/progressBar";
 import "../../componentes/sheets/tabladinamica/data-controls";
 import { App } from "../../clases/App";
 import { UserSettings } from "../../clases/UserSettings";
@@ -25,7 +26,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   filaSeleccionadaTD: ["NOMBRE_CORTO"],
   columnaSeleccionadaTD: [],
-  valoresSeleccionadaTD: ["VALOR_EUR", "EDAD"],
+  valorSeleccionadaTD: ["VALOR_EUR", "EDAD"],
   funcionesSeleccionadasTD: ["mean", "sum"],
 };
 let df;
