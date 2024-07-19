@@ -185,6 +185,7 @@ customElements.define(
       const contenedorGrafico = this.querySelector("#plot_div");
       const context = contenedorGrafico.getContext("2d");
       const data = state.seleccion.datos;
+      //console.log(data)
 
       const contenedorPresentacion = this.querySelector(
         "#presentacion-grafico"
@@ -235,11 +236,63 @@ customElements.define(
     }
 
     createBarChart(context, data) {
-      const selectEjex = this.querySelector("#ejeX");
-      const selectSerie = this.querySelector("#serie");
+      const selectEjex = this.querySelector("#ejeX").value;
+      const selectSerie = this.querySelector("#serie").value;
+      console.log(data)
+      console.log(selectEjex)
+      console.log(selectSerie)
 
-      const labels = data.map((item) => item[selectEjex.value]);
-      const values = data.map((item) => item[selectSerie.value]);
+      // Inicializar el objeto Agrupado
+      const agrupado = {};
+
+      // Iterar sobre los datos y construir el objeto Agrupado
+      for (let i = 0; i < data[selectEjex].length; i++) {
+        const ejeX = data[selectEjex][i];
+        const sumaceldas = data[selectSerie][i];
+        
+        if (!agrupado[ejeX]) {
+          agrupado[ejeX] = { count: 0, sumaCelda: 0, promedioCelda: 0};
+        }
+        
+        agrupado[ejeX].count++;
+        agrupado[ejeX].sumaCelda += sumaceldas;
+        //agrupado[ejeX].promedioCelda = agrupado[ejeX].sumaCelda / agrupado[ejeX].count;
+      }
+
+      // Obtener los valores únicos, los arrays de count y ratingSum
+      const uniqueValues = Object.keys(agrupado);
+      const countArray = uniqueValues.map(ejeX => agrupado[ejeX].count);
+      const sumCeldaArray = uniqueValues.map(ejeX => agrupado[ejeX].sumaCelda);
+      //const ratingAvgArray = uniqueValues.map(ejeX => agrupado[ejeX].ratingAvg);
+
+      console.log("Agrupado:", agrupado);
+      console.log("Unique Values:", uniqueValues);
+      console.log("Count Array:", countArray);
+      console.log("Rating Sum Array:", sumCeldaArray);
+      //console.log("Rating Avg Array:", ratingAvgArray);
+
+      function isNumericArray(array) {
+        return array.every(element => typeof element === 'number');
+      }
+
+      const isSerieNumeric = isNumericArray(data[selectSerie]);
+
+      let dataset= countArray;
+
+      if(isNumericArray(data[selectSerie])){
+        dataset = sumCeldaArray;
+
+      }
+
+      console.log("Is Serie Numeric:", isSerieNumeric);
+      console.log(dataset);
+
+
+
+      //const labels = data2.map((item) => item[selectEjex.value]);
+      //const values = data2.map((item) => item[selectSerie.value]);
+      //const labels= data[selectEjex.value];
+      //const values=;
 
       const tituloGrafico = this.querySelector("#titulo-grafico").value;
       const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
@@ -249,8 +302,16 @@ customElements.define(
       this.myChart = new Chart(context, {
         type: "bar",
         data: {
-          labels: labels,
-          datasets: [{ data: values }],
+          labels: uniqueValues,
+          //datasets: [{ data: values }],
+          datasets: [
+            {
+              label: selectSerie,
+              //label: selectSerie.options[selectSerie.selectedIndex].text,
+              //data: data[selectSerie.value],
+              data: dataset,
+            },
+          ],
         },
         options: {
           scales: {
@@ -266,10 +327,14 @@ customElements.define(
                 text: tituloEjeY,
               },
               ticks: {
+                beginAtZero: true,
+                stepSize: parseFloat(escala), // configuracion de escala
+              },
+              /*ticks: {
                 callback: function (value) {
                   return value / escala;
                 },
-              },
+              },*/
             },
           },
           plugins: {
