@@ -53,9 +53,9 @@ customElements.define(
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
                     <select class="graph-select" id="ejeX"></select>
-                    <label>Serie:</label>
+                    <label style=" margin-left: 20px;">Serie:</label>
                     <select class="graph-select" id="serie"></select>
-                    <h3>Personalizar</h3>
+                    <h3 style=" margin-top: 10px;">Personalizar</h3>
                     <label>Titulo eje X</label>
                     <input class="graph-input" type="text" id="titulo-grafico-x">
                     <label>Titulo eje Y</label>
@@ -83,7 +83,7 @@ customElements.define(
           .grafico-preview { height: 60%; }
           .view-container { display: flex; width: 100%; height: auto; }
           .view-container > h3 { margin-top: 15%; }
-          .graph-input, .graph-select { max-width: 350px; min-width: 100%; padding: 10px; }
+          .graph-input, .graph-select { max-width: 550px; padding: 10px; margin-top: 8px; }
           .hidden { display: none; }
           .menudesplegable { display: none; }
           .insert-data-grafic.active { right: -600px; transition: right 0.3s ease; }
@@ -101,6 +101,14 @@ customElements.define(
             color: #0b57d0;
             background-color: #e1e9f7;
             font-weight: 600;
+          }
+          #ejeX {
+            margin-top: 10px;
+          }
+
+          #confi-torta label {
+              display: block;
+              margin-top: 10px
           }
           .insert-data-grafic__container { width: 100%; display: flex; height: 100%; }
         </style>

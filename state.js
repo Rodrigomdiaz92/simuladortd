@@ -596,18 +596,34 @@ export const state = {
   },
   agregarTipoGrafico(nuevoValorGrafico) {
     this.seleccionGraficos.seleccion.tipoGrafico = nuevoValorGrafico;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
-  },
-  agregarEtiquetas(nuevoValorEtiqueta) {
+},
+agregarEtiquetas(nuevoValorEtiqueta) {
     this.seleccionGraficos.seleccion.etiqueta = nuevoValorEtiqueta;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
-  },
-  agregarEjeX(nuevoValorEjeX) {
+},
+agregarEjeX(nuevoValorEjeX) {
     this.seleccionGraficos.seleccion.ejeX = nuevoValorEjeX;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
-  },
-  agregarSerie(nuevoValorEjeY) {
+},
+agregarSerie(nuevoValorEjeY) {
     this.seleccionGraficos.seleccion.ejeY = nuevoValorEjeY;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
-  },
+},
 };

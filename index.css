@@ -357,10 +357,12 @@ tr .celda-encabezado-filas {
   margin: 2% auto;
 }
 #controles-grafico{
-  padding:15px 10px;
+  padding:10px 1px 40px;
   padding-bottom:80px;
-  overflow: auto;
+  /* overflow: auto; */
   height: 500px;
+  margin-left:-30px;
+  width: 600px
 }
 .control {
   display: flex;
@@ -378,6 +380,8 @@ tr .celda-encabezado-filas {
   border: none;
   background-color: var(--sheets-green);
   margin-bottom: auto;
+  margin-top: 20px;
+  width: 550px;
 }
 .insert-data-grafic {
   position: absolute;
