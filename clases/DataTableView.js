@@ -254,17 +254,23 @@ export class DataTableView {
     return newData;
   }
   setearEventos() {
+    let isTouchSelecting = false;
+    let initialTouchCell = null;
+
     function handleMouseOrTouchMove(e) {
-      e.preventDefault();
       const eventType = e.type;
       const isTouch = eventType.includes("touch");
       const event = isTouch ? e.touches[0] : e;
+
+      if (isTouch && !isTouchSelecting) {
+        return; // No hacer nada si no estamos en modo de selección táctil
+      }
+
       if (this.globalStartCell) {
         let globalStartCellColumnIndex = this.globalStartCell.cellIndex - 1;
         let globalStartCellRowIndex =
           this.globalStartCell.parentNode.rowIndex - 1;
 
-        // Obtener la celda actual basada en la posición del dedo
         const currentCell = document.elementFromPoint(
           event.clientX,
           event.clientY
@@ -274,7 +280,6 @@ export class DataTableView {
           return; // Salir si no se encuentra un elemento válido
         }
 
-        // Comparar la celda actual con la celda de inicio y actualizar si es necesario
         if (
           !this.globalEndCell ||
           !currentCell.isEqualNode(this.globalEndCell)
@@ -283,6 +288,7 @@ export class DataTableView {
           let globalEndCellColumnIndex = this.globalEndCell.cellIndex - 1;
           let globalEndCellRowIndex =
             this.globalEndCell.parentNode.rowIndex - 1;
+
           if (
             this.globalStartCell.tagName === "TD" &&
             this.globalEndCell.tagName === "TD" &&
@@ -323,14 +329,12 @@ export class DataTableView {
         }
       }
 
-      // Scrollear la tabla si el mouse está en los bordes y hay una selección
       if (this.globalStartCell && this.globalEndCell) {
         const mousePositionX =
           event.clientX - this.container.getBoundingClientRect().left;
         const mousePositionY =
           event.clientY - this.container.getBoundingClientRect().top;
 
-        // Scrolleo horizontal
         if (mousePositionX > this.container.clientWidth - 100) {
           this.container.scrollLeft +=
             10 * ((mousePositionX - (this.container.clientWidth - 100)) / 100);
@@ -340,7 +344,6 @@ export class DataTableView {
           this.container.scrollLeft -= 10 * ((100 - mousePositionX) / 100);
         }
 
-        // Scrolleo vertical
         if (mousePositionY > this.container.clientHeight - 100) {
           this.container.scrollTop +=
             10 * ((mousePositionY - (this.container.clientHeight - 100)) / 100);
@@ -352,13 +355,25 @@ export class DataTableView {
       }
     }
 
-    // Función que maneja el inicio de la selección
     function handleMouseOrTouchStart(e) {
-      e.preventDefault();
       const eventType = e.type;
       const isTouch = eventType.includes("touch");
       const event = isTouch ? e.touches[0] : e;
-      console.log("touchstart");
+
+      if (isTouch) {
+        initialTouchCell = document.elementFromPoint(
+          event.clientX,
+          event.clientY
+        );
+        isTouchSelecting =
+          initialTouchCell && initialTouchCell.classList.contains("selected");
+
+        if (!isTouchSelecting) {
+          // Permitir el desplazamiento si no estamos en modo de selección táctil
+          return;
+        }
+      }
+
       this.limpiarSeleccion();
       this.globalStartCell = event.target;
 
@@ -382,13 +397,13 @@ export class DataTableView {
       }
     }
 
-    // Función que maneja el fin de la selección
     function handleMouseOrTouchEnd() {
       this.globalStartCell = null;
       this.globalEndCell = null;
+      isTouchSelecting = false;
+      initialTouchCell = null;
     }
 
-    // Asignar eventos a la tabla
     this.table.addEventListener("mousedown", (e) =>
       handleMouseOrTouchStart.call(this, e)
     );
