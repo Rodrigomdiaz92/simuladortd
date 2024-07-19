@@ -254,49 +254,40 @@ export class DataTableView {
     return newData;
   }
   setearEventos() {
-    this.table.addEventListener("mousedown", (e) => {
-      this.limpiarSeleccion();
-      this.globalStartCell = e.target;
-      if (!e.target.id && e.target.tagName === "TD") {
-        // this.selectRange(e.target, e.target);
-        const coordenadas = this.obtenerIndexCoordenadas(e.target);
-        this.selecionarUnicaCelda(coordenadas.fila, coordenadas.columna);
-        e.preventDefault();
-      }
-      if (e.target.classList.contains("celda-encabezado-columnas")) {
-        const columnIndex = e.target.cellIndex - 1;
-        this.seleccionarRangoColumnaCompleta(columnIndex, columnIndex);
-        e.preventDefault();
-      }
-      if (e.target.classList.contains("celda-encabezado-filas")) {
-        const rowIndex = e.target.parentNode.rowIndex - 1;
-        this.seleccionarRangoFilaCompleta(rowIndex, rowIndex);
-        e.preventDefault();
-      }
-      if (e.target.id == "all-cells") {
-        const totalFilas = this.cantidadFilas - 1;
-        const totalColumnas = this.cantidadColumnas - 1;
-        this.seleccionarRangoCardinal(0, totalFilas, 0, totalColumnas);
-        e.preventDefault();
-      }
-    });
-
-    document.addEventListener("mousemove", (e) => {
+    function handleMouseOrTouchMove(e) {
+      e.preventDefault();
+      const eventType = e.type;
+      const isTouch = eventType.includes("touch");
+      const event = isTouch ? e.touches[0] : e;
       if (this.globalStartCell) {
         let globalStartCellColumnIndex = this.globalStartCell.cellIndex - 1;
         let globalStartCellRowIndex =
           this.globalStartCell.parentNode.rowIndex - 1;
 
-        if (!this.globalEndCell || this.globalEndCell != e.target) {
-          this.globalEndCell = e.target;
+        // Obtener la celda actual basada en la posición del dedo
+        const currentCell = document.elementFromPoint(
+          event.clientX,
+          event.clientY
+        );
+
+        if (!currentCell || !currentCell.tagName || !currentCell.parentNode) {
+          return; // Salir si no se encuentra un elemento válido
+        }
+
+        // Comparar la celda actual con la celda de inicio y actualizar si es necesario
+        if (
+          !this.globalEndCell ||
+          !currentCell.isEqualNode(this.globalEndCell)
+        ) {
+          this.globalEndCell = currentCell;
           let globalEndCellColumnIndex = this.globalEndCell.cellIndex - 1;
           let globalEndCellRowIndex =
             this.globalEndCell.parentNode.rowIndex - 1;
           if (
-            this.globalStartCell.tagName == "TD" &&
-            e.target.tagName == "TD" &&
-            e.target.classList.length == 0 &&
-            !e.target.id
+            this.globalStartCell.tagName === "TD" &&
+            this.globalEndCell.tagName === "TD" &&
+            this.globalEndCell.classList.length === 0 &&
+            !this.globalEndCell.id
           ) {
             this.seleccionarRangoCardinal(
               globalStartCellRowIndex,
@@ -305,7 +296,10 @@ export class DataTableView {
               globalEndCellColumnIndex
             );
             e.preventDefault();
-          } else if (e.target.tagName == "TD" || e.target.tagName == "TH") {
+          } else if (
+            this.globalEndCell.tagName === "TD" ||
+            this.globalEndCell.tagName === "TH"
+          ) {
             if (
               this.globalStartCell.classList.contains(
                 "celda-encabezado-columnas"
@@ -329,23 +323,17 @@ export class DataTableView {
         }
       }
 
-      document.addEventListener("mouseup", () => {
-        this.globalStartCell = null;
-        this.globalEndCell = null;
-      });
-      document.addEventListener("mouseup", function () {
-        this.globalStartCell = null;
-        this.globalEndCell = null;
-      });
-
       // Scrollear la tabla si el mouse está en los bordes y hay una selección
       if (this.globalStartCell && this.globalEndCell) {
-        const mousePositionX = e.clientX - this.container.getBoundingClientRect().left;
-        const mousePositionY = e.clientY - this.container.getBoundingClientRect().top;
+        const mousePositionX =
+          event.clientX - this.container.getBoundingClientRect().left;
+        const mousePositionY =
+          event.clientY - this.container.getBoundingClientRect().top;
 
         // Scrolleo horizontal
         if (mousePositionX > this.container.clientWidth - 100) {
-          this.container.scrollLeft += 10 * ((mousePositionX - (this.container.clientWidth - 100)) / 100);
+          this.container.scrollLeft +=
+            10 * ((mousePositionX - (this.container.clientWidth - 100)) / 100);
         }
 
         if (mousePositionX < 100) {
@@ -354,14 +342,77 @@ export class DataTableView {
 
         // Scrolleo vertical
         if (mousePositionY > this.container.clientHeight - 100) {
-          this.container.scrollTop += 10 * ((mousePositionY - (this.container.clientHeight - 100)) / 100);
+          this.container.scrollTop +=
+            10 * ((mousePositionY - (this.container.clientHeight - 100)) / 100);
         }
 
         if (mousePositionY < 100) {
           this.container.scrollTop -= 10 * ((100 - mousePositionY) / 100);
         }
       }
-    });
+    }
+
+    // Función que maneja el inicio de la selección
+    function handleMouseOrTouchStart(e) {
+      e.preventDefault();
+      const eventType = e.type;
+      const isTouch = eventType.includes("touch");
+      const event = isTouch ? e.touches[0] : e;
+      console.log("touchstart");
+      this.limpiarSeleccion();
+      this.globalStartCell = event.target;
+
+      if (!event.target.id && event.target.tagName === "TD") {
+        const coordenadas = this.obtenerIndexCoordenadas(event.target);
+        this.selecionarUnicaCelda(coordenadas.fila, coordenadas.columna);
+        e.preventDefault();
+      } else if (event.target.classList.contains("celda-encabezado-columnas")) {
+        const columnIndex = event.target.cellIndex - 1;
+        this.seleccionarRangoColumnaCompleta(columnIndex, columnIndex);
+        e.preventDefault();
+      } else if (event.target.classList.contains("celda-encabezado-filas")) {
+        const rowIndex = event.target.parentNode.rowIndex - 1;
+        this.seleccionarRangoFilaCompleta(rowIndex, rowIndex);
+        e.preventDefault();
+      } else if (event.target.id == "all-cells") {
+        const totalFilas = this.cantidadFilas - 1;
+        const totalColumnas = this.cantidadColumnas - 1;
+        this.seleccionarRangoCardinal(0, totalFilas, 0, totalColumnas);
+        e.preventDefault();
+      }
+    }
+
+    // Función que maneja el fin de la selección
+    function handleMouseOrTouchEnd() {
+      this.globalStartCell = null;
+      this.globalEndCell = null;
+    }
+
+    // Asignar eventos a la tabla
+    this.table.addEventListener("mousedown", (e) =>
+      handleMouseOrTouchStart.call(this, e)
+    );
+    this.table.addEventListener(
+      "touchstart",
+      (e) => handleMouseOrTouchStart.call(this, e),
+      { passive: false }
+    );
+
+    document.addEventListener("mousemove", (e) =>
+      handleMouseOrTouchMove.call(this, e)
+    );
+    document.addEventListener(
+      "touchmove",
+      (e) => handleMouseOrTouchMove.call(this, e),
+      { passive: false }
+    );
+
+    document.addEventListener("mouseup", () =>
+      handleMouseOrTouchEnd.call(this)
+    );
+    document.addEventListener("touchend", () =>
+      handleMouseOrTouchEnd.call(this)
+    );
   }
 
   getSelectedCords() {
