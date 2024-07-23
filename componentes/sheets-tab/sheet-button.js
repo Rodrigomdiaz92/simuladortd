@@ -58,9 +58,8 @@ customElements.define(
               );
               selectedSheet.remove();
               this.remove();
-
               appController.userSettings.reset();
-              
+
               // // Obtén el div dentro del botón correspondiente a la hoja de datos
               // const dataSheetButtonDiv = document.querySelector('sheet-button[id="button1"] div');
 
@@ -68,7 +67,6 @@ customElements.define(
               // if (dataSheetButtonDiv) {
               //   dataSheetButtonDiv.click();
               // }
-              
             }
           });
         }

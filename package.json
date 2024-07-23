@@ -8,6 +8,7 @@
   "devDependencies": {
     "dataframe-js": "^1.4.4",
     "lodash": "^4.17.21",
+    "parcel": "^2.9.3",
     "process": "^0.11.10",
     "sortablejs": "^1.15.2",
     "sweetalert": "^2.1.2"
