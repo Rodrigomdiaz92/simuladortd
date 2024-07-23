@@ -55,12 +55,19 @@ customElements.define(
                     <select class="graph-select" id="ejeX"></select>
                     <label style=" margin-left: 20px;">Serie:</label>
                     <select class="graph-select" id="serie"></select>
+                    <label style=" margin-left: 366px;">Función:</label>
+                    <select class="graph-select" id="funcion">
+                      <option value="suma">Suma</option>
+                      <option value="promedio">Promedio</option>
+                      <option value="minimo">Mín.</option>
+                      <option value="maximo">Máx.</option>
+                    </select>               
                     <h3 style=" margin-top: 10px;">Personalizar</h3>
                     <label>Titulo eje X</label>
                     <input class="graph-input" type="text" id="titulo-grafico-x">
                     <label>Titulo eje Y</label>
                     <input class="graph-input" type="text" id="titulo-grafico-y">
-                    <label>Factor de escala Eje vertical</label>
+                    <label>Escala del Eje vertical</label>
                     <select class="graph-select" id="escala">
                       <option value="1000">Predeterminado</option>
                       <option value="0.01">0,01</option>
@@ -83,7 +90,7 @@ customElements.define(
           .grafico-preview { height: 60%; }
           .view-container { display: flex; width: 100%; height: auto; }
           .view-container > h3 { margin-top: 15%; }
-          .graph-input, .graph-select { max-width: 550px; padding: 10px; margin-top: 8px; }
+          .graph-input, .graph-select { max-width: 550px; padding: 10px; margin-top: 8px; cursor: pointer; }
           .hidden { display: none; }
           .menudesplegable { display: none; }
           .insert-data-grafic.active { right: -600px; transition: right 0.3s ease; }
@@ -105,7 +112,12 @@ customElements.define(
           #ejeX {
             margin-top: 10px;
           }
-
+          #titulo-grafico-x{
+            cursor: text;
+          }
+          #titulo-grafico-y{
+            cursor: text;
+          }
           #confi-torta label {
               display: block;
               margin-top: 10px
