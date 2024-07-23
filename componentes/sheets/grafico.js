@@ -238,6 +238,7 @@ customElements.define(
     createBarChart(context, data) {
       const selectEjex = this.querySelector("#ejeX").value;
       const selectSerie = this.querySelector("#serie").value;
+      const selectFuncion = this.querySelector("#funcion").value;
       console.log(data)
       console.log(selectEjex)
       console.log(selectSerie)
@@ -251,25 +252,34 @@ customElements.define(
         const sumaceldas = data[selectSerie][i];
         
         if (!agrupado[ejeX]) {
-          agrupado[ejeX] = { count: 0, sumaCelda: 0, promedioCelda: 0};
+          agrupado[ejeX] = { count: 0, sumaCelda: 0, promedioCelda: 0, minCelda: Infinity, maxCelda: 0};
         }
         
         agrupado[ejeX].count++;
         agrupado[ejeX].sumaCelda += sumaceldas;
-        //agrupado[ejeX].promedioCelda = agrupado[ejeX].sumaCelda / agrupado[ejeX].count;
+        if (sumaceldas < agrupado[ejeX].minCelda) agrupado[ejeX].minCelda = sumaceldas;
+        if (sumaceldas > agrupado[ejeX].maxCelda) agrupado[ejeX].maxCelda = sumaceldas;
+      }
+
+      for (let habilidad in agrupado) {
+        agrupado[habilidad].promedioCelda = agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
       }
 
       // Obtener los valores únicos, los arrays de count y ratingSum
       const uniqueValues = Object.keys(agrupado);
       const countArray = uniqueValues.map(ejeX => agrupado[ejeX].count);
       const sumCeldaArray = uniqueValues.map(ejeX => agrupado[ejeX].sumaCelda);
-      //const ratingAvgArray = uniqueValues.map(ejeX => agrupado[ejeX].ratingAvg);
+      const ratingAvgArray = uniqueValues.map(ejeX => agrupado[ejeX].promedioCelda);
+      const ratingMinArray = uniqueValues.map(habilidad => agrupado[habilidad].minCelda);
+      const ratingMaxArray = uniqueValues.map(habilidad => agrupado[habilidad].maxCelda);
 
       console.log("Agrupado:", agrupado);
       console.log("Unique Values:", uniqueValues);
       console.log("Count Array:", countArray);
       console.log("Rating Sum Array:", sumCeldaArray);
-      //console.log("Rating Avg Array:", ratingAvgArray);
+      console.log("Rating Avg Array:", ratingAvgArray);
+      console.log("Rating Min Array:", ratingMinArray);
+      console.log("Rating Max Array:", ratingMaxArray);
 
       function isNumericArray(array) {
         return array.every(element => typeof element === 'number');
@@ -277,11 +287,20 @@ customElements.define(
 
       const isSerieNumeric = isNumericArray(data[selectSerie]);
 
-      let dataset= countArray;
+      let dataset;
 
       if(isNumericArray(data[selectSerie])){
-        dataset = sumCeldaArray;
-
+        if (selectFuncion =="suma") {
+          dataset = sumCeldaArray;
+        } else if (selectFuncion == "promedio") {
+          dataset = ratingAvgArray;
+        } else if (selectFuncion == "minimo") {
+          dataset = ratingMinArray;
+        } else if (selectFuncion == "maximo") {
+          dataset = ratingMaxArray;
+        }
+      }else{
+        dataset= countArray;
       }
 
       console.log("Is Serie Numeric:", isSerieNumeric);
