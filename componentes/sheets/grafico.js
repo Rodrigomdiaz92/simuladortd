@@ -57,6 +57,7 @@ customElements.define(
                     <select class="graph-select" id="serie"></select>
                     <label style=" margin-left: 366px;">Función:</label>
                     <select class="graph-select" id="funcion">
+                      <option value="conteo">Conteo</option>
                       <option value="suma">Suma</option>
                       <option value="promedio">Promedio</option>
                       <option value="minimo">Mín.</option>
