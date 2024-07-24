@@ -627,3 +627,8 @@ agregarSerie(nuevoValorEjeY) {
     console.log(this.seleccionGraficos.seleccion);
 },
 };
+
+
+//  Validacion Graficos
+
+
