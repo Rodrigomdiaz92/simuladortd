@@ -19,6 +19,7 @@ export const state = {
       ejeX: "",
       ejeY: "",
       etiqueta: "",
+      huecoCirculo: "",
     },
     intervalo: {},
     datos: [],
@@ -626,6 +627,15 @@ agregarSerie(nuevoValorEjeY) {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
 },
+agregarHuecoCirculo(nuevoValorHuecoCirculo) {
+  this.seleccionGraficos.seleccion.huecoCirculo = nuevoValorHuecoCirculo;
+  this.timer = true;
+  this.editingBlocked = true;
+  this.actualizarIntervaloYRenderizar();
+  this.actualizarReloj();
+  console.log(this.seleccionGraficos.seleccion);
+},
+
 //  Validacion Graficos
 
 validarTipoGrafico(tipo) {
@@ -634,6 +644,24 @@ validarTipoGrafico(tipo) {
     window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
   } else {
     window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+  }
+},
+
+validarEtiquetaGrafico(valorColumna) {
+  console.log(appController)
+  if (valorColumna == appController.app.baseSettings.columna) {
+    window.tabEl.handleChat(`La columna seleccionada es correcta.`, "correct");
+  } else {
+    window.tabEl.handleChat(`La columna seleccionada NO es correcta.`, "error");
+  }
+},
+
+validarHuecoCirculo(valorHueco) {
+  console.log(appController)
+  if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
   }
 },
 };
