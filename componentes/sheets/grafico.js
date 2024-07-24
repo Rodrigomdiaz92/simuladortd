@@ -133,7 +133,13 @@ customElements.define(
       botonMostrar.addEventListener("click", this.toggleMenu.bind(this));
 
       const tipoGrafico = this.querySelector("#tipoGrafico");
+    
+
+    
       tipoGrafico.addEventListener("change", this.updateOptions.bind(this));
+      tipoGrafico.addEventListener("change", () => {
+        state.validarTipoGrafico(tipoGrafico.value);
+      });
 
       const controlConfirm = this.querySelector("#control-confirm");
       controlConfirm.addEventListener("click", this.createChart.bind(this));

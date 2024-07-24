@@ -23,7 +23,7 @@ const BASE_SETTINGS = {
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barra",
+  tipoGrafico: "barras",
   ejeX: "ALTURA_CM",
   serie: "",
   columna: "",

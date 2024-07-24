@@ -626,9 +626,20 @@ agregarSerie(nuevoValorEjeY) {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
 },
+//  Validacion Graficos
+
+validarTipoGrafico(tipo) {
+  console.log(appController)
+  if (tipo == appController.app.baseSettings.tipoGrafico) {
+    window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+  }
+},
 };
 
 
-//  Validacion Graficos
 
 
+
+      
