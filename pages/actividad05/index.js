@@ -24,9 +24,10 @@ const BASE_SETTINGS = {
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "ALTURA_CM",
-  serie: "",
-  columna: "",
+  ejeX: "HABILIDAD_ATAQUE",
+  serie: "EDAD",
+  funcion: "promedio",
+  escala:100,
 };
 let df;
 window.onload = pgEvent.getValues();

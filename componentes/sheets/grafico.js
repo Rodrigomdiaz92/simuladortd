@@ -55,8 +55,8 @@ customElements.define(
                     <select class="graph-select" id="ejeX"></select>
                     <label style=" margin-left: 3.3%;">Serie:</label>
                     <select class="graph-select" id="serie"></select>
-                    <label style=" margin-left: 61%;">Función:</label>
-                    <select class="graph-select" id="funcion">
+                    <label style="display: none;" style=" margin-left: 61%;">Función:</label>
+                    <select style="display: none;" class="graph-select" id="funcion">
                       <option value="conteo">Conteo</option>
                       <option value="suma">Suma</option>
                       <option value="promedio">Promedio</option>
@@ -153,14 +153,25 @@ customElements.define(
         state.validarHuecoCirculo(huecoCirculo.value);
       });
 
+      //const selectEjex = this.querySelector("#ejeX");
+      
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", () => {
         state.agregarEjeX(selectEjex.value);
       });
+      selectEjex.addEventListener("change", this.updateOptions.bind(this));
+      selectEjex.addEventListener("change", () => {
+        state.validarEjeXBarras(selectEjex.value);
+      });
 
-      const selectSerie = this.querySelector("#serie");
+      /*const selectSerie = this.querySelector("#serie");
       selectSerie.addEventListener("change", () => {
         state.agregarSerie(selectSerie.value);
+      });*/
+      const selectSerie = this.querySelector("#serie");
+      selectSerie.addEventListener("change", this.updateOptions.bind(this));
+      selectSerie.addEventListener("change", () => {
+        state.validarSerieBarras(selectSerie.value);
       });
     }
 
@@ -318,13 +329,13 @@ customElements.define(
       if(isNumericArray(data[selectSerie])){
         if (selectFuncion =="suma") {
           dataset = sumCeldaArray;
-        } else if (selectFuncion == "promedio") {
+        } /*else if (selectFuncion == "promedio") {
           dataset = ratingAvgArray;
         } else if (selectFuncion == "minimo") {
           dataset = ratingMinArray;
         } else if (selectFuncion == "maximo") {
           dataset = ratingMaxArray;
-        }
+        }*/
       }else{
         dataset= countArray;
       }
