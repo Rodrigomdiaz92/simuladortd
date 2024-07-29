@@ -361,7 +361,7 @@ tr .celda-encabezado-filas {
   padding-bottom:80px;
   /* overflow: auto; */
   height: 500px;
-  margin-left:-30px;
+  margin-left:-5%;
   width: 600px
 }
 .control {
@@ -380,8 +380,8 @@ tr .celda-encabezado-filas {
   border: none;
   background-color: var(--sheets-green);
   margin-bottom: auto;
-  margin-top: 20px;
-  width: 550px;
+  margin-top: 4%;
+  width: 91.6%;
   cursor: pointer;
 }
 .insert-data-grafic {

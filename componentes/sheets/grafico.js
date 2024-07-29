@@ -48,22 +48,22 @@ customElements.define(
                     <label>Columna:</label>
                     <select class="graph-select" id="etiquetas-grafico"></select>
                     <label>Hueco del círculo(%)</label>
-                    <input class="graph-input" type="number" id="porcentaje-circulo" placeholder="Predeterminado">
+                    <input class="graph-input" type="number" id="porcentaje-circulo">
                   </div>
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
                     <select class="graph-select" id="ejeX"></select>
-                    <label style=" margin-left: 20px;">Serie:</label>
+                    <label style=" margin-left: 3.3%;">Serie:</label>
                     <select class="graph-select" id="serie"></select>
-                    <label style=" margin-left: 366px;">Función:</label>
-                    <select class="graph-select" id="funcion">
+                    <label style="display: none;" style=" margin-left: 61%;">Función:</label>
+                    <select style="display: none;" class="graph-select" id="funcion">
                       <option value="conteo">Conteo</option>
                       <option value="suma">Suma</option>
                       <option value="promedio">Promedio</option>
                       <option value="minimo">Mín.</option>
                       <option value="maximo">Máx.</option>
-                    </select>               
-                    <h3 style=" margin-top: 10px;">Personalizar</h3>
+                    </select>
+                    <h3>Personalizar</h3>               
                     <label>Titulo eje X</label>
                     <input class="graph-input" type="text" id="titulo-grafico-x">
                     <label>Titulo eje Y</label>
@@ -91,7 +91,7 @@ customElements.define(
           .grafico-preview { height: 60%; }
           .view-container { display: flex; width: 100%; height: auto; }
           .view-container > h3 { margin-top: 15%; }
-          .graph-input, .graph-select { max-width: 550px; padding: 10px; margin-top: 8px; cursor: pointer; }
+          .graph-input, .graph-select { max-width: 91.6%; padding: 10px; margin-top: 8px; cursor: pointer; }
           .hidden { display: none; }
           .menudesplegable { display: none; }
           .insert-data-grafic.active { right: -600px; transition: right 0.3s ease; }
@@ -111,7 +111,7 @@ customElements.define(
             font-weight: 600;
           }
           #ejeX {
-            margin-top: 10px;
+            margin-top: 1.6%;
           }
           #titulo-grafico-x{
             cursor: text;
@@ -134,23 +134,44 @@ customElements.define(
 
       const tipoGrafico = this.querySelector("#tipoGrafico");
       tipoGrafico.addEventListener("change", this.updateOptions.bind(this));
+      tipoGrafico.addEventListener("change", () => {
+        state.validarTipoGrafico(tipoGrafico.value);
+      });
 
       const controlConfirm = this.querySelector("#control-confirm");
       controlConfirm.addEventListener("click", this.createChart.bind(this));
 
       const selectEtiquetas = this.querySelector("#etiquetas-grafico");
+      selectEtiquetas.addEventListener("change", this.updateOptions.bind(this));
       selectEtiquetas.addEventListener("change", () => {
-        state.agregarEtiquetas(selectEtiquetas.value);
+        state.validarEtiquetaGrafico(selectEtiquetas.value);
+      });
+      
+      const huecoCirculo = this.querySelector("#porcentaje-circulo");
+      huecoCirculo.addEventListener("change", this.updateOptions.bind(this));
+      huecoCirculo.addEventListener("change", () => {
+        state.validarHuecoCirculo(huecoCirculo.value);
       });
 
+      //const selectEjex = this.querySelector("#ejeX");
+      
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", () => {
         state.agregarEjeX(selectEjex.value);
       });
+      selectEjex.addEventListener("change", this.updateOptions.bind(this));
+      selectEjex.addEventListener("change", () => {
+        state.validarEjeXBarras(selectEjex.value);
+      });
 
-      const selectSerie = this.querySelector("#serie");
+      /*const selectSerie = this.querySelector("#serie");
       selectSerie.addEventListener("change", () => {
         state.agregarSerie(selectSerie.value);
+      });*/
+      const selectSerie = this.querySelector("#serie");
+      selectSerie.addEventListener("change", this.updateOptions.bind(this));
+      selectSerie.addEventListener("change", () => {
+        state.validarSerieBarras(selectSerie.value);
       });
     }
 
@@ -184,13 +205,16 @@ customElements.define(
       const newDf = new dfd.DataFrame(data);
       const columns = newDf.columns;
 
+      const defaultOption = `<option value="none" selected>---</option>`;
       const optionsHTML = columns
         .map((col) => `<option value=${col}>${col}</option>`)
         .join("");
 
-      this.querySelector("#etiquetas-grafico").innerHTML = optionsHTML;
-      this.querySelector("#ejeX").innerHTML = optionsHTML;
-      this.querySelector("#serie").innerHTML = optionsHTML;
+      const finalOptionsHTML = defaultOption + optionsHTML;
+
+      this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
+      this.querySelector("#ejeX").innerHTML = finalOptionsHTML;
+      this.querySelector("#serie").innerHTML = finalOptionsHTML;
     }
 
     createChart() {
@@ -303,7 +327,8 @@ customElements.define(
       let dataset;
 
       if(isNumericArray(data[selectSerie])){
-        if (selectFuncion =="suma") {
+        dataset = sumCeldaArray;
+        /*if (selectFuncion =="suma") {
           dataset = sumCeldaArray;
         } /*else if (selectFuncion == "promedio") {
           dataset = ratingAvgArray;
@@ -311,7 +336,7 @@ customElements.define(
           dataset = ratingMinArray;
         } else if (selectFuncion == "maximo") {
           dataset = ratingMaxArray;
-        }
+        }*/
       }else{
         dataset= countArray;
       }
