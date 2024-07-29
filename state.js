@@ -631,4 +631,73 @@ agregarSerie(nuevoValorEjeY) {
 
 //  Validacion Graficos
 
+validarTipoGrafico(tipo) {
+  
+  if (tipo == appController.app.baseSettings.tipoGrafico) {
+    window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+  }
+},
+
+validarEtiquetaGrafico(valorColumna) {
+  
+  if (valorColumna == appController.app.baseSettings.columna) {
+    window.tabEl.handleChat(`La columna seleccionada es correcta.`, "correct");
+  } else {
+    window.tabEl.handleChat(`La columna seleccionada NO es correcta.`, "error");
+  }
+},
+
+validarHuecoCirculo(valorHueco) {
+  
+  if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
+  }
+},
+
+validarEjeXBarras(valorEjeX) {
+  
+  if (valorEjeX == appController.app.baseSettings.ejeX) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La columna seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+validarSerieBarras(valorSerie) {
+  
+  if (valorSerie == appController.app.baseSettings.serie) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+validarFuncionBarras(valorFuncion) {
+  
+  if (valorFuncion == appController.app.baseSettings.funcion) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La funcion de agregacion seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+validarEscalaBarras(valorEscala) {
+  
+  if (valorEscala == appController.app.baseSettings.escala) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La escala seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+};
+
+
+
+
+
 

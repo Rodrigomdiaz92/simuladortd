@@ -305,7 +305,7 @@ customElements.define(
       if(isNumericArray(data[selectSerie])){
         if (selectFuncion =="suma") {
           dataset = sumCeldaArray;
-        } else if (selectFuncion == "promedio") {
+        } /*else if (selectFuncion == "promedio") {
           dataset = ratingAvgArray;
         } else if (selectFuncion == "minimo") {
           dataset = ratingMinArray;
