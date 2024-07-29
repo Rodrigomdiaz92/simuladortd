@@ -146,7 +146,7 @@ customElements.define(
       selectEtiquetas.addEventListener("change", () => {
         state.validarEtiquetaGrafico(selectEtiquetas.value);
       });
-      
+
       const huecoCirculo = this.querySelector("#porcentaje-circulo");
       huecoCirculo.addEventListener("change", this.updateOptions.bind(this));
       huecoCirculo.addEventListener("change", () => {
@@ -154,7 +154,7 @@ customElements.define(
       });
 
       //const selectEjex = this.querySelector("#ejeX");
-      
+
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", () => {
         state.agregarEjeX(selectEjex.value);
@@ -276,9 +276,9 @@ customElements.define(
       const selectEjex = this.querySelector("#ejeX").value;
       const selectSerie = this.querySelector("#serie").value;
       const selectFuncion = this.querySelector("#funcion").value;
-      console.log(data)
-      console.log(selectEjex)
-      console.log(selectSerie)
+      console.log(data);
+      console.log(selectEjex);
+      console.log(selectSerie);
 
       // Inicializar el objeto Agrupado
       const agrupado = {};
@@ -287,28 +287,45 @@ customElements.define(
       for (let i = 0; i < data[selectEjex].length; i++) {
         const ejeX = data[selectEjex][i];
         const sumaceldas = data[selectSerie][i];
-        
+
         if (!agrupado[ejeX]) {
-          agrupado[ejeX] = { count: 0, sumaCelda: 0, promedioCelda: 0, minCelda: Infinity, maxCelda: 0};
+          agrupado[ejeX] = {
+            count: 0,
+            sumaCelda: 0,
+            promedioCelda: 0,
+            minCelda: Infinity,
+            maxCelda: 0,
+          };
         }
-        
+
         agrupado[ejeX].count++;
         agrupado[ejeX].sumaCelda += sumaceldas;
-        if (sumaceldas < agrupado[ejeX].minCelda) agrupado[ejeX].minCelda = sumaceldas;
-        if (sumaceldas > agrupado[ejeX].maxCelda) agrupado[ejeX].maxCelda = sumaceldas;
+        if (sumaceldas < agrupado[ejeX].minCelda)
+          agrupado[ejeX].minCelda = sumaceldas;
+        if (sumaceldas > agrupado[ejeX].maxCelda)
+          agrupado[ejeX].maxCelda = sumaceldas;
       }
 
       for (let habilidad in agrupado) {
-        agrupado[habilidad].promedioCelda = agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
+        agrupado[habilidad].promedioCelda =
+          agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
       }
 
       // Obtener los valores únicos, los arrays de count y ratingSum
       const uniqueValues = Object.keys(agrupado);
-      const countArray = uniqueValues.map(ejeX => agrupado[ejeX].count);
-      const sumCeldaArray = uniqueValues.map(ejeX => agrupado[ejeX].sumaCelda);
-      const ratingAvgArray = uniqueValues.map(ejeX => agrupado[ejeX].promedioCelda);
-      const ratingMinArray = uniqueValues.map(habilidad => agrupado[habilidad].minCelda);
-      const ratingMaxArray = uniqueValues.map(habilidad => agrupado[habilidad].maxCelda);
+      const countArray = uniqueValues.map((ejeX) => agrupado[ejeX].count);
+      const sumCeldaArray = uniqueValues.map(
+        (ejeX) => agrupado[ejeX].sumaCelda
+      );
+      const ratingAvgArray = uniqueValues.map(
+        (ejeX) => agrupado[ejeX].promedioCelda
+      );
+      const ratingMinArray = uniqueValues.map(
+        (habilidad) => agrupado[habilidad].minCelda
+      );
+      const ratingMaxArray = uniqueValues.map(
+        (habilidad) => agrupado[habilidad].maxCelda
+      );
 
       console.log("Agrupado:", agrupado);
       console.log("Unique Values:", uniqueValues);
@@ -319,14 +336,14 @@ customElements.define(
       console.log("Rating Max Array:", ratingMaxArray);
 
       function isNumericArray(array) {
-        return array.every(element => typeof element === 'number');
+        return array.every((element) => typeof element === "number");
       }
 
       const isSerieNumeric = isNumericArray(data[selectSerie]);
 
       let dataset;
 
-      if(isNumericArray(data[selectSerie])){
+      if (isNumericArray(data[selectSerie])) {
         dataset = sumCeldaArray;
         /*if (selectFuncion =="suma") {
           dataset = sumCeldaArray;
@@ -337,14 +354,12 @@ customElements.define(
         } else if (selectFuncion == "maximo") {
           dataset = ratingMaxArray;
         }*/
-      }else{
-        dataset= countArray;
+      } else {
+        dataset = countArray;
       }
 
       console.log("Is Serie Numeric:", isSerieNumeric);
       console.log(dataset);
-
-
 
       //const labels = data2.map((item) => item[selectEjex.value]);
       //const values = data2.map((item) => item[selectSerie.value]);
