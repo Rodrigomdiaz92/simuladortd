@@ -664,7 +664,7 @@ validarHuecoCirculo(valorHueco) {
     window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
   }
 },
-/*ya
+/*
 validarEjeXBarras(valorEjeX) {
   
   if (valorEjeX == appController.app.baseSettings.ejeX) {
