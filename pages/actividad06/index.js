@@ -23,11 +23,11 @@ const BASE_SETTINGS = {
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
-  escala:100,
+  tipoGrafico: "torta",
+  ejeX: "",
+  serie: "",
+  columna: "POSICION",
+  huecoCirculo: "0"
 };
 let df;
 window.onload = pgEvent.getValues();
