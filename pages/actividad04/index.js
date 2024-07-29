@@ -13,6 +13,7 @@ import "../../componentes/sheets/grafico";
 import "../../componentes/sheets/tabladinamica/tabladinamica";
 import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
 import "../../componentes/sheets/tabladinamica/data-controls";
+import "../../componentes/progressBar";
 import { App } from "../../clases/App";
 import { UserSettings } from "../../clases/UserSettings";
 import { appController } from "../../appController";
@@ -25,7 +26,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   filaSeleccionadaTD: ['CLUB'],
   columnaSeleccionadaTD: ['PIE_HABIL'],
-  valoresSeleccionadaTD: ['ID_JUGADOR', 'VALOR_EUR'],
+  valorSeleccionadaTD: ['ID_JUGADOR', 'VALOR_EUR'],
   funcionesSeleccionadasTD: ['count', 'mean']
 };
 let df;

@@ -4,7 +4,11 @@ import path from "path";
 
 export default defineConfig({
   base: "/",
+  server: {
+    port: 1234,
+  },
   build: {
+    outDir: "dist",
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, "index.html"),
