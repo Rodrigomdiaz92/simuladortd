@@ -467,6 +467,183 @@ validarTipoGrafico(tipo) {
       );
     }
   },
+
+  verificarSeleccionMensaje(seleccion) {
+    let tipoSeleccion = seleccion === "fila" ? "fila" : "columna";
+    let seleccionadaTD =
+      appController.app.baseSettings[`${tipoSeleccion}SeleccionadaTD`];
+    let seleccionDinamica = this.seleccionTablaDinamica[`${tipoSeleccion}s`];
+
+    // Verifica si las filas/columnas recomendadas están vacías
+    if (seleccionadaTD.length === 0) {
+      this.handleFirstChangeMade();
+      window.tabEl.handleChat(
+        `No se recomienda seleccionar ninguna ${tipoSeleccion}.`,
+        "error"
+      );
+      return;
+    }
+
+    // Retorna sin decir nada si la selección dinámica está vacía
+    if (seleccionDinamica.length === 0) {
+      return;
+    }
+
+    let seleccionCorrecta = seleccionDinamica.filter((item) =>
+      seleccionadaTD.includes(item)
+    );
+    let cantidadCorrecta = seleccionDinamica.length === seleccionadaTD.length;
+    let ordenCorrecto =
+      JSON.stringify(seleccionDinamica) === JSON.stringify(seleccionadaTD);
+
+    if (seleccionCorrecta.length === seleccionadaTD.length) {
+      if (ordenCorrecto && cantidadCorrecta) {
+        let mensaje =
+          seleccionDinamica.length > 1
+            ? `Las ${tipoSeleccion}s seleccionadas y su orden son correctos.`
+            : `La ${tipoSeleccion} seleccionada "${seleccionCorrecta[0]}" es correcta.`;
+        window.tabEl.handleChat(mensaje, "correct");
+        appController.app.addProgressToProgressBar();
+        this.verificarSeleccion();
+      } else {
+        let mensaje, tipoNotificacion;
+        if (!cantidadCorrecta) {
+          mensaje = `El número de ${tipoSeleccion}s seleccionadas no es correcto. Por favor, verifica tus selecciones.`;
+          tipoNotificacion = "error";
+        } else {
+          mensaje = `Las ${tipoSeleccion}s seleccionadas son correctas, pero el orden no es correcto. Por favor, verifica el orden de tus selecciones.`;
+          tipoNotificacion = "warning";
+          appController.app.addProgressToProgressBar();
+        }
+        this.handleFirstChangeMade();
+        window.tabEl.handleChat(mensaje, tipoNotificacion);
+        appController.app.subProgressToProgressBar();
+      }
+    } else {
+      this.handleFirstChangeMade();
+      if (seleccionCorrecta.length > 0) {
+        window.tabEl.handleChat(
+          `La ${tipoSeleccion} seleccionada "${seleccionCorrecta.join(
+            ", "
+          )}" es correcta, pero faltan más ${tipoSeleccion}s.`,
+          "warning"
+        );
+        appController.app.addProgressToProgressBar();
+      } else {
+        window.tabEl.handleChat(
+          `Las ${tipoSeleccion}s seleccionadas no son correctas. Por favor, prueba con otras ${tipoSeleccion}s.`,
+          "error"
+        );
+      }
+    }
+  },
+  verificarSeleccionValores() {
+    let seleccionadaTD = appController.app.baseSettings.valorSeleccionadaTD;
+    let seleccionDinamica = this.seleccionTablaDinamica.valores.map(
+      (v) => Object.keys(v)[0]
+    );
+
+    // Verifica si los valores recomendados están vacíos
+    if (seleccionadaTD.length === 0) {
+      this.handleFirstChangeMade();
+      window.tabEl.handleChat(
+        `No se recomienda seleccionar ningún valor.`,
+        "error"
+      );
+      return;
+    }
+
+    if (seleccionDinamica.length === 0) {
+      return;
+    }
+
+    let seleccionCorrecta = seleccionDinamica.filter((valor) =>
+      seleccionadaTD.includes(valor)
+    );
+    let cantidadCorrecta = seleccionDinamica.length === seleccionadaTD.length;
+    let ordenCorrecto =
+      JSON.stringify(seleccionDinamica) === JSON.stringify(seleccionadaTD);
+
+    if (seleccionCorrecta.length === seleccionadaTD.length) {
+      if (ordenCorrecto && cantidadCorrecta) {
+        let mensaje =
+          seleccionDinamica.length > 1
+            ? `Los valores seleccionados y su orden son correctos.`
+            : `El valor seleccionado "${seleccionCorrecta[0]}" es correcto.`;
+        window.tabEl.handleChat(mensaje, "correct");
+        appController.app.addProgressToProgressBar();
+      } else {
+        let mensaje, tipoNotificacion;
+        if (!cantidadCorrecta) {
+          mensaje = `El número de valores seleccionados no es correcto. Por favor, verifica tus selecciones.`;
+          tipoNotificacion = "error";
+        } else {
+          mensaje = `Los valores seleccionados son correctos, pero el orden no es correcto. Por favor, verifica el orden de tus selecciones.`;
+          tipoNotificacion = "warning";
+          // appController.app.subProgressToProgressBar();
+        }
+        this.handleFirstChangeMade();
+        window.tabEl.handleChat(mensaje, tipoNotificacion);
+      }
+    } else {
+      this.handleFirstChangeMade();
+      if (seleccionCorrecta.length > 0) {
+        let incorrectas = seleccionDinamica.filter(
+          (valor) => !seleccionadaTD.includes(valor)
+        );
+        if (incorrectas.length > 0) {
+          window.tabEl.handleChat(
+            `El valor "${incorrectas.join(", ")}" es incorrecto.`,
+            "error"
+          );
+        } else {
+          window.tabEl.handleChat(
+            `El valor seleccionado "${seleccionCorrecta.join(
+              ", "
+            )}" es correcto, pero faltan más valores.`,
+            "warning"
+          );
+          appController.app.addProgressToProgressBar();
+        }
+      } else {
+        window.tabEl.handleChat(
+          `Los valores seleccionados no son correctos. Por favor, prueba con otros valores.`,
+          "error"
+        );
+      }
+    }
+
+    // Llama a la nueva función para verificar la función del último valor agregado
+    this.verificarFuncionValor(this.ultimoValorAgregado, seleccionadaTD);
+  },
+  verificarFuncionValor(ultimoValor, seleccionadaTD) {
+    if (ultimoValor && seleccionadaTD.includes(ultimoValor)) {
+      let funcionValor = this.seleccionTablaDinamica.valores.find(
+        (v) => Object.keys(v)[0] === ultimoValor
+      )[ultimoValor];
+      let funcionRecomendada =
+        appController.app.baseSettings.funcionesSeleccionadasTD[
+          appController.app.baseSettings.valorSeleccionadaTD.indexOf(
+            ultimoValor
+          )
+        ];
+
+      if (funcionValor === funcionRecomendada) {
+        window.tabEl.handleChat(
+          `La función para el valor "${ultimoValor}" es correcta.`,
+          "correct"
+        );
+        appController.app.addProgressToProgressBar();
+        this.verificarSeleccion();
+      } else {
+        window.tabEl.handleChat(
+          `La función para el valor "${ultimoValor}" no es correcta.`,
+          "error"
+        );
+      }
+    }
+  },
+
   /*ya
 validarEjeXBarras(valorEjeX) {
   
