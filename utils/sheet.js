@@ -37,10 +37,11 @@ export function crearHojaGrafico() {
   //crear nueva pagina y boton dentro del tab de paginas
   const nuevaPagina = document.createElement("sheet-el");
   const containerBotonesPages = document.querySelector(
-    ".sheets-bar-content__container.pages"
+    ".sheets-bar-content__container.pages div"
   );
   const index = containerBotonesPages.children.length;
   const paginaAnterior = document.getElementById("content-container" + index);
+  console.log(index, paginaAnterior);
   nuevaPagina.id = index + 1;
   const nuevoGrafico = document.createElement("grafico-el");
   const nuevoBoton = document.createElement("sheet-button");
