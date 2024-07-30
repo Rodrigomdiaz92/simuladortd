@@ -16,7 +16,10 @@ export default defineConfig({
         actividad02: path.resolve(__dirname, "pages/actividad02/act.html"),
         actividad03: path.resolve(__dirname, "pages/actividad03/act.html"),
         actividad04: path.resolve(__dirname, "pages/actividad04/act.html"),
-      },
+        actividad05: path.resolve(__dirname, "pages/actividad05/act.html"),
+        actividad06: path.resolve(__dirname, "pages/actividad06/act.html"),
+        actividad07: path.resolve(__dirname, "pages/actividad07/act.html"),
+      }
     },
   },
 });
