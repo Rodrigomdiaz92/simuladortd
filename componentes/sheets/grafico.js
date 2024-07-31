@@ -276,9 +276,9 @@ customElements.define(
       const selectEjex = this.querySelector("#ejeX").value;
       const selectSerie = this.querySelector("#serie").value;
       const selectFuncion = this.querySelector("#funcion").value;
-      console.log(data)
-      console.log(selectEjex)
-      console.log(selectSerie)
+      console.log(data);
+      console.log(selectEjex);
+      console.log(selectSerie);
 
       // Inicializar el objeto Agrupado
       const agrupado = {};
