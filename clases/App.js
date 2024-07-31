@@ -1,10 +1,10 @@
 export class App {
   constructor(dataTableController, baseSettings) {
     this.itemsToComplete =
-      baseSettings.filaSeleccionadaTD.length +
-      baseSettings.columnaSeleccionadaTD.length +
-      baseSettings.valorSeleccionadaTD.length +
-      baseSettings.funcionesSeleccionadasTD.length;
+      baseSettings.filaSeleccionadaTD?.length +
+      baseSettings.columnaSeleccionadaTD?.length +
+      baseSettings.valorSeleccionadaTD?.length +
+      baseSettings.funcionesSeleccionadasTD?.length;
     this.dataTableController = dataTableController;
     this.baseSettings = baseSettings;
     this.removeLoader();
