@@ -8,7 +8,9 @@ class Tab extends HTMLElement {
     this.API_KEY = "PASTE-YOUR-API-KEY";
     this.hasLoadedHistory = false;
     this.floatingMessageQueue = [];
+    this.activeFloatingMessages = [];
   }
+
   connectedCallback() {
     this.render();
     this.setupEventListeners();
@@ -65,6 +67,7 @@ class Tab extends HTMLElement {
       }
     });
   }
+
   adjustInputHeight() {
     // Ajustar la altura del textarea de entrada en función de su contenido
     this.chatInput.style.height = `${this.inputInitHeight}px`;
@@ -109,47 +112,170 @@ class Tab extends HTMLElement {
       if (!document.body.classList.contains("show-chatbot")) {
         // Añade el mensaje a la cola en lugar de mostrarlo inmediatamente
         this.floatingMessageQueue.push({ message, status });
-        // Comienza a procesar la cola si no se está procesando ya
-        if (!this.isProcessingQueue) {
-          this.processFloatingMessageQueue();
-        }
+        // Comienza a procesar la cola
+        this.processFloatingMessageQueue();
       }
     }, 1000);
   }
 
   processFloatingMessageQueue() {
     if (this.floatingMessageQueue.length > 0) {
-      this.isProcessingQueue = true;
-      const { message, status } = this.floatingMessageQueue.shift();
-      const floatingMessage = document.createElement("div");
-      floatingMessage.textContent = message;
-      floatingMessage.style.position = "fixed";
-      floatingMessage.style.bottom = "120px";
-      floatingMessage.style.right = "20px";
-      floatingMessage.style.padding = "15px";
-      floatingMessage.style.backgroundColor =
-        status === "error"
-          ? "#f44336"
-          : status === "warning"
-          ? "#FFA500"
-          : "#4CAF50";
-      floatingMessage.style.border = "none";
-      floatingMessage.style.borderRadius = "10px";
-      floatingMessage.style.color = "#fff";
-      floatingMessage.style.fontSize = "16px";
-      floatingMessage.style.zIndex = "1000";
-      document.body.appendChild(floatingMessage);
+        const { message, status } = this.floatingMessageQueue.shift();
+        const floatingMessage = document.createElement("div");
+        floatingMessage.textContent = message;
+        floatingMessage.style.position = "fixed";
+        floatingMessage.style.right = "20px";
+        floatingMessage.style.padding = "15px";
+        floatingMessage.style.backgroundColor =
+            status === "error"
+                ? "#f44336"
+                : status === "warning"
+                ? "#FFA500"
+                : "#4CAF50";
+        floatingMessage.style.border = "none";
+        floatingMessage.style.borderRadius = "10px";
+        floatingMessage.style.color = "#fff";
+        floatingMessage.style.fontSize = "16px";
+        floatingMessage.style.zIndex = "1000";
+        floatingMessage.style.transition =
+            "transform 0.3s ease, opacity 0.3s ease";
+        floatingMessage.classList.add("floating-message");
 
-      setTimeout(() => {
-        document.body.removeChild(floatingMessage);
-        // Procesa el siguiente mensaje en la cola después de un retraso de 2.5 segundos
+        // Set a maximum width and allow text to wrap
+        floatingMessage.style.maxWidth = "300px"; // You can adjust this width as needed
+        floatingMessage.style.wordWrap = "break-word";
+
+        // Calculate the bottom position of the message
+        const bottomPosition = 120 + this.activeFloatingMessages.length * 70;
+        floatingMessage.style.bottom = `${bottomPosition}px`;
+
+        // Ensure the message has a margin bottom to prevent overlap
+        floatingMessage.style.marginBottom = "5px";
+
+        // Add close button
+        const closeButton = document.createElement("button");
+        closeButton.textContent = "x";
+        closeButton.style.position = "absolute";
+
+        closeButton.style.top = "-5px";
+        closeButton.style.right = "2px";
+        closeButton.style.padding = "5px"; 
+
+        closeButton.style.backgroundColor = "transparent";
+        closeButton.style.border = "none";
+        closeButton.style.color = "#fff";
+        closeButton.style.cursor = "pointer";
+        closeButton.style.fontWeight = "bold";
+        closeButton.style.fontSize = "16px";
+
+        closeButton.addEventListener("click", () => {
+            document.body.removeChild(floatingMessage);
+            this.activeFloatingMessages = this.activeFloatingMessages.filter(
+                (msg) => msg !== floatingMessage
+            );
+            // Reorganize floating messages after removing one
+            this.reorganizeFloatingMessages();
+        });
+
+        floatingMessage.appendChild(closeButton);
+
+        this.activeFloatingMessages.push(floatingMessage);
+        document.body.appendChild(floatingMessage);
+
+        this.enableDrag(floatingMessage);
+
+        // Reorganize floating messages after adding a new one
+        this.reorganizeFloatingMessages();
+
         setTimeout(() => {
-          this.processFloatingMessageQueue();
-        }, 400);
-      }, 2000);
-    } else {
-      this.isProcessingQueue = false;
-    }
+            floatingMessage.style.opacity = "0";
+            setTimeout(() => {
+                if (floatingMessage.parentElement) {
+                    document.body.removeChild(floatingMessage);
+                    this.activeFloatingMessages = this.activeFloatingMessages.filter(
+                        (msg) => msg !== floatingMessage
+                    );
+                    // Reorganize floating messages after removing one
+                    this.reorganizeFloatingMessages();
+                }
+            }, 300);
+        }, 20000);
+      }
+  }
+
+
+
+  reorganizeFloatingMessages() {
+    let bottomPosition = 120;
+    this.activeFloatingMessages.forEach((msg) => {
+      msg.style.bottom = `${bottomPosition}px`;
+      bottomPosition += msg.offsetHeight + 10; // Adjust spacing between messages
+    });
+  }
+
+  enableDrag(floatingMessage) {
+    let startX;
+    let startY;
+    let initialX;
+    let initialY;
+    let isDragging = false;
+    let isDeleting = false; // New variable to track if the user is deleting
+
+    floatingMessage.addEventListener("mousedown", (e) => {
+      startX = e.clientX;
+      startY = e.clientY;
+      initialX = floatingMessage.offsetLeft;
+      initialY = floatingMessage.offsetTop;
+      isDragging = true;
+      floatingMessage.style.cursor = "grabbing";
+      e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const currentX = e.clientX;
+        const currentY = e.clientY;
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+
+        // Check if the user is dragging to the right
+        if (deltaX > 20) {
+          // Adjust the threshold to a smaller value, e.g., 20 pixels
+          isDeleting = true;
+        } else {
+          isDeleting = false;
+        }
+
+        // Move the message horizontally if not deleting
+        if (!isDeleting) {
+          floatingMessage.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        }
+      }
+    });
+
+    document.addEventListener("mouseup", (e) => {
+      if (isDragging) {
+        // If the user was deleting and releases the mouse, delete the message
+        if (isDeleting) {
+          floatingMessage.style.opacity = "0";
+          setTimeout(() => {
+            if (floatingMessage.parentElement) {
+              document.body.removeChild(floatingMessage);
+              this.activeFloatingMessages = this.activeFloatingMessages.filter(
+                (msg) => msg !== floatingMessage
+              );
+              // Reorganize floating messages after removing one
+              this.reorganizeFloatingMessages();
+            }
+          }, 300);
+        } else {
+          // If not deleting, reset the message position
+          floatingMessage.style.transform = `translate(0px, 0px)`;
+        }
+        isDragging = false;
+        floatingMessage.style.cursor = "grab";
+      }
+    });
   }
 
   createChatLi(message, className, status) {
@@ -196,15 +322,18 @@ class Tab extends HTMLElement {
     ).href;
     this.innerHTML = `
         <style>
+        /* Estilos CSS para el botón de alternar el chatbot y la interfaz del chatbot */
         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        .chatbot-toggler {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }        
+      .chatbot-toggler {
           position: fixed;
-          bottom: 33.2px;
           right: 35px;
+          bottom: 33.2px;
+          height: 180px;
+          width: 180px;
           outline: none;
           border: none;
           height: 50px;
@@ -217,6 +346,7 @@ class Tab extends HTMLElement {
           transition: all 0.2s ease;
           z-index: 1000;
           background: transparent;
+          transition: transform 0.3s ease;
         }
         body.show-chatbot .chatbot-toggler {
           transform: scale(0.5);  /* Achica el robot a la mitad de su tamaño original */
@@ -374,6 +504,9 @@ class Tab extends HTMLElement {
           height: 25px;  /* Altura fija */
           object-fit: cover;  
         }
+        .floating-message {
+          cursor: grab;
+        }
         @media (max-width: 490px) {
           .chatbot-toggler {
             right: 20px;
@@ -397,11 +530,18 @@ class Tab extends HTMLElement {
             display: block;
           }
         }
-
+        .sheets-bar-content__container.pages{
+          display: flex;
+          justify-content: space-between;
+          padding-right: 40%;   
+        }
         </style>
         <div class="pages-bar__container">
           <div class="sheets-bar-content__container pages">
-            <sheet-button class="selected" id="button1">Datos</sheet-button>
+            <div>
+              <sheet-button class="selected" id="button1">Datos</sheet-button>
+            </div>
+            <dhs-progress-bar></dhs-progress-bar>
           </div>
           <button class="chatbot-toggler">
             <img src="${this.imgSrc}" alt="Andy" style="width: 180px;">

@@ -1,3 +1,4 @@
+import { appController } from "../../appController";
 import { pgEvent } from "../../utils/pgEvent";
 import { crearHojaGrafico, crearHojaTabla } from "../../utils/sheet";
 
@@ -34,6 +35,11 @@ customElements.define(
       const buttonGrafico = document.getElementById("crear-grafico-button");
 
       buttonTabla.addEventListener("click", (e) => {
+        const cantidadTablasDinamicas =
+          document.querySelectorAll("tabla-dinamica").length;
+        if (cantidadTablasDinamicas == 1) {
+          return;
+        }
         // Obtener la instancia de DataTableView
         const dataTableView = window.dataTableView;
 
@@ -67,16 +73,17 @@ customElements.define(
           // pgEvent.onFailEvent(errorMessage, []);
           //pgEvent.postEvent("FAILURE", null, [], null);
 
-
           return;
         }
         e.stopImmediatePropagation();
         crearHojaTabla();
+        contenido.style.display = "none";
       });
 
       buttonGrafico.addEventListener("click", (e) => {
         e.stopImmediatePropagation();
         crearHojaGrafico();
+        contenido.style.display = "none";
       });
     }
 
