@@ -366,9 +366,9 @@ tr .celda-encabezado-filas {
   /* overflow: auto; */
   height: 500px;
   margin-left:-5%;
-  width: 600px
-  width: 50%;
+  width: 100%;
   margin: 15% auto;
+  margin-top: 0;
 }
 .control {
   display: flex;
