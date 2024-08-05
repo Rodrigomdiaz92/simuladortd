@@ -52,9 +52,14 @@ customElements.define(
                   </div>
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
-                    <select class="graph-select" id="ejeX"></select>
+                    <select class="graph-select" id="ejeX" disabled></select>
                     <label style=" margin-left: 3.3%;">Serie:</label>
                     <select class="graph-select" id="serie"></select>
+                    <div class="dropdown-toggle" id="dropdown-toggle" >
+                        Seleccionar Series
+                    </div>
+                    <div id="dropdown-content" class="dropdown-content"></div>
+
                     <label style="display: none;" style=" margin-left: 61%;">Función:</label>
                     <select style="display: none;" class="graph-select" id="funcion">
                       <option value="conteo">Conteo</option>
@@ -124,6 +129,84 @@ customElements.define(
               margin-top: 10px
           }
           .insert-data-grafic__container { width: 100%; display: flex; height: 100%; }
+          /* Estilo para la opción "Mostrar opciones" */
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: #6200ea;
+            user-select: none;
+            font-size: 18px;
+        }
+
+        .dropdown-toggle:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilo para el menú desplegable */
+        .dropdown-content {
+            display: none;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            margin-top: 10px;
+            padding: 10px;
+            max-width: 200px;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        /* Estilo para los checkboxes del menú desplegable */
+        .dropdown-content label {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .dropdown-content input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #757575;
+            border-radius: 4px;
+            margin-right: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .dropdown-content input[type="checkbox"]:checked {
+            background-color: #6200ea;
+            border-color: #6200ea;
+        }
+
+        .dropdown-content input[type="checkbox"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        button {
+            background-color: #6200ea;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
         </style>
       `;
     }
@@ -131,6 +214,9 @@ customElements.define(
     addListeners() {
       const botonMostrar = this.querySelector("#menu-mostrar");
       botonMostrar.addEventListener("click", this.toggleMenu.bind(this));
+
+      
+      
 
       const tipoGrafico = this.querySelector("#tipoGrafico");
       tipoGrafico.addEventListener("change", this.updateOptions.bind(this));
@@ -140,6 +226,9 @@ customElements.define(
 
       const controlConfirm = this.querySelector("#control-confirm");
       controlConfirm.addEventListener("click", this.createChart.bind(this));
+
+      const mostraSeries = this.querySelector("#dropdown-toggle");
+      mostraSeries.addEventListener("click", this.toggleDropdown.bind(this));
 
       const selectEtiquetas = this.querySelector("#etiquetas-grafico");
       selectEtiquetas.addEventListener("change", this.updateOptions.bind(this));
@@ -152,6 +241,7 @@ customElements.define(
       huecoCirculo.addEventListener("change", () => {
         state.validarHuecoCirculo(huecoCirculo.value);
       });
+      
 
       //const selectEjex = this.querySelector("#ejeX");
 
@@ -183,6 +273,11 @@ customElements.define(
         botonMostrar.textContent === "X" ? "Editar" : "X";
     }
 
+    toggleDropdown() {
+      const dropdownContent = this.querySelector('#dropdown-content');
+      dropdownContent.classList.toggle('show');
+  }
+
     updateOptions() {
       const tipoGrafico = this.querySelector("#tipoGrafico");
       const contenedorOpciones1 = this.querySelector("#confi-torta");
@@ -196,10 +291,16 @@ customElements.define(
         "hidden",
         tipoGrafico.value !== "barras"
       );
+      
 
       state.agregarTipoGrafico(tipoGrafico.value);
     }
-
+                                                                      //Nuevo + series
+    toggleDropdown() {
+      const dropdownContent = this.querySelector('dropdown-content');
+      dropdownContent.classList.toggle('show');
+  }
+  /*
     populateOptions() {
       const data = state.seleccion.datos;
       const newDf = new dfd.DataFrame(data);
@@ -215,6 +316,39 @@ customElements.define(
       this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
       this.querySelector("#ejeX").innerHTML = finalOptionsHTML;
       this.querySelector("#serie").innerHTML = finalOptionsHTML;
+    }*/
+    populateOptions() {
+      const data = state.seleccion.datos;
+      const newDf = new dfd.DataFrame(data);
+      const columns = newDf.columns;
+
+      const defaultOption = `<option value="none" selected>---</option>`;
+      
+      //EjeX
+      const optionsHTML = columns
+        .map((col) => `<option value=${col}>${col}</option>`)
+        .join("");
+
+      
+      //Series Barras
+      const serieOptionHTML = columns
+        .map((col) => `<label for="${col}">
+                <input type="checkbox" id="${col}" name="opciones" value="${col}">
+                ${col}
+            </label>`)
+        .join("");
+
+      const finalOptionsHTML = defaultOption + optionsHTML;
+
+      this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
+      this.querySelector("#ejeX").innerHTML = optionsHTML;
+      this.querySelector("#serie").innerHTML = finalOptionsHTML;
+      this.querySelector("#dropdown-content").innerHTML = serieOptionHTML;
+    }
+
+    toggleDropdown() {
+      const dropdownContent = this.querySelector('#dropdown-content');
+      dropdownContent.classList.toggle('show');
     }
 
     createChart() {
@@ -240,7 +374,7 @@ customElements.define(
       }
     }
 
-    createPieChart(context, data) {
+    createPieChart(context, data) {                 //Torta
       const selectEtiquetas = this.querySelector("#etiquetas-grafico");
       const counts = data[selectEtiquetas.value].reduce((acc, pos) => {
         acc[pos] = (acc[pos] || 0) + 1;
@@ -272,10 +406,30 @@ customElements.define(
       });
     }
 
-    createBarChart(context, data) {
+    createBarChart(context, data) {                             //Barras
       const selectEjex = this.querySelector("#ejeX").value;
       const selectSerie = this.querySelector("#serie").value;
       const selectFuncion = this.querySelector("#funcion").value;
+      const serieBarras = this.querySelector("#serie").value;
+
+      //Nuevo + opciones Series
+      const checkboxes = this.querySelectorAll('input[name="opciones"]:checked');
+      const opcionesSeleccionadas = [];
+
+      checkboxes.forEach((checkbox) => {
+        opcionesSeleccionadas.push(checkbox.value);
+      });
+
+      console.log(opcionesSeleccionadas);
+
+      if(false){
+
+      }else{
+
+          
+
+
+      
       console.log(data);
       console.log(selectEjex);
       console.log(selectSerie);
@@ -330,10 +484,10 @@ customElements.define(
       console.log("Agrupado:", agrupado);
       console.log("Unique Values:", uniqueValues);
       console.log("Count Array:", countArray);
-      console.log("Rating Sum Array:", sumCeldaArray);
-      console.log("Rating Avg Array:", ratingAvgArray);
-      console.log("Rating Min Array:", ratingMinArray);
-      console.log("Rating Max Array:", ratingMaxArray);
+      console.log("Sum Array:", sumCeldaArray);
+      console.log("Avg Array:", ratingAvgArray);
+      console.log("Min Array:", ratingMinArray);
+      console.log(" Max Array:", ratingMaxArray);
 
       function isNumericArray(array) {
         return array.every((element) => typeof element === "number");
@@ -341,11 +495,12 @@ customElements.define(
 
       const isSerieNumeric = isNumericArray(data[selectSerie]);
 
-      let dataset;
+      let dataset = [];
+
 
       if (isNumericArray(data[selectSerie])) {
         dataset = sumCeldaArray;
-        /*if (selectFuncion =="suma") {
+        /*if (selectFuncion =="suma") { // no borrar, futura funcion para Looker
           dataset = sumCeldaArray;
         } else if (selectFuncion == "promedio") {
           dataset = ratingAvgArray;
@@ -357,14 +512,35 @@ customElements.define(
       } else {
         dataset = countArray;
       }
+                                                                        //Apiladas
+      const datasetApilado=[];
+      if(true){
+        for (let i = 0; i < uniqueValues.length; i++){
+          let colores =[
+            '#FF0000', // Rojo
+            '#00FF00', // Verde
+            '#0000FF', // Azul
+            '#FFFF00', // Amarillo
+            '#FFA500', // Naranja
+            '#800080', // Púrpura
+            '#00FFFF', // Cian
+            '#FFC0CB', // Rosa
+            '#000000', // Negro
+          ];;
+        let aux={
+          label: uniqueValues[i],
+          backgroundColor: colores[i],
+          data: [dataset[i]],
+      };
+      datasetApilado.push(aux)
+      }
+      }
+
+      
 
       console.log("Is Serie Numeric:", isSerieNumeric);
       console.log(dataset);
 
-      //const labels = data2.map((item) => item[selectEjex.value]);
-      //const values = data2.map((item) => item[selectSerie.value]);
-      //const labels= data[selectEjex.value];
-      //const values=;
 
       const tituloGrafico = this.querySelector("#titulo-grafico").value;
       const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
@@ -374,39 +550,38 @@ customElements.define(
       this.myChart = new Chart(context, {
         type: "bar",
         data: {
-          labels: uniqueValues,
-          //datasets: [{ data: values }],
-          datasets: [
+          //labels: uniqueValues,
+          labels: " ",
+          datasets: datasetApilado, /*[
             {
               label: selectSerie,
-              //label: selectSerie.options[selectSerie.selectedIndex].text,
-              //data: data[selectSerie.value],
               data: dataset,
             },
-          ],
+          ],*/
         },
         options: {
           scales: {
             x: {
+              stacked: true,
               title: {
                 display: true,
                 text: tituloEjeX,
               },
             },
             y: {
+              stacked: true,
               title: {
                 display: true,
                 text: tituloEjeY,
               },
+              beginAtZero: true,
               ticks: {
-                beginAtZero: true,
-                stepSize: parseFloat(escala), // configuracion de escala
+                //beginAtZero: true,
+                //stepSize: parseFloat(escala),
+                callback: function(value) {
+                  return value.toLocaleString(); // Para formatear los números con comas
+              } // configuracion de escala
               },
-              /*ticks: {
-                callback: function (value) {
-                  return value / escala;
-                },
-              },*/
             },
           },
           plugins: {
@@ -419,4 +594,6 @@ customElements.define(
       });
     }
   }
+  }
 );
+
