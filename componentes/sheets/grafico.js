@@ -52,13 +52,14 @@ customElements.define(
                   </div>
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
-                    <select class="graph-select" id="ejeX" disabled></select>
-                    <label style=" margin-left: 3.3%;">Serie:</label>
-                    <select class="graph-select" id="serie"></select>
+                    <select class="graph-select" id="ejeX" disabled></select>                    
                     <div class="dropdown-toggle" id="dropdown-toggle" >
                         Seleccionar Series
                     </div>
                     <div id="dropdown-content" class="dropdown-content"></div>
+                    <label for="graficoApilado">Gráfico Apilado</label>
+                    <input type="checkbox" id="graficoApilado">
+
 
                     <label style="display: none;" style=" margin-left: 61%;">Función:</label>
                     <select style="display: none;" class="graph-select" id="funcion">
@@ -258,11 +259,14 @@ customElements.define(
       selectSerie.addEventListener("change", () => {
         state.agregarSerie(selectSerie.value);
       });*/
+
+      //Validacion Series
+      /*
       const selectSerie = this.querySelector("#serie");
       selectSerie.addEventListener("change", this.updateOptions.bind(this));
       selectSerie.addEventListener("change", () => {
         state.validarSerieBarras(selectSerie.value);
-      });
+      });*/
     }
 
     toggleMenu() {
@@ -342,7 +346,7 @@ customElements.define(
 
       this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
       this.querySelector("#ejeX").innerHTML = optionsHTML;
-      this.querySelector("#serie").innerHTML = finalOptionsHTML;
+      //this.querySelector("#serie").innerHTML = finalOptionsHTML;
       this.querySelector("#dropdown-content").innerHTML = serieOptionHTML;
     }
 
@@ -408,31 +412,383 @@ customElements.define(
 
     createBarChart(context, data) {                             //Barras
       const selectEjex = this.querySelector("#ejeX").value;
-      const selectSerie = this.querySelector("#serie").value;
+      //const selectSerie = this.querySelector("#serie").value;
       const selectFuncion = this.querySelector("#funcion").value;
-      const serieBarras = this.querySelector("#serie").value;
+      //const serieBarras = this.querySelector("#serie").value;
+
+      let colores =[
+        '#ffdc76', // dh
+        '#ff8d7a', // dh
+        '#8383fd', // dh
+        '#00cc7e', // dh
+        '#FFA500', // Naranja
+        '#800080', // Púrpura
+        '#00FFFF', // Cian
+        '#FFC0CB', // Rosa
+        '#000000', // Negro
+      ];;
 
       //Nuevo + opciones Series
       const checkboxes = this.querySelectorAll('input[name="opciones"]:checked');
       const opcionesSeleccionadas = [];
+
+      const checkbox = this.querySelector('#graficoApilado');
+      const isChecked = checkbox.checked;
+      console.log("apilado? : " + isChecked);
 
       checkboxes.forEach((checkbox) => {
         opcionesSeleccionadas.push(checkbox.value);
       });
 
       console.log(opcionesSeleccionadas);
+      console.log(opcionesSeleccionadas.length);
 
-      if(false){
-
-      }else{
-
+      if(opcionesSeleccionadas.length > 1){
+      //if(true){
+        if(isChecked){ // grafico + de una serie Apilado
+        //if(false){ // grafico + de una serie Apilado
+          console.log(data);
+          console.log(selectEjex);
+          const selectSerie = opcionesSeleccionadas;
           
 
+          const barrasagrupadas=[];    
+          
+          for (let j = 0; j < opcionesSeleccionadas.length; j++){
+            // Inicializar el objeto Agrupado
+          let agrupado = {};    
+          // Iterar sobre los datos y construir el objeto Agrupado
+          for (let i = 0; i < data[selectEjex].length; i++) {
+            const ejeX = data[selectEjex][i];
+            const sumaceldas = data[selectSerie[j]][i];
+    
+            if (!agrupado[ejeX]) {
+              agrupado[ejeX] = {
+                count: 0,
+                sumaCelda: 0,
+                promedioCelda: 0,
+                minCelda: Infinity,
+                maxCelda: 0,
+              };
+            }
+    
+            agrupado[ejeX].count++;
+            agrupado[ejeX].sumaCelda += sumaceldas;
+            if (sumaceldas < agrupado[ejeX].minCelda)
+              agrupado[ejeX].minCelda = sumaceldas;
+            if (sumaceldas > agrupado[ejeX].maxCelda)
+              agrupado[ejeX].maxCelda = sumaceldas;
+          }    
+          for (let habilidad in agrupado) {
+            agrupado[habilidad].promedioCelda =
+              agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
+          }
+          barrasagrupadas.push(agrupado);
+        }
+        console.log(barrasagrupadas)
+        const datasetApilado=[];
+        let valores;
 
-      
+        for (let j = 0; j < opcionesSeleccionadas.length; j++){
+          console.log(opcionesSeleccionadas[j]);    
+          // Obtener los valores únicos, los arrays de count y ratingSum
+          valores = Object.keys(barrasagrupadas[j]);
+          const countArray = valores.map((ejeX) => barrasagrupadas[j][ejeX].count);
+          const sumCeldaArray = valores.map(
+            (ejeX) => barrasagrupadas[j][ejeX].sumaCelda
+          );
+          const ratingAvgArray = valores.map(
+            (ejeX) => barrasagrupadas[j][ejeX].promedioCelda
+          );
+          const ratingMinArray = valores.map(
+            (habilidad) => barrasagrupadas[j][habilidad].minCelda
+          );
+          const ratingMaxArray = valores.map(
+            (habilidad) => barrasagrupadas[j][habilidad].maxCelda
+          );
+          
+          console.log("Agrupado:", barrasagrupadas[j]);
+          console.log("Unique Values:", valores);
+          console.log("Count Array:", countArray);
+          console.log("Sum Array:", sumCeldaArray);
+          console.log("Avg Array:", ratingAvgArray);
+          console.log("Min Array:", ratingMinArray);
+          console.log(" Max Array:", ratingMaxArray);
+          
+          function isNumericArray(array) {
+            return array.every((element) => typeof element === "number");
+          }
+    
+          const isSerieNumeric = isNumericArray(data[selectSerie[j]]);
+    
+          let dataset = [];
+    
+    
+          if (isNumericArray(data[selectSerie[j]])) {
+            dataset = sumCeldaArray;
+            /*if (selectFuncion =="suma") { // no borrar, futura funcion para Looker
+              dataset = sumCeldaArray;
+            } else if (selectFuncion == "promedio") {
+              dataset = ratingAvgArray;
+            } else if (selectFuncion == "minimo") {
+              dataset = ratingMinArray;
+            } else if (selectFuncion == "maximo") {
+              dataset = ratingMaxArray;
+            }*/
+          } else {
+            dataset = countArray;
+          }
+                                                                            //Apiladas
+          
+          
+            //for (let i = 0; i < opcionesSeleccionadas.length; i++){
+
+            let aux={
+              //label: uniqueValues[i],
+              label: opcionesSeleccionadas[j],
+              backgroundColor: colores[j],
+              data: dataset,
+          };
+          datasetApilado.push(aux)
+          //}
+          
+        }
+    
+          
+    
+          //console.log("Is Serie Numeric:", isSerieNumeric);
+          console.log(datasetApilado);
+    
+    
+          const tituloGrafico = this.querySelector("#titulo-grafico").value;
+          const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
+          const tituloEjeY = this.querySelector("#titulo-grafico-y").value;
+          const escala = this.querySelector("#escala").value;
+    
+          this.myChart = new Chart(context, {
+            type: "bar",
+            data: {
+              labels: valores,
+              //labels: " ",
+              datasets: datasetApilado,
+              /*datasets: [
+                {
+                  label: selectSerie,
+                  data: dataset,
+                },
+              ],*/
+            },
+            options: {
+              scales: {
+                x: {
+                  stacked: true,
+                  title: {
+                    display: true,
+                    text: tituloEjeX,
+                  },
+                },
+                y: {
+                  stacked: true,
+                  title: {
+                    display: true,
+                    text: tituloEjeY,
+                  },
+                  beginAtZero: true,
+                  ticks: {
+                    //beginAtZero: true,
+                    //stepSize: parseFloat(escala),
+                    callback: function(value) {
+                      return value.toLocaleString(); // Para formatear los números con comas
+                  } // configuracion de escala
+                  },
+                },
+              },
+              plugins: {
+                title: {
+                  display: true,
+                  text: tituloGrafico,
+                },
+              },
+            },
+          });
+          
+
+        }else{
+          //grafico + de una serie agrupado
+          console.log(data);
+          console.log(selectEjex);
+          const selectSerie = opcionesSeleccionadas;
+          
+
+          const barrasagrupadas=[];    
+          
+          for (let j = 0; j < opcionesSeleccionadas.length; j++){
+            // Inicializar el objeto Agrupado
+          let agrupado = {};    
+          // Iterar sobre los datos y construir el objeto Agrupado
+          for (let i = 0; i < data[selectEjex].length; i++) {
+            const ejeX = data[selectEjex][i];
+            const sumaceldas = data[selectSerie[j]][i];
+    
+            if (!agrupado[ejeX]) {
+              agrupado[ejeX] = {
+                count: 0,
+                sumaCelda: 0,
+                promedioCelda: 0,
+                minCelda: Infinity,
+                maxCelda: 0,
+              };
+            }
+    
+            agrupado[ejeX].count++;
+            agrupado[ejeX].sumaCelda += sumaceldas;
+            if (sumaceldas < agrupado[ejeX].minCelda)
+              agrupado[ejeX].minCelda = sumaceldas;
+            if (sumaceldas > agrupado[ejeX].maxCelda)
+              agrupado[ejeX].maxCelda = sumaceldas;
+          }    
+          for (let habilidad in agrupado) {
+            agrupado[habilidad].promedioCelda =
+              agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
+          }
+          barrasagrupadas.push(agrupado);
+        }
+        console.log(barrasagrupadas)
+        const datasetApilado=[];
+        let valores;
+
+        for (let j = 0; j < opcionesSeleccionadas.length; j++){
+          console.log(opcionesSeleccionadas[j]);    
+          // Obtener los valores únicos, los arrays de count y ratingSum
+          valores = Object.keys(barrasagrupadas[j]);
+          const countArray = valores.map((ejeX) => barrasagrupadas[j][ejeX].count);
+          const sumCeldaArray = valores.map(
+            (ejeX) => barrasagrupadas[j][ejeX].sumaCelda
+          );
+          const ratingAvgArray = valores.map(
+            (ejeX) => barrasagrupadas[j][ejeX].promedioCelda
+          );
+          const ratingMinArray = valores.map(
+            (habilidad) => barrasagrupadas[j][habilidad].minCelda
+          );
+          const ratingMaxArray = valores.map(
+            (habilidad) => barrasagrupadas[j][habilidad].maxCelda
+          );
+          
+          console.log("Agrupado:", barrasagrupadas[j]);
+          console.log("Unique Values:", valores);
+          console.log("Count Array:", countArray);
+          console.log("Sum Array:", sumCeldaArray);
+          console.log("Avg Array:", ratingAvgArray);
+          console.log("Min Array:", ratingMinArray);
+          console.log(" Max Array:", ratingMaxArray);
+          
+          function isNumericArray(array) {
+            return array.every((element) => typeof element === "number");
+          }
+    
+          const isSerieNumeric = isNumericArray(data[selectSerie[j]]);
+    
+          let dataset = [];
+    
+    
+          if (isNumericArray(data[selectSerie[j]])) {
+            dataset = sumCeldaArray;
+            /*if (selectFuncion =="suma") { // no borrar, futura funcion para Looker
+              dataset = sumCeldaArray;
+            } else if (selectFuncion == "promedio") {
+              dataset = ratingAvgArray;
+            } else if (selectFuncion == "minimo") {
+              dataset = ratingMinArray;
+            } else if (selectFuncion == "maximo") {
+              dataset = ratingMaxArray;
+            }*/
+          } else {
+            dataset = countArray;
+          }
+                                                                            //Apiladas
+          
+          
+            //for (let i = 0; i < opcionesSeleccionadas.length; i++){
+              
+            let aux={
+              //label: uniqueValues[i],
+              label: opcionesSeleccionadas[j],
+              backgroundColor: colores[j],
+              data: dataset,
+          };
+          datasetApilado.push(aux)
+          //}
+          
+        }
+    
+          
+    
+          //console.log("Is Serie Numeric:", isSerieNumeric);
+          console.log(datasetApilado);
+    
+    
+          const tituloGrafico = this.querySelector("#titulo-grafico").value;
+          const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
+          const tituloEjeY = this.querySelector("#titulo-grafico-y").value;
+          const escala = this.querySelector("#escala").value;
+    
+          this.myChart = new Chart(context, {
+            type: "bar",
+            data: {
+              labels: valores,
+              //labels: " ",
+              datasets: datasetApilado,
+              /*datasets: [
+                {
+                  label: selectSerie,
+                  data: dataset,
+                },
+              ],*/
+            },
+            options: {
+              scales: {
+                x: {
+                  //stacked: true,
+                  title: {
+                    display: true,
+                    text: tituloEjeX,
+                  },
+                },
+                y: {
+                  //stacked: true,
+                  title: {
+                    display: true,
+                    text: tituloEjeY,
+                  },
+                  beginAtZero: true,
+                  ticks: {
+                    //beginAtZero: true,
+                    //stepSize: parseFloat(escala),
+                    callback: function(value) {
+                      return value.toLocaleString(); // Para formatear los números con comas
+                  } // configuracion de escala
+                  },
+                },
+              },
+              plugins: {
+                title: {
+                  display: true,
+                  text: tituloGrafico,
+                },
+              },
+            },
+          });
+          
+
+        }
+
+      }else{
+                                                                //grafico simple
       console.log(data);
       console.log(selectEjex);
-      console.log(selectSerie);
+      const selectSerie = opcionesSeleccionadas[0];
+      console.log(opcionesSeleccionadas[0]);
 
       // Inicializar el objeto Agrupado
       const agrupado = {};
@@ -515,20 +871,10 @@ customElements.define(
                                                                         //Apiladas
       const datasetApilado=[];
       if(true){
-        for (let i = 0; i < uniqueValues.length; i++){
-          let colores =[
-            '#FF0000', // Rojo
-            '#00FF00', // Verde
-            '#0000FF', // Azul
-            '#FFFF00', // Amarillo
-            '#FFA500', // Naranja
-            '#800080', // Púrpura
-            '#00FFFF', // Cian
-            '#FFC0CB', // Rosa
-            '#000000', // Negro
-          ];;
+        for (let i = 0; i < opcionesSeleccionadas.length; i++){
+
         let aux={
-          label: uniqueValues[i],
+          label: opcionesSeleccionadas[i],
           backgroundColor: colores[i],
           data: [dataset[i]],
       };
@@ -550,34 +896,31 @@ customElements.define(
       this.myChart = new Chart(context, {
         type: "bar",
         data: {
-          //labels: uniqueValues,
-          labels: " ",
-          datasets: datasetApilado, /*[
+          labels: uniqueValues,
+          datasets: [
             {
               label: selectSerie,
               data: dataset,
             },
-          ],*/
+          ],
         },
         options: {
           scales: {
             x: {
-              stacked: true,
               title: {
                 display: true,
                 text: tituloEjeX,
               },
             },
             y: {
-              stacked: true,
-              title: {
+                title: {
                 display: true,
                 text: tituloEjeY,
               },
               beginAtZero: true,
               ticks: {
-                //beginAtZero: true,
-                //stepSize: parseFloat(escala),
+                beginAtZero: true,
+                stepSize: parseFloat(escala),
                 callback: function(value) {
                   return value.toLocaleString(); // Para formatear los números con comas
               } // configuracion de escala
