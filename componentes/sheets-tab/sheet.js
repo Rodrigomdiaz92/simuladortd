@@ -20,7 +20,7 @@ customElements.define(
             .content-container {
               display:none;
               height: 100%;
-              overflow: auto;
+              
             }
             .content-container.selected{
               display:block;

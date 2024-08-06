@@ -52,7 +52,7 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 .sheets-container {
-  overflow: hidden;
+  overflow: auto;
 }
 .table-section {
   width: 100%;
@@ -357,8 +357,18 @@ tr .celda-encabezado-filas {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 50%;
+  width: 80%;
+  margin: 2% auto;
+}
+#controles-grafico{
+  padding:10px 1px 40px;
+  padding-bottom:80px;
+  overflow: auto;
+  height: 560px;
+  margin-left:-5%;
+  width: 100%;
   margin: 15% auto;
+  margin-top: 0;
 }
 .control {
   display: flex;
@@ -376,6 +386,9 @@ tr .celda-encabezado-filas {
   border: none;
   background-color: var(--sheets-green);
   margin-bottom: auto;
+  margin-top: 4%;
+  width: 91.6%;
+  cursor: pointer;
 }
 .insert-data-grafic {
   position: absolute;

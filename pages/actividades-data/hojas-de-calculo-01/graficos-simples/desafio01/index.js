@@ -1,33 +1,33 @@
-import { DataTable } from "../../clases/DataTable";
-import { DataTableView } from "../../clases/DataTableView";
-import { DataTableController } from "../../clases/DataTableController";
-import { pgEvent } from "../../utils/pgEvent"; // Importar PgEvent
-import "../../componentes/menu/menu";
-import "../../componentes/menu/archivo-menu";
-import "../../componentes/menu/reloj";
-import "../../componentes/loader";
-import "../../componentes/sheets-tab/sheet";
-import "../../componentes/sheets-tab/sheet-button";
-import "../../componentes/sheets-tab/tab";
-import "../../componentes/sheets/grafico";
-import "../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../clases/App";
-import { UserSettings } from "../../clases/UserSettings";
-import { appController } from "../../appController";
+import { DataTable } from "../../../../../clases/DataTable";
+import { DataTableView } from "../../../../../clases/DataTableView";
+import { DataTableController } from "../../../../../clases/DataTableController";
+import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
+import "../../../../../componentes/menu/menu";
+import "../../../../../componentes/menu/archivo-menu";
+import "../../../../../componentes/menu/reloj";
+import "../../../../../componentes/loader";
+import "../../../../../componentes/sheets-tab/sheet";
+import "../../../../../componentes/sheets-tab/sheet-button";
+import "../../../../../componentes/sheets-tab/tab";
+import "../../../../../componentes/sheets/grafico";
+import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
+import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "../../../../../componentes/sheets/tabladinamica/data-controls";
+import { App } from "../../../../../clases/App";
+import { UserSettings } from "../../../../../clases/UserSettings";
+import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
-  datasetURL:
-    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
+  datasetURL: //mismo dataset que actividad 03
+    "https://script.google.com/macros/s/AKfycbxI2be_e5rMQCDQ63B-l0RS_AMBj6mQmcEEYsV4whYgMdRHTEQqnrnesNdko9xzXrqO/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
-  escala:100,
+  ejeX: "GENERO",
+  serie: ["PlayStation", "PC (Computadora)","Nintendo"],
+  funcion: "",
+  escala:"",
 };
 let df;
 window.onload = pgEvent.getValues();

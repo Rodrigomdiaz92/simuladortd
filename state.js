@@ -15,7 +15,15 @@ export const state = {
     funcion: "",
     ejercicioCompletado: false,
   },
-  seleccion: {
+  seleccionGraficos: {
+    seleccion: {
+      tipoGrafico: "",
+      ejeX: "",
+      ejeY: "",
+      etiqueta: "",
+      huecoCirculo: "",
+      valorGrafico: "",
+    },
     intervalo: {},
     datos: [],
   },
@@ -379,180 +387,232 @@ export const state = {
       this.actualizarIntervaloYRenderizar();
       this.actualizarReloj();
     }
+    //Actualizar los valores en seleccionGraficos
   },
-  verificarSeleccionMensaje(seleccion) {
-    let tipoSeleccion = seleccion === "fila" ? "fila" : "columna";
-    let seleccionadaTD =
-      appController.app.baseSettings[`${tipoSeleccion}SeleccionadaTD`];
-    let seleccionDinamica = this.seleccionTablaDinamica[`${tipoSeleccion}s`];
+  agregarTipoGrafico(nuevoValorGrafico) {
+    this.seleccionGraficos.seleccion.tipoGrafico = nuevoValorGrafico;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarEtiquetas(nuevoValorEtiqueta) {
+    this.seleccionGraficos.seleccion.etiqueta = nuevoValorEtiqueta;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarEjeX(nuevoValorEjeX) {
+    this.seleccionGraficos.seleccion.ejeX = nuevoValorEjeX;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarSerie(nuevoValorEjeY) {
+    this.seleccionGraficos.seleccion.ejeY = nuevoValorEjeY;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarHuecoCirculo(nuevoValorHuecoCirculo) {
+    this.seleccionGraficos.seleccion.huecoCirculo = nuevoValorHuecoCirculo;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarValorGrafico(nuevoValorGrafico) {
+    this.seleccionGraficos.seleccion.valorGrafico = nuevoValorGrafico;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
-    // Verifica si las filas/columnas recomendadas están vacías
-    if (seleccionadaTD.length === 0) {
-      this.handleFirstChangeMade();
+  //  Validacion Graficos
+validarTipoGrafico(tipo) {
+  
+  if (tipo == appController.app.baseSettings.tipoGrafico) {
+    window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+  }
+},
+
+  validarEtiquetaGrafico(valorColumna) {
+    if (valorColumna == appController.app.baseSettings.etiqueta) {
       window.tabEl.handleChat(
-        `No se recomienda seleccionar ninguna ${tipoSeleccion}.`,
+        `La etiqueta seleccionada es correcta.`,
+        "correct"
+      );
+    } else {
+      window.tabEl.handleChat(
+        `La etiqueta seleccionada NO es correcta.`,
         "error"
       );
-      return;
-    }
-
-    // Retorna sin decir nada si la selección dinámica está vacía
-    if (seleccionDinamica.length === 0) {
-      return;
-    }
-
-    let seleccionCorrecta = seleccionDinamica.filter((item) =>
-      seleccionadaTD.includes(item)
-    );
-    let cantidadCorrecta = seleccionDinamica.length === seleccionadaTD.length;
-    let ordenCorrecto =
-      JSON.stringify(seleccionDinamica) === JSON.stringify(seleccionadaTD);
-
-    if (seleccionCorrecta.length === seleccionadaTD.length) {
-      if (ordenCorrecto && cantidadCorrecta) {
-        let mensaje =
-          seleccionDinamica.length > 1
-            ? `Las ${tipoSeleccion}s seleccionadas y su orden son correctos.`
-            : `La ${tipoSeleccion} seleccionada "${seleccionCorrecta[0]}" es correcta.`;
-        window.tabEl.handleChat(mensaje, "correct");
-        appController.app.addProgressToProgressBar();
-        this.verificarSeleccion();
-      } else {
-        let mensaje, tipoNotificacion;
-        if (!cantidadCorrecta) {
-          mensaje = `El número de ${tipoSeleccion}s seleccionadas no es correcto. Por favor, verifica tus selecciones.`;
-          tipoNotificacion = "error";
-        } else {
-          mensaje = `Las ${tipoSeleccion}s seleccionadas son correctas, pero el orden no es correcto. Por favor, verifica el orden de tus selecciones.`;
-          tipoNotificacion = "warning";
-          appController.app.addProgressToProgressBar();
-        }
-        this.handleFirstChangeMade();
-        window.tabEl.handleChat(mensaje, tipoNotificacion);
-        appController.app.subProgressToProgressBar();
-      }
-    } else {
-      this.handleFirstChangeMade();
-      if (seleccionCorrecta.length > 0) {
-        window.tabEl.handleChat(
-          `La ${tipoSeleccion} seleccionada "${seleccionCorrecta.join(
-            ", "
-          )}" es correcta, pero faltan más ${tipoSeleccion}s.`,
-          "warning"
-        );
-        appController.app.addProgressToProgressBar();
-      } else {
-        window.tabEl.handleChat(
-          `Las ${tipoSeleccion}s seleccionadas no son correctas. Por favor, prueba con otras ${tipoSeleccion}s.`,
-          "error"
-        );
-      }
     }
   },
-  verificarSeleccionValores() {
-    let seleccionadaTD = appController.app.baseSettings.valorSeleccionadaTD;
-    let seleccionDinamica = this.seleccionTablaDinamica.valores.map(
-      (v) => Object.keys(v)[0]
-    );
 
-    // Verifica si los valores recomendados están vacíos
-    if (seleccionadaTD.length === 0) {
-      this.handleFirstChangeMade();
+validarHuecoCirculo(valorHueco) {
+  
+  if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
+  }
+},
+validarValorGrafico(valorGrafico) {
+  
+  if (valorGrafico == appController.app.baseSettings.valorGrafico) {
+    window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+  }
+},
+
+  validarHuecoCirculo(valorHueco) {
+    if (valorHueco == appController.app.baseSettings.huecoCirculo) {
       window.tabEl.handleChat(
-        `No se recomienda seleccionar ningún valor.`,
+        `El porcentaje del círculo es correcto.`,
+        "correct"
+      );
+    } else {
+      window.tabEl.handleChat(
+        `El porcentaje del círculo NO es correcto.`,
         "error"
       );
-      return;
-    }
-
-    if (seleccionDinamica.length === 0) {
-      return;
-    }
-
-    let seleccionCorrecta = seleccionDinamica.filter((valor) =>
-      seleccionadaTD.includes(valor)
-    );
-    let cantidadCorrecta = seleccionDinamica.length === seleccionadaTD.length;
-    let ordenCorrecto =
-      JSON.stringify(seleccionDinamica) === JSON.stringify(seleccionadaTD);
-
-    if (seleccionCorrecta.length === seleccionadaTD.length) {
-      if (ordenCorrecto && cantidadCorrecta) {
-        let mensaje =
-          seleccionDinamica.length > 1
-            ? `Los valores seleccionados y su orden son correctos.`
-            : `El valor seleccionado "${seleccionCorrecta[0]}" es correcto.`;
-        window.tabEl.handleChat(mensaje, "correct");
-        appController.app.addProgressToProgressBar();
-      } else {
-        let mensaje, tipoNotificacion;
-        if (!cantidadCorrecta) {
-          mensaje = `El número de valores seleccionados no es correcto. Por favor, verifica tus selecciones.`;
-          tipoNotificacion = "error";
-        } else {
-          mensaje = `Los valores seleccionados son correctos, pero el orden no es correcto. Por favor, verifica el orden de tus selecciones.`;
-          tipoNotificacion = "warning";
-          // appController.app.subProgressToProgressBar();
-        }
-        this.handleFirstChangeMade();
-        window.tabEl.handleChat(mensaje, tipoNotificacion);
-      }
-    } else {
-      this.handleFirstChangeMade();
-      if (seleccionCorrecta.length > 0) {
-        let incorrectas = seleccionDinamica.filter(
-          (valor) => !seleccionadaTD.includes(valor)
-        );
-        if (incorrectas.length > 0) {
-          window.tabEl.handleChat(
-            `El valor "${incorrectas.join(", ")}" es incorrecto.`,
-            "error"
-          );
-        } else {
-          window.tabEl.handleChat(
-            `El valor seleccionado "${seleccionCorrecta.join(
-              ", "
-            )}" es correcto, pero faltan más valores.`,
-            "warning"
-          );
-          appController.app.addProgressToProgressBar();
-        }
-      } else {
-        window.tabEl.handleChat(
-          `Los valores seleccionados no son correctos. Por favor, prueba con otros valores.`,
-          "error"
-        );
-      }
-    }
-
-    // Llama a la nueva función para verificar la función del último valor agregado
-    this.verificarFuncionValor(this.ultimoValorAgregado, seleccionadaTD);
-  },
-  verificarFuncionValor(ultimoValor, seleccionadaTD) {
-    if (ultimoValor && seleccionadaTD.includes(ultimoValor)) {
-      let funcionValor = this.seleccionTablaDinamica.valores.find(
-        (v) => Object.keys(v)[0] === ultimoValor
-      )[ultimoValor];
-      let funcionRecomendada =
-        appController.app.baseSettings.funcionesSeleccionadasTD[
-          appController.app.baseSettings.valorSeleccionadaTD.indexOf(
-            ultimoValor
-          )
-        ];
-
-      if (funcionValor === funcionRecomendada) {
-        window.tabEl.handleChat(
-          `La función para el valor "${ultimoValor}" es correcta.`,
-          "correct"
-        );
-        appController.app.addProgressToProgressBar();
-        this.verificarSeleccion();
-      } else {
-        window.tabEl.handleChat(
-          `La función para el valor "${ultimoValor}" no es correcta.`,
-          "error"
-        );
-      }
     }
   },
+
+
+validarEjeXBarras(valorEjeX) {
+  
+  if (valorEjeX == appController.app.baseSettings.ejeX) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La columna seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+validarSerieBarras(valorSerie) {
+  
+  if (valorSerie == appController.app.baseSettings.serie) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+/*
+validarFuncionBarras(valorFuncion) {
+  
+  if (valorFuncion == appController.app.baseSettings.funcion) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La funcion de agregacion seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},
+
+validarEscalaBarras(valorEscala) {
+  
+  if (valorEscala == appController.app.baseSettings.escala) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`La escala seleccionada no es la pedida por el ejercicio.`, "error");
+  }
+},*/
+
+
+
+  /*
+  verificarSeleccion() {
+    // Verifica si las filas seleccionadas son las recomendadas
+    let filasCorrectasSeleccionadas =
+      appController.app.baseSettings.filaSeleccionadaTD.length === 0 ||
+      this.seleccionTablaDinamica.filas.length === 0 ||
+      this.seleccionTablaDinamica.filas.every((fila) =>
+        appController.app.baseSettings.filaSeleccionadaTD.includes(fila)
+      );
+    let todasLasFilasRecomendadasSeleccionadas =
+      appController.app.baseSettings.filaSeleccionadaTD.every((fila) =>
+        this.seleccionTablaDinamica.filas.includes(fila)
+      );
+
+    // Verifica si las columnas seleccionadas son las recomendadas
+    let columnasCorrectasSeleccionadas =
+      appController.app.baseSettings.columnaSeleccionadaTD.length === 0 ||
+      this.seleccionTablaDinamica.columnas.length === 0 ||
+      this.seleccionTablaDinamica.columnas.every((columna) =>
+        appController.app.baseSettings.columnaSeleccionadaTD.includes(columna)
+      );
+    let todasLasColumnasRecomendadasSeleccionadas =
+      appController.app.baseSettings.columnaSeleccionadaTD.every((columna) =>
+        this.seleccionTablaDinamica.columnas.includes(columna)
+      );
+
+    // Verifica si los valores seleccionados son los recomendados
+    let valoresCorrectosSeleccionados =
+      appController.app.baseSettings.valoresSeleccionadaTD.length === 0 ||
+      this.seleccionTablaDinamica.valores.length === 0 ||
+      this.seleccionTablaDinamica.valores.every((valor) =>
+        appController.app.baseSettings.valoresSeleccionadaTD.includes(
+          Object.keys(valor)[0]
+        )
+      );
+    let todosLosValoresRecomendadosSeleccionados =
+      appController.app.baseSettings.valoresSeleccionadaTD.every((valor) =>
+        this.seleccionTablaDinamica.valores
+          .map((v) => Object.keys(v)[0])
+          .includes(valor)
+      );
+
+    let funcionesCorrectasSeleccionadas =
+      this.seleccionTablaDinamica.valores.every((valor) => {
+        let nombreValor = Object.keys(valor)[0];
+        let funcionValor = valor[nombreValor];
+        let indiceValor =
+          appController.app.baseSettings.valoresSeleccionadaTD.indexOf(
+            nombreValor
+          );
+        return (
+          funcionValor ===
+          appController.app.baseSettings.funcionesSeleccionadasTD[indiceValor]
+        );
+      });
+
+    if (
+      filasCorrectasSeleccionadas &&
+      todasLasFilasRecomendadasSeleccionadas &&
+      columnasCorrectasSeleccionadas &&
+      todasLasColumnasRecomendadasSeleccionadas &&
+      valoresCorrectosSeleccionados &&
+      todosLosValoresRecomendadosSeleccionados &&
+      funcionesCorrectasSeleccionadas
+    ) {
+      this.seleccionTablaDinamica.ejercicioCompletado = true;
+      appController.userSettings.settings.ejercicioCompletado =
+        this.seleccionTablaDinamica.ejercicioCompletado;
+      window.tabEl.handleChat(
+        `Felicitaciones! Has completado el ejercicio correctamente.`,
+        "correct"
+      );
+      this.timer = false;
+      this.firstChangeMade = false;
+      pgEvent.postEvent("SUCCESS", "Bien hecho", [], "");
+      // appController.userSettings.save();
+      this.actualizarIntervaloYRenderizar();
+      this.actualizarReloj();
+    }
+    //Actualizar los valores en seleccionGraficos
+  },
+
+*/
 };
