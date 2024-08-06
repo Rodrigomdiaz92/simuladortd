@@ -19,15 +19,16 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
+    "https://script.google.com/macros/s/AKfycbys35qsxqtK-XZZZMhrnoI1bL1Wj1eNY-6x-Wh9S5W4v6tgYU6I8dOduLmG3OjwUxEADA/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
-  escala:100,
+  tipoGrafico: "torta",
+  ejeX: "",
+  serie: "",
+  etiqueta: "Marcas",
+  valorGrafico: "Suma_precio_por_marca",
+  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();

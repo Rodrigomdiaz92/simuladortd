@@ -19,7 +19,7 @@ import { appController } from "../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbwe4ZpbDIQVGdJZKIy0-pxxl9Gc5XDDJrGqroPTECfUz6yDKvDHyHbr3AAFHjcewws0/exec",
+    "https://script.google.com/macros/s/AKfycbyqO3GVelkVWlpy6v5jtqW4phInNaiUh29R5pBP2IL6b7bZQr3r0QIz7cYpUikgFUw0/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
