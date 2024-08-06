@@ -19,6 +19,11 @@ export default defineConfig({
         actividad05: path.resolve(__dirname, "pages/actividad05/act.html"),
         actividad06: path.resolve(__dirname, "pages/actividad06/act.html"),
         actividad07: path.resolve(__dirname, "pages/actividad07/act.html"),
+        actividad01: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad01/act.html"),
+        actividad02: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad02/act.html"),
+        actividad03: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad03/act.html"),
+        desafio01: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio01/act.html"),
+        desafio02: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio02/act.html"),
       }
     },
   },
