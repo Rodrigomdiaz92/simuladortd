@@ -52,7 +52,7 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 .sheets-container {
-  overflow: hidden;
+  overflow: auto;
 }
 .table-section {
   width: 100%;

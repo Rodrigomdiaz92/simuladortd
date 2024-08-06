@@ -19,15 +19,16 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
+    "https://script.google.com/macros/s/AKfycbxIFda25W6cvbM3RtDx4MxONwZTaDwk7L4sbhxwdQQJ_VQf68QGR11DNeQGDbHZz2KLnA/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
-  escala:100,
+  tipoGrafico: "torta",
+  ejeX: "",
+  serie: "",
+  etiqueta: "FAMILIA_CONSOLAS",
+  valorGrafico: "UNIDADES_VENDIDAS",
+  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();

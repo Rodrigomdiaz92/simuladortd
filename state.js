@@ -439,7 +439,6 @@ export const state = {
   },
 
   //  Validacion Graficos
-  /*
 validarTipoGrafico(tipo) {
   
   if (tipo == appController.app.baseSettings.tipoGrafico) {
@@ -447,17 +446,17 @@ validarTipoGrafico(tipo) {
   } else {
     window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
   }
-},*/
+},
 
   validarEtiquetaGrafico(valorColumna) {
-    if (valorColumna == appController.app.baseSettings.columna) {
+    if (valorColumna == appController.app.baseSettings.etiqueta) {
       window.tabEl.handleChat(
-        `La columna seleccionada es correcta.`,
+        `La etiqueta seleccionada es correcta.`,
         "correct"
       );
     } else {
       window.tabEl.handleChat(
-        `La columna seleccionada NO es correcta.`,
+        `La etiqueta seleccionada NO es correcta.`,
         "error"
       );
     }
@@ -474,9 +473,9 @@ validarHuecoCirculo(valorHueco) {
 validarValorGrafico(valorGrafico) {
   
   if (valorGrafico == appController.app.baseSettings.valorGrafico) {
-    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+    window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
   } else {
-    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
+    window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
   }
 },
 /*
