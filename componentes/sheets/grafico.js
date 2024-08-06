@@ -34,6 +34,12 @@ customElements.define(
                   <div class="control">
                     <label>Intervalo de datos:</label>
                     <input class="graph-input" value="${state.seleccion.intervalo}" readonly>
+                    <div class="small-square">
+                      <div class="small-square1"></div>
+                      <div class="small-square2"></div>
+                      <div class="small-square3"></div>
+                      <div class="small-square4"></div>
+                    </div>
                   </div>
                   <div class="control">
                     <input class="graph-input" type="text" id="titulo-grafico" placeholder="Ingresa aqui el titulo de tu grafico">
@@ -45,8 +51,10 @@ customElements.define(
                     </select>
                   </div>
                   <div id="confi-torta" class="hidden">              
-                    <label>Columna:</label>
+                    <label>Etiqueta:</label>
                     <select class="graph-select" id="etiquetas-grafico"></select>
+                    <label>Valor:</label>
+                    <select class="graph-select" id="valor-grafico"></select> 
                     <label>Hueco del círculo(%)</label>
                     <input class="graph-input" type="number" id="porcentaje-circulo">
                   </div>
@@ -57,7 +65,7 @@ customElements.define(
                         Seleccionar Series
                     </div>
                     <div id="dropdown-content" class="dropdown-content"></div>
-                    <label for="graficoApilado">Gráfico Apilado</label>
+                    <label for="graficoApilado" style=" margin-left: 290px;">Gráfico Apilado</label>
                     <input type="checkbox" id="graficoApilado">
 
 
@@ -69,11 +77,15 @@ customElements.define(
                       <option value="minimo">Mín.</option>
                       <option value="maximo">Máx.</option>
                     </select>
-                    <h3>Personalizar</h3>               
+                    <h3>Personalizar</h3> 
+                    <div>              
                     <label>Titulo eje X</label>
                     <input class="graph-input" type="text" id="titulo-grafico-x">
+                    </div>
+                    <div>
                     <label>Titulo eje Y</label>
                     <input class="graph-input" type="text" id="titulo-grafico-y">
+                    </div>
                     <label>Escala del Eje vertical</label>
                     <select class="graph-select" id="escala">
                       <option value="1000">Predeterminado</option>
@@ -88,6 +100,7 @@ customElements.define(
                   </div>
                   <button id="control-confirm" class="control-button">Confirmar</button>             
                 </ul>
+
               </div>
             </div>
           </div>
@@ -115,37 +128,158 @@ customElements.define(
             color: #0b57d0;
             background-color: #e1e9f7;
             font-weight: 600;
+            margin-top: -1px
           }
           #ejeX {
             margin-top: 1.6%;
           }
           #titulo-grafico-x{
             cursor: text;
+            width: 345px;
           }
           #titulo-grafico-y{
             cursor: text;
+            width: 345px;
           }
           #confi-torta label {
               display: block;
               margin-top: 10px
           }
+
+          #escala{
+          width: 262px;
+          }
           .insert-data-grafic__container { width: 100%; display: flex; height: 100%; }
-          /* Estilo para la opción "Mostrar opciones" */
+
+          .small-square {
+            width: 20px;
+            height: 20px;
+            margin-top: -35px;
+            margin-left: 80%;
+        }
+          .small-square1 {
+            width: 10px;
+            height: 10px;
+            border: solid 1px dimgrey;
+            border-top: solid 3px dimgrey;
+            border-left: solid 3px dimgrey;
+        }
+          .small-square2 {
+            width: 10px;
+            height: 10px;
+            border: solid 1px dimgrey;
+            border-bottom: solid 3px dimgrey;
+            border-left: solid 3px dimgrey;
+        }
+          .small-square3 {
+            width: 10px;
+            height: 10px;
+            border: solid 1px dimgrey;
+            border-top: solid 3px dimgrey;
+            border-right: solid 3px dimgrey;
+            margin-top: -20px;
+            margin-left: 10px;
+        }
+          .small-square4 {
+            width: 10px;
+            height: 10px;
+            border: solid 1px dimgrey;
+            margin-left: 10px;
+            border-right: solid 3px dimgrey;
+            border-bottom: solid 3px dimgrey;
+        }
+          #etiquetas-grafico, #valor-grafico, #porcentaje-circulo {
+            border-radius: 10px;
+            appearance: none;
+            width: 100%;
+        }
+      
+
+        
+          
+          /* Estilo para la opción "Mostrar opciones" NO BORRAR */
+
         .dropdown-toggle {
-            display: flex;
-            align-items: center;
+            border: solid 1px;
+            border-radius: 10px;
+            width: 180px;
+            text-align: center;
+            background-color: white;
             cursor: pointer;
-            color: #6200ea;
             user-select: none;
+            margin-left: 53%;
+            margin-top: -30px;
             font-size: 18px;
         }
 
-        .dropdown-toggle:hover {
-            text-decoration: underline;
+        .dropdown-content {
+            display: none;
+            background-color: #ffffff;
+            margin-top: 10px;
+            max-width: 300px;
+            margin-left: 136px;
+            text-align: right;
+            border-radius: 10px;
+            margin-top: 20px;
+
+            
         }
 
-        /* Estilo para el menú desplegable */
-        .dropdown-content {
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content label {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            flex-direction: row-reverse;
+        }
+
+        .dropdown-content input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #757575;
+            border-radius: 4px;
+            margin-right: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .dropdown-content input[type="checkbox"]:checked {
+            background-color: #6200ea;
+            border-color: #6200ea;
+        }
+
+        .dropdown-content input[type="checkbox"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        #graficoApilado{
+            
+            width: 18px;
+            height: 18px;
+            border: 2px solid #757575;
+            border-radius: 4px;
+            margin-right: 10px;
+            position: relative;
+            margin-top: 5px; 
+        }
+
+
+
+
+        /*Estilo para el menú desplegable */
+        /*.dropdown-content {
             display: none;
             background-color: #ffffff;
             border: 1px solid #e0e0e0;
@@ -193,21 +327,9 @@ customElements.define(
             border: solid white;
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
-        }
+        } */
 
-        button {
-            background-color: #6200ea;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #3700b3;
-        }
+          
         </style>
       `;
     }
@@ -215,9 +337,6 @@ customElements.define(
     addListeners() {
       const botonMostrar = this.querySelector("#menu-mostrar");
       botonMostrar.addEventListener("click", this.toggleMenu.bind(this));
-
-      
-      
 
       const tipoGrafico = this.querySelector("#tipoGrafico");
       tipoGrafico.addEventListener("change", this.updateOptions.bind(this));
@@ -242,6 +361,12 @@ customElements.define(
       huecoCirculo.addEventListener("change", () => {
         state.validarHuecoCirculo(huecoCirculo.value);
       });
+
+      const valorGrafico = this.querySelector("#valor-grafico");
+      valorGrafico.addEventListener("change", this.updateOptions.bind(this));
+      valorGrafico.addEventListener("change", () => {
+        state.validarValorGrafico(valorGrafico.value);
+      });
       
 
       //const selectEjex = this.querySelector("#ejeX");
@@ -253,7 +378,7 @@ customElements.define(
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
       selectEjex.addEventListener("change", () => {
         state.validarEjeXBarras(selectEjex.value);
-      });
+      }); 
 
       /*const selectSerie = this.querySelector("#serie");
       selectSerie.addEventListener("change", () => {
@@ -299,42 +424,37 @@ customElements.define(
 
       state.agregarTipoGrafico(tipoGrafico.value);
     }
-                                                                      //Nuevo + series
+     //Nuevo + series
+
+
     toggleDropdown() {
-      const dropdownContent = this.querySelector('dropdown-content');
+      const dropdownContent = this.querySelector('dropdown-content'); // ???
       dropdownContent.classList.toggle('show');
   }
-  /*
     populateOptions() {
       const data = state.seleccion.datos;
       const newDf = new dfd.DataFrame(data);
       const columns = newDf.columns;
 
-      const defaultOption = `<option value="none" selected>---</option>`;
       const optionsHTML = columns
         .map((col) => `<option value=${col}>${col}</option>`)
         .join("");
+      const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
+      const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
+      /* const defaultOptionEjeX = `<option value="none" selected>Agregar Eje X</option>`;
+      const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi */
 
-      const finalOptionsHTML = defaultOption + optionsHTML;
+      const finalOptionsHTMLEtiqueta = defaultOptionEtiqueta + optionsHTML;
+      const finalOptionsHTMLValorGrafico = defaultOptionValorGrafico + optionsHTML;
+      /*const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
+      const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi */
 
-      this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
-      this.querySelector("#ejeX").innerHTML = finalOptionsHTML;
-      this.querySelector("#serie").innerHTML = finalOptionsHTML;
-    }*/
-    populateOptions() {
-      const data = state.seleccion.datos;
-      const newDf = new dfd.DataFrame(data);
-      const columns = newDf.columns;
+      this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTMLEtiqueta;
+      this.querySelector("#ejeX").innerHTML = optionsHTML;
+      /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */ 
+      this.querySelector("#valor-grafico").innerHTML = finalOptionsHTMLValorGrafico; // Agrega esta línea
 
-      const defaultOption = `<option value="none" selected>---</option>`;
-      
-      //EjeX
-      const optionsHTML = columns
-        .map((col) => `<option value=${col}>${col}</option>`)
-        .join("");
 
-      
-      //Series Barras
       const serieOptionHTML = columns
         .map((col) => `<label for="${col}">
                 <input type="checkbox" id="${col}" name="opciones" value="${col}">
@@ -342,11 +462,6 @@ customElements.define(
             </label>`)
         .join("");
 
-      const finalOptionsHTML = defaultOption + optionsHTML;
-
-      this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTML;
-      this.querySelector("#ejeX").innerHTML = optionsHTML;
-      //this.querySelector("#serie").innerHTML = finalOptionsHTML;
       this.querySelector("#dropdown-content").innerHTML = serieOptionHTML;
     }
 
@@ -378,25 +493,106 @@ customElements.define(
       }
     }
 
-    createPieChart(context, data) {                 //Torta
+    createPieChart(context, data) {
       const selectEtiquetas = this.querySelector("#etiquetas-grafico");
-      const counts = data[selectEtiquetas.value].reduce((acc, pos) => {
-        acc[pos] = (acc[pos] || 0) + 1;
-        return acc;
-      }, {});
-
-      const labels = Object.keys(counts);
-      const values = Object.values(counts);
-
+      const selectValorGrafico = this.querySelector("#valor-grafico");
+      
+      // Verificar si el valor seleccionado es una clave válida en `data`
+      if (!data.hasOwnProperty(selectEtiquetas.value) || !data.hasOwnProperty(selectValorGrafico.value)) {
+        console.error("Invalid column selected");
+        return;
+      }
+      
+      // Inicializar el objeto Agrupado
+      const agrupado = {};
+    
+      // Iterar sobre los datos y construir el objeto Agrupado
+      for (let i = 0; i < data[selectEtiquetas.value].length; i++) {
+        const etiquetas = data[selectEtiquetas.value][i];
+        const sumaceldasgrafico = data[selectValorGrafico.value][i];
+    
+        if (!agrupado[etiquetas]) {
+          agrupado[etiquetas] = {
+            count: 0,
+            sumaCelda: 0,
+            promedioCelda: 0,
+            minCelda: Infinity,
+            maxCelda: 0,
+          };
+        }
+    
+        agrupado[etiquetas].count++;
+        agrupado[etiquetas].sumaCelda += sumaceldasgrafico;
+        if (sumaceldasgrafico < agrupado[etiquetas].minCelda)
+          agrupado[etiquetas].minCelda = sumaceldasgrafico;
+        if (sumaceldasgrafico > agrupado[etiquetas].maxCelda)
+          agrupado[etiquetas].maxCelda = sumaceldasgrafico;
+      }
+    
+      for (let habilidad in agrupado) {
+        agrupado[habilidad].promedioCelda =
+          agrupado[habilidad].sumaCelda / agrupado[habilidad].count;
+      }
+    
+      // Obtener los valores únicos, los arrays de count y ratingSum
+      const uniqueValues = Object.keys(agrupado);
+      const countArray = uniqueValues.map((etiquetas) => agrupado[etiquetas].count);
+      const sumCeldaArray = uniqueValues.map(
+        (etiquetas) => agrupado[etiquetas].sumaCelda
+      );
+      const ratingAvgArray = uniqueValues.map(
+        (etiquetas) => agrupado[etiquetas].promedioCelda
+      );
+      const ratingMinArray = uniqueValues.map(
+        (habilidad) => agrupado[habilidad].minCelda
+      );
+      const ratingMaxArray = uniqueValues.map(
+        (habilidad) => agrupado[habilidad].maxCelda
+      );
+    
+      console.log("Agrupado:", agrupado);
+      console.log("Unique Values:", uniqueValues);
+      console.log("Count Array:", countArray);
+      console.log("Rating Sum Array:", sumCeldaArray);
+      console.log("Rating Avg Array:", ratingAvgArray);
+      console.log("Rating Min Array:", ratingMinArray);
+      console.log("Rating Max Array:", ratingMaxArray);
+    
+      function isNumericArray(array) {
+        return array.every((element) => typeof element === "number");
+      }
+    
+      const valorGraficoData = data[selectValorGrafico.value];
+    
+      // Verificar si `valorGraficoData` está definido
+      if (valorGraficoData === undefined) {
+        console.error("Data for selected value is undefined");
+        return;
+      }
+    
+      const isSerieNumeric = isNumericArray(valorGraficoData);
+    
+      let dataset;
+    
+      if (isSerieNumeric) {
+        dataset = sumCeldaArray;
+      } else {
+        dataset = countArray;
+      }
+    
+      console.log("Is Serie Numeric:", isSerieNumeric);
+      console.log(dataset);
+    
       const tituloGrafico = this.querySelector("#titulo-grafico").value;
       const porcentajeAnillo =
         this.querySelector("#porcentaje-circulo").value || "0";
-
+    
       this.myChart = new Chart(context, {
         type: "pie",
         data: {
-          labels: labels,
-          datasets: [{ data: values }],
+          labels: uniqueValues,
+          datasets: [{ label: selectEtiquetas.value,
+                      data: dataset }],
         },
         options: {
           cutout: porcentajeAnillo + "%",

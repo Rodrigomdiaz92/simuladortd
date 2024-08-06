@@ -22,6 +22,7 @@ export const state = {
       ejeY: "",
       etiqueta: "",
       huecoCirculo: "",
+      valorGrafico: "",
     },
     intervalo: {},
     datos: [],
@@ -428,6 +429,14 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+  agregarValorGrafico(nuevoValorGrafico) {
+    this.seleccionGraficos.seleccion.valorGrafico = nuevoValorGrafico;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
   //  Validacion Graficos
   /*
@@ -457,6 +466,14 @@ validarTipoGrafico(tipo) {
 validarHuecoCirculo(valorHueco) {
   
   if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
+  }
+},
+validarValorGrafico(valorGrafico) {
+  
+  if (valorGrafico == appController.app.baseSettings.valorGrafico) {
     window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
   } else {
     window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
