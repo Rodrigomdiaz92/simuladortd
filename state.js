@@ -479,7 +479,7 @@ validarValorGrafico(valorGrafico) {
     window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
   }
 },
-/*
+
   validarHuecoCirculo(valorHueco) {
     if (valorHueco == appController.app.baseSettings.huecoCirculo) {
       window.tabEl.handleChat(
@@ -493,7 +493,8 @@ validarValorGrafico(valorGrafico) {
       );
     }
   },
-  /*ya
+
+
 validarEjeXBarras(valorEjeX) {
   
   if (valorEjeX == appController.app.baseSettings.ejeX) {
@@ -511,7 +512,7 @@ validarSerieBarras(valorSerie) {
     window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
   }
 },
-
+/*
 validarFuncionBarras(valorFuncion) {
   
   if (valorFuncion == appController.app.baseSettings.funcion) {
@@ -528,9 +529,9 @@ validarEscalaBarras(valorEscala) {
   } else {
     window.tabEl.handleChat(`La escala seleccionada no es la pedida por el ejercicio.`, "error");
   }
-},
+},*/
 
-*/
+
 
   /*
   verificarSeleccion() {

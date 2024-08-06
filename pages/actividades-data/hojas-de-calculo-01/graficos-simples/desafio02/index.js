@@ -19,15 +19,15 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
+    "https://script.google.com/macros/s/AKfycbzg4VgXxzjuiUsPpLVdgjRIalfwyylhawiqUmb2mORi0oxWidRfT4qv_XDH3u0O1EuhUg/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
-  escala:100,
+  ejeX: "AÑO_PUBLICACION",
+  serie: ["NINTENDO","PlayStation","XBox (Microsoft)"],
+  funcion: "",
+  escala:"",
 };
 let df;
 window.onload = pgEvent.getValues();

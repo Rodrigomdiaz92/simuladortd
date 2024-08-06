@@ -386,12 +386,23 @@ customElements.define(
       });*/
 
       //Validacion Series
-      /*
-      const selectSerie = this.querySelector("#serie");
-      selectSerie.addEventListener("change", this.updateOptions.bind(this));
-      selectSerie.addEventListener("change", () => {
-        state.validarSerieBarras(selectSerie.value);
+
+      const checkboxes = this.querySelectorAll('input[name="opciones"]:checked');
+      const opcionesSeleccionadas = [];
+      checkboxes.forEach((checkbox) => {
+        opcionesSeleccionadas.push(checkbox.value);
+      });
+/* Bug validacion series
+      checkboxes.addEventListener("change", this.updateOptions.bind(this));
+      checkboxes.addEventListener("change", () => {
+        state.validarSerieBarras(opcionesSeleccionadas);
       });*/
+      
+      //const selectSerie = this.querySelector("#serie");
+      //selectSerie.addEventListener("change", this.updateOptions.bind(this));
+      //selectSerie.addEventListener("change", () => {
+      //  state.validarSerieBarras(selectSerie.value);
+      //});
     }
 
     toggleMenu() {

@@ -23,9 +23,9 @@ const BASE_SETTINGS = {
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "torta",
+  tipoGrafico: "barras",
   ejeX: "",
-  serie: "",
+  serie: [],
   columna: "POSICION",
   huecoCirculo: "0"
 };
