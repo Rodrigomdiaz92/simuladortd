@@ -52,7 +52,7 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 .sheets-container {
-  overflow: hidden;
+  overflow: auto;
 }
 .table-section {
   width: 100%;
@@ -363,12 +363,12 @@ tr .celda-encabezado-filas {
 #controles-grafico{
   padding:10px 1px 40px;
   padding-bottom:80px;
-  /* overflow: auto; */
-  height: 500px;
+  overflow: auto;
+  height: 560px;
   margin-left:-5%;
-  width: 600px
-  width: 50%;
+  width: 100%;
   margin: 15% auto;
+  margin-top: 0;
 }
 .control {
   display: flex;

@@ -19,13 +19,13 @@ import { appController } from "../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbwRcJ06Um_d9zgVd_VhhTPM6t3h5or0mb5ON9qS1W2gFDjqP7uhbnLzMBVUSuYQiWRBFg/exec",
+    "https://script.google.com/macros/s/AKfycbwe4ZpbDIQVGdJZKIy0-pxxl9Gc5XDDJrGqroPTECfUz6yDKvDHyHbr3AAFHjcewws0/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
+  tipoGrafico: "torta",
   ejeX: "",
-  serie: [],
+  serie: "",
   columna: "POSICION",
   huecoCirculo: "0"
 };

@@ -1,33 +1,33 @@
-import { DataTable } from "../../clases/DataTable";
-import { DataTableView } from "../../clases/DataTableView";
-import { DataTableController } from "../../clases/DataTableController";
-import { pgEvent } from "../../utils/pgEvent"; // Importar PgEvent
-import "../../componentes/menu/menu";
-import "../../componentes/menu/archivo-menu";
-import "../../componentes/menu/reloj";
-import "../../componentes/loader";
-import "../../componentes/sheets-tab/sheet";
-import "../../componentes/sheets-tab/sheet-button";
-import "../../componentes/sheets-tab/tab";
-import "../../componentes/sheets/grafico";
-import "../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../clases/App";
-import { UserSettings } from "../../clases/UserSettings";
-import { appController } from "../../appController";
+import { DataTable } from "../../../../../clases/DataTable";
+import { DataTableView } from "../../../../../clases/DataTableView";
+import { DataTableController } from "../../../../../clases/DataTableController";
+import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
+import "../../../../../componentes/menu/menu";
+import "../../../../../componentes/menu/archivo-menu";
+import "../../../../../componentes/menu/reloj";
+import "../../../../../componentes/loader";
+import "../../../../../componentes/sheets-tab/sheet";
+import "../../../../../componentes/sheets-tab/sheet-button";
+import "../../../../../componentes/sheets-tab/tab";
+import "../../../../../componentes/sheets/grafico";
+import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
+import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "../../../../../componentes/sheets/tabladinamica/data-controls";
+import { App } from "../../../../../clases/App";
+import { UserSettings } from "../../../../../clases/UserSettings";
+import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbwRcJ06Um_d9zgVd_VhhTPM6t3h5or0mb5ON9qS1W2gFDjqP7uhbnLzMBVUSuYQiWRBFg/exec",
+    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "",
-  serie: [],
-  columna: "POSICION",
-  huecoCirculo: "0"
+  ejeX: "HABILIDAD_ATAQUE",
+  serie: "EDAD",
+  funcion: "promedio",
+  escala:100,
 };
 let df;
 window.onload = pgEvent.getValues();

@@ -1,33 +1,33 @@
-import { DataTable } from "../../clases/DataTable";
-import { DataTableView } from "../../clases/DataTableView";
-import { DataTableController } from "../../clases/DataTableController";
-import { pgEvent } from "../../utils/pgEvent"; // Importar PgEvent
-import "../../componentes/menu/menu";
-import "../../componentes/menu/archivo-menu";
-import "../../componentes/menu/reloj";
-import "../../componentes/loader";
-import "../../componentes/sheets-tab/sheet";
-import "../../componentes/sheets-tab/sheet-button";
-import "../../componentes/sheets-tab/tab";
-import "../../componentes/sheets/grafico";
-import "../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../clases/App";
-import { UserSettings } from "../../clases/UserSettings";
-import { appController } from "../../appController";
+import { DataTable } from "../../../../../clases/DataTable";
+import { DataTableView } from "../../../../../clases/DataTableView";
+import { DataTableController } from "../../../../../clases/DataTableController";
+import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
+import "../../../../../componentes/menu/menu";
+import "../../../../../componentes/menu/archivo-menu";
+import "../../../../../componentes/menu/reloj";
+import "../../../../../componentes/loader";
+import "../../../../../componentes/sheets-tab/sheet";
+import "../../../../../componentes/sheets-tab/sheet-button";
+import "../../../../../componentes/sheets-tab/tab";
+import "../../../../../componentes/sheets/grafico";
+import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
+import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "../../../../../componentes/sheets/tabladinamica/data-controls";
+import { App } from "../../../../../clases/App";
+import { UserSettings } from "../../../../../clases/UserSettings";
+import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbwRcJ06Um_d9zgVd_VhhTPM6t3h5or0mb5ON9qS1W2gFDjqP7uhbnLzMBVUSuYQiWRBFg/exec",
+    "https://script.google.com/macros/s/AKfycbzg4VgXxzjuiUsPpLVdgjRIalfwyylhawiqUmb2mORi0oxWidRfT4qv_XDH3u0O1EuhUg/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "",
-  serie: [],
-  columna: "POSICION",
-  huecoCirculo: "0"
+  ejeX: "AÑO_PUBLICACION",
+  serie: "NINTENDO",
+  funcion: "",
+  escala:"",
 };
 let df;
 window.onload = pgEvent.getValues();

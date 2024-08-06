@@ -22,6 +22,7 @@ export const state = {
       ejeY: "",
       etiqueta: "",
       huecoCirculo: "",
+      valorGrafico: "",
     },
     intervalo: {},
     datos: [],
@@ -428,9 +429,16 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+  agregarValorGrafico(nuevoValorGrafico) {
+    this.seleccionGraficos.seleccion.valorGrafico = nuevoValorGrafico;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
   //  Validacion Graficos
-  /*
 validarTipoGrafico(tipo) {
   
   if (tipo == appController.app.baseSettings.tipoGrafico) {
@@ -438,21 +446,38 @@ validarTipoGrafico(tipo) {
   } else {
     window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
   }
-},*/
+},
 
   validarEtiquetaGrafico(valorColumna) {
-    if (valorColumna == appController.app.baseSettings.columna) {
+    if (valorColumna == appController.app.baseSettings.etiqueta) {
       window.tabEl.handleChat(
-        `La columna seleccionada es correcta.`,
+        `La etiqueta seleccionada es correcta.`,
         "correct"
       );
     } else {
       window.tabEl.handleChat(
-        `La columna seleccionada NO es correcta.`,
+        `La etiqueta seleccionada NO es correcta.`,
         "error"
       );
     }
   },
+
+validarHuecoCirculo(valorHueco) {
+  
+  if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
+  }
+},
+validarValorGrafico(valorGrafico) {
+  
+  if (valorGrafico == appController.app.baseSettings.valorGrafico) {
+    window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
+  } else {
+    window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+  }
+},
 
   validarHuecoCirculo(valorHueco) {
     if (valorHueco == appController.app.baseSettings.huecoCirculo) {
@@ -644,7 +669,6 @@ validarTipoGrafico(tipo) {
     }
   },
 
-  /*ya
 validarEjeXBarras(valorEjeX) {
   
   if (valorEjeX == appController.app.baseSettings.ejeX) {
@@ -662,7 +686,7 @@ validarSerieBarras(valorSerie) {
     window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
   }
 },
-
+/*
 validarFuncionBarras(valorFuncion) {
   
   if (valorFuncion == appController.app.baseSettings.funcion) {
@@ -679,9 +703,9 @@ validarEscalaBarras(valorEscala) {
   } else {
     window.tabEl.handleChat(`La escala seleccionada no es la pedida por el ejercicio.`, "error");
   }
-},
+},*/
 
-*/
+
 
   /*
   verificarSeleccion() {
