@@ -24,6 +24,8 @@ export default defineConfig({
         actividad03: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad03/act.html"),
         desafio01: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio01/act.html"),
         desafio02: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio02/act.html"),
+        actividad03b: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad03b/act.html"),
+        actividad04b: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01//recuentos-condicionales/actividad04b/act.html"),
       }
     },
   },
