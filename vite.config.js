@@ -1,11 +1,18 @@
 // vite.config.js
 import { defineConfig } from "vite";
 import path from "path";
-
+console.log(path.resolve(__dirname, "clases"));
 export default defineConfig({
   base: "/",
   server: {
     port: 1234,
+  },
+  resolve: {
+    alias: {
+      "@componentes": path.resolve(__dirname, "componentes"),
+      "@clases": path.resolve(__dirname, "clases"),
+      "@utils": path.resolve(__dirname, "utils"),
+    },
   },
   build: {
     outDir: "dist",
@@ -19,14 +26,35 @@ export default defineConfig({
         actividad05: path.resolve(__dirname, "pages/actividad05/act.html"),
         actividad06: path.resolve(__dirname, "pages/actividad06/act.html"),
         actividad07: path.resolve(__dirname, "pages/actividad07/act.html"),
-        actividad01: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad01/act.html"),
-        actividad02: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad02/act.html"),
-        actividad03: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad03/act.html"),
-        desafio01: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio01/act.html"),
-        desafio02: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio02/act.html"),
-        actividad03b: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad03b/act.html"),
-        actividad04b: path.resolve(__dirname, "/pages/actividades-data/hojas-de-calculo-01//recuentos-condicionales/actividad04b/act.html"),
-      }
+        actividad01: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad01/act.html"
+        ),
+        actividad02: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad02/act.html"
+        ),
+        actividad03: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/graficos-simples/actividad03/act.html"
+        ),
+        desafio01: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio01/act.html"
+        ),
+        desafio02: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/graficos-simples/desafio02/act.html"
+        ),
+        actividad03b: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad03b/act.html"
+        ),
+        actividad04b: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01//recuentos-condicionales/actividad04b/act.html"
+        ),
+      },
     },
   },
 });
