@@ -19,14 +19,14 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbyVWmRM9YzbbNdyYl8pC9oIjANFGjeTKremWPfN3swHBTQpMzvdP51InEtlLE6HK1lgSw/exec",
+    "https://script.google.com/macros/s/AKfycbz0l3YTwYXdDnmaRwkkN8QOx4cwq9hWN6bbpWWI0F_jOJuCXG-ALIqMgh7uWxylEvgTpQ/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
-  funcion: "promedio",
+  tipoGrafico: "torta",
+  ejeX: " ",
+  serie: " ",
+  funcion: " ",
   escala:100,
 };
 let df;
