@@ -23,10 +23,10 @@ const BASE_SETTINGS = {
   graphEnabled: false,
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["AÑO_FABRICACION"],
-  columnaSeleccionadaTD: ["CAJA"],
-  valorSeleccionadaTD: ["ID_AUTO"],
-  funcionesSeleccionadasTD: ["count"],
+  filaSeleccionadaTD: ["MARCA"],
+  columnaSeleccionadaTD: ["PUERTAS"],
+  valorSeleccionadaTD: ["KILOMETROS"],
+  funcionesSeleccionadasTD: ["suma"],
 };
 let df;
 window.onload = pgEvent.getValues();
