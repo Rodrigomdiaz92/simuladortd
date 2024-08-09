@@ -52,7 +52,47 @@ export default defineConfig({
         ),
         actividad04b: path.resolve(
           __dirname,
-          "pages/actividades-data/hojas-de-calculo-01//recuentos-condicionales/actividad04b/act.html"
+          "pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad04b/act.html"
+        ),
+        actividadTD1_01a: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad01a/act.html"
+        ),
+        actividadTD1_01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad01b/act.html"
+        ),
+        actividadTD1_02: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad02/act.html"
+        ),
+        actividadTD1_03: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad03/act.html"
+        ),
+        actividadTD1_04: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad04/act.html"
+        ),
+        actividadTD2_01: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad01/act.html"
+        ),
+        actividadTD2_02: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad02/act.html"
+        ),
+        actividadTD2_03: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad03/act.html"
+        ),
+        actividadTD3_01a: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01a/act.html"
+        ),
+        actividadTD3_01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01b/act.html"
         ),
       },
     },
