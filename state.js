@@ -1,6 +1,6 @@
 import { appController } from "./appController";
 import { pgEvent } from "./utils/pgEvent";
-
+//
 export const state = {
   firstChangeMade: false,
   ultimaVariableAgregada: "",
