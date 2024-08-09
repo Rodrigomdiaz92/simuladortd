@@ -1,7 +1,6 @@
 // vite.config.js
 import { defineConfig } from "vite";
 import path from "path";
-console.log(path.resolve(__dirname, "clases"));
 export default defineConfig({
   base: "/",
   server: {
