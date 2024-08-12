@@ -24,7 +24,7 @@ const BASE_SETTINGS = {
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
   filaSeleccionadaTD: ["AÑO_FABRICACION"],
-  columnaSeleccionadaTD: ["CAJA", "COMBUSTIBLE"],
+  columnaSeleccionadaTD: ["COMBUSTIBLE"],
   valorSeleccionadaTD: ["PRECIO"],
   funcionesSeleccionadasTD: ["sum"],
 };
