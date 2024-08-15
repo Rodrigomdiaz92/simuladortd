@@ -403,33 +403,26 @@ customElements.define(
         state.validarEjeXBarras(selectEjex.value);
       }); 
 
-      /*const selectSerie = this.querySelector("#serie");
-      selectSerie.addEventListener("change", () => {
-        state.agregarSerie(selectSerie.value);
-      });*/
-
-      //Validacion Series
-
-      const checkboxes = this.querySelectorAll('input[name="opciones"]:checked');
-      const opcionesSeleccionadas = [];
-
-      checkboxes.forEach((checkbox) => {
-      opcionesSeleccionadas.push(checkbox.value);
-    });
+      //Validacion Series barras
+      const selectedOptions = [];
+      const series = this.querySelector("#dropdown-content");
+      series.addEventListener("change", (event) => {
+        const value = state.quitarAcentosYCaracteresEspeciales(event.target.value);
+        console.log(value)
+            if (event.target.checked) {
+              // Agregar la opción al array si se selecciona
+              selectedOptions.push(value);
+            } else {
+              // Eliminar la opción del array si se deselecciona
+              const index = selectedOptions.indexOf(value);
+              if (index > -1) {
+                selectedOptions.splice(index, 1);
+              }
+            }
+            console.log(selectedOptions);
+            state.validarSerieBarras(selectedOptions)
+      });
       
-
-      
-/* Bug validacion series
-      checkboxes.addEventListener("change", this.updateOptions.bind(this));
-      checkboxes.addEventListener("change", () => {
-        state.validarSerieBarras(opcionesSeleccionadas);
-      });*/
-      
-      //const selectSerie = this.querySelector("#serie");
-      //selectSerie.addEventListener("change", this.updateOptions.bind(this));
-      //selectSerie.addEventListener("change", () => {
-      //  state.validarSerieBarras(selectSerie.value);
-      //});
     }
 
     toggleMenu() {

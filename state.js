@@ -696,37 +696,55 @@ validarSerieBarras(valorSerie) {
   }
 },
 
-/*graficoBarrasCompletado(valorEjeX, ){
-  if (valorEjeX == appController.app.baseSettings.ejeX && 
-    valorColumna == appController.app.baseSettings.etiqueta &&
-    {
-        window.tabEl.handleChat(
-          `El grafico esta completo`,
-          "correct");
-      } else {
-        window.tabEl.handleChat(
-          `Hay errores en tu grafico.`,
-          "error"
-        );
-      }
-  },*/
-/*
-validarFuncionBarras(valorFuncion) {
-  
-  if (valorFuncion == appController.app.baseSettings.funcion) {
-    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-  } else {
-    window.tabEl.handleChat(`La funcion de agregacion seleccionada no es la pedida por el ejercicio.`, "error");
-  }
+//Validaciones de arrays y textos
+validarTexto(texto) { //Formatea strings con caracteres extraños (ñ,´)
+  const regex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/;
+  return regex.test(texto);
 },
-
-validarEscalaBarras(valorEscala) {
-  
-  if (valorEscala == appController.app.baseSettings.escala) {
-    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-  } else {
-    window.tabEl.handleChat(`La escala seleccionada no es la pedida por el ejercicio.`, "error");
-  }
-},*/
-
+limpiarArrayTexto(array) {
+const regex = /[^a-zA-ZñÑáéíóúÁÉÍÓÚ\s]/g;
+// Recorre el array y limpia cada string
+return array.map(texto => texto.replace(regex, ''));
+},
+ordenarAlfabeticamente(array) { //ordena alfabeticamente un array
+return array.sort((a, b) => a.localeCompare(b));
+},
+quitarAcentosYCaracteresEspeciales(texto) {
+// Normaliza el texto a forma descompuesta
+const textoNormalizado = texto.normalize('NFD');
+// Elimina los caracteres diacríticos y otros caracteres especiales
+return textoNormalizado.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z\s]/g, '');
+},
+arraysIguales(array1, array2) {
+// Primero, verifica si ambos arrays tienen la misma longitud
+if (array1.length !== array2.length) {
+    return false;
+}
+// Luego, compara los elementos en cada índice
+for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+        return false;
+    }
+}
+// Si todos los elementos son iguales, los arrays son iguales
+return true;
+},
+validarEjeXBarras(valorEjeX) {
+let ingresado = this.quitarAcentosYCaracteresEspeciales(valorEjeX);
+let correcto = this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX);
+if(ingresado == correcto){
+  window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+} else {
+  window.tabEl.handleChat(`La columna seleccionada "${valorEjeX}" no es la pedida para eje X.`, "error");
+}
+},
+validarSerieBarras(valorSerie) {
+let ingresado= this.ordenarAlfabeticamente(valorSerie);
+let correcto= this.ordenarAlfabeticamente(appController.app.baseSettings.serie);
+if (this.arraysIguales(ingresado,correcto)) {
+  window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+} else {
+  window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
+}
+},
 };

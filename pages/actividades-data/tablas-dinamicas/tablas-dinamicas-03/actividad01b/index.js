@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: " ",
-  serie: " ",
+  serie: ["Diesel","Nafta"],
   funcion: " ",
   escala:100,
 };
