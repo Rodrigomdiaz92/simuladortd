@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "NACIONALIDAD",
-  serie: "CANTIDAD_DE_JUGADORES",
+  serie: ["CANTIDAD_DE_JUGADORES"],
   funcion: "",
   escala:"",
 };

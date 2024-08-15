@@ -615,7 +615,7 @@ export const state = {
 
   //  Validacion Graficos
 validarTipoGrafico(tipo) {
-  
+  appController.userSettings.settings.tipoGrafico = tipo
   if (tipo == appController.app.baseSettings.tipoGrafico) {
     window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
   } else {
@@ -624,6 +624,7 @@ validarTipoGrafico(tipo) {
 },
 
   validarEtiquetaGrafico(valorColumna) {
+    appController.userSettings.settings.etiqueta = valorColumna
     if (valorColumna == appController.app.baseSettings.etiqueta) {
       window.tabEl.handleChat(
         `La etiqueta seleccionada es correcta.`,
@@ -636,17 +637,8 @@ validarTipoGrafico(tipo) {
       );
     }
   },
-
-validarHuecoCirculo(valorHueco) {
-  
-  if (valorHueco == appController.app.baseSettings.huecoCirculo) {
-    window.tabEl.handleChat(`El porcentaje del círculo es correcto.`, "correct");
-  } else {
-    window.tabEl.handleChat(`El porcentaje del círculo NO es correcto.`, "error");
-  }
-},
 validarValorGrafico(valorGrafico) {
-  
+  appController.userSettings.settings.valorGrafico = valorGrafico
   if (valorGrafico == appController.app.baseSettings.valorGrafico) {
     window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
   } else {
@@ -655,6 +647,7 @@ validarValorGrafico(valorGrafico) {
 },
 
   validarHuecoCirculo(valorHueco) {
+    appController.userSettings.settings.huecoCirculo = valorHueco
     if (valorHueco == appController.app.baseSettings.huecoCirculo) {
       window.tabEl.handleChat(
         `El porcentaje del círculo es correcto.`,
@@ -666,6 +659,22 @@ validarValorGrafico(valorGrafico) {
         "error"
       );
     }
+  },
+
+  graficoTortaCompletado(tipoGrafico, valorColumna, valorGrafico, valorHueco){
+  if (tipoGrafico == appController.app.baseSettings.tipoGrafico && 
+    valorColumna == appController.app.baseSettings.etiqueta &&
+    valorGrafico == appController.app.baseSettings.valorGrafico &&
+    valorHueco == appController.app.baseSettings.huecoCirculo) {
+        window.tabEl.handleChat(
+          `El grafico esta completo`,
+          "correct");
+      } else {
+        window.tabEl.handleChat(
+          `Hay errores en tu grafico.`,
+          "error"
+        );
+      }
   },
 
 
@@ -686,6 +695,21 @@ validarSerieBarras(valorSerie) {
     window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
   }
 },
+
+/*graficoBarrasCompletado(valorEjeX, ){
+  if (valorEjeX == appController.app.baseSettings.ejeX && 
+    valorColumna == appController.app.baseSettings.etiqueta &&
+    {
+        window.tabEl.handleChat(
+          `El grafico esta completo`,
+          "correct");
+      } else {
+        window.tabEl.handleChat(
+          `Hay errores en tu grafico.`,
+          "error"
+        );
+      }
+  },*/
 /*
 validarFuncionBarras(valorFuncion) {
   
