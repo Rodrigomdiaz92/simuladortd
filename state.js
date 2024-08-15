@@ -623,20 +623,20 @@ validarTipoGrafico(tipo) {
   }
 },
 
-  validarEtiquetaGrafico(valorColumna) {
-    appController.userSettings.settings.etiqueta = valorColumna
-    if (valorColumna == appController.app.baseSettings.etiqueta) {
-      window.tabEl.handleChat(
-        `La etiqueta seleccionada es correcta.`,
-        "correct"
-      );
-    } else {
-      window.tabEl.handleChat(
-        `La etiqueta seleccionada NO es correcta.`,
-        "error"
-      );
-    }
-  },
+validarEtiquetaGrafico(valorColumna) {
+  appController.userSettings.settings.etiqueta = valorColumna
+  if (valorColumna == appController.app.baseSettings.etiqueta) {
+    window.tabEl.handleChat(
+      `La etiqueta seleccionada es correcta.`,
+      "correct"
+    );
+  } else {
+    window.tabEl.handleChat(
+      `La etiqueta seleccionada NO es correcta.`,
+      "error"
+    );
+  }
+},
 validarValorGrafico(valorGrafico) {
   appController.userSettings.settings.valorGrafico = valorGrafico
   if (valorGrafico == appController.app.baseSettings.valorGrafico) {
@@ -669,32 +669,35 @@ validarValorGrafico(valorGrafico) {
         window.tabEl.handleChat(
           `El grafico esta completo`,
           "correct");
+        appController.userSettings.settings.ejercicioCompletado = true;
+        pgEvent.postEvent("SUCCESS","Bien hecho","","");
       } else {
         window.tabEl.handleChat(
           `Hay errores en tu grafico.`,
           "error"
         );
+        pgEvent.postEvent("Failure","Mal hecho","","");
       }
   },
 
 
-validarEjeXBarras(valorEjeX) {
-  
-  if (valorEjeX == appController.app.baseSettings.ejeX) {
-    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-  } else {
-    window.tabEl.handleChat(`La columna seleccionada no es la pedida por el ejercicio.`, "error");
-  }
-},
+// validarEjeXBarras(valorEjeX) {
+//   appController.app.userSettings.settings.ejeX = valorEjeX;
+//   if (valorEjeX == appController.app.baseSettings.ejeX) {
+//     window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+//   } else {
+//     window.tabEl.handleChat(`La columna seleccionada no es la pedida por el ejercicio.`, "error");
+//   }
+// },
 
-validarSerieBarras(valorSerie) {
+// validarSerieBarras(valorSerie) {
   
-  if (valorSerie == appController.app.baseSettings.serie) {
-    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-  } else {
-    window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
-  }
-},
+//   if (valorSerie == appController.app.baseSettings.serie) {
+//     window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+//   } else {
+//     window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
+//   }
+// },
 
 //Validaciones de arrays y textos
 validarTexto(texto) { //Formatea strings con caracteres extraños (ñ,´)
@@ -730,6 +733,7 @@ for (let i = 0; i < array1.length; i++) {
 return true;
 },
 validarEjeXBarras(valorEjeX) {
+appController.app.userSettings.settings.ejeX = valorEjeX;
 let ingresado = this.quitarAcentosYCaracteresEspeciales(valorEjeX);
 let correcto = this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX);
 if(ingresado == correcto){
@@ -739,6 +743,7 @@ if(ingresado == correcto){
 }
 },
 validarSerieBarras(valorSerie) {
+appController.app.userSettings.settings.serie = valorSerie;
 let ingresado= this.ordenarAlfabeticamente(valorSerie);
 let correcto= this.ordenarAlfabeticamente(appController.app.baseSettings.serie);
 if (this.arraysIguales(ingresado,correcto)) {
