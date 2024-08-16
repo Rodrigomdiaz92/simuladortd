@@ -82,6 +82,7 @@ async function main() {
   appController.app = new App(dataTableController, BASE_SETTINGS);
   appController.app.startEvents();
   const USER_SETTINGS_DEFAULT = {
+    esEjemplo: true,
     intervalo: "A1:P4394",
     ejercicioCompletado: true,
     conversationHistory: [],
