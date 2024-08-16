@@ -73,6 +73,10 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad04/act.html"
         ),
+        actividadTD1_ejemplo: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/ejemplo/act.html"
+        ),
         actividadTD2_01: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad01/act.html"
@@ -84,6 +88,10 @@ export default defineConfig({
         actividadTD2_03: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad03/act.html"
+        ),
+        actividadTD2_ejemplo: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/ejemplo/act.html"
         ),
         actividadTD3_01a: path.resolve(
           __dirname,
