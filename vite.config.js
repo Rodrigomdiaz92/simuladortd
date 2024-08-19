@@ -101,6 +101,10 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01b/act.html"
         ),
+        actividadTD3_ej02a: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo02a/act.html"
+        ),
       },
     },
   },
