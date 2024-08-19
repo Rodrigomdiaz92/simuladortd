@@ -77,6 +77,9 @@ export class UserSettings {
 
     tab.render();
     tab.setupEventListeners();
+    if (this.settings.esEjemplo) {
+      location.reload();
+    }
   }
 
   init() {

@@ -23,10 +23,10 @@ const BASE_SETTINGS = {
   graphEnabled: false,
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["GÉNERO"],
-  columnaSeleccionadaTD: ["AÑO_PUBLICACIÓN"],
+  filaSeleccionadaTD: ["AÑO_PUBLICACIÓN"],
+  columnaSeleccionadaTD: ["FAMILIA_CONSOLA"],
   valorSeleccionadaTD: ["UNIDADES_VENDIDAS"],
-  funcionesSeleccionadasTD: ["mean"],
+  funcionesSeleccionadasTD: ["sum"],
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -86,9 +86,9 @@ async function main() {
     intervalo: "A1:P4394",
     ejercicioCompletado: true,
     conversationHistory: [],
-    filas: ["GÉNERO"],
-    columnas: ["AÑO_PUBLICACIÓN"],
-    valores: [{ UNIDADES_VENDIDAS: "mean" }],
+    filas: ["AÑO_PUBLICACIÓN"],
+    columnas: ["FAMILIA_CONSOLA"],
+    valores: [{ UNIDADES_VENDIDAS: "sum" }],
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)

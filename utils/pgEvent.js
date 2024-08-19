@@ -37,7 +37,6 @@ export class PgEvent {
     }
   }
 
-
   postToPg(dataObject) {
     dataObject.type = this.data.type;
     dataObject.id = this.data.id;
@@ -66,8 +65,6 @@ export class PgEvent {
   //   this.postToPg(dataObject);
   //  }
 
-
-  
   postToPg(dataObject) {
     dataObject.type = this.data.type;
     dataObject.id = this.data.id;
@@ -75,14 +72,18 @@ export class PgEvent {
   }
 
   postEvent(eventType, message, reasons, state) {
-
     if (eventType === "FAILURE") {
-      if (appController.userSettings.settings.ejercicioCompletado === undefined || appController.userSettings.settings.ejercicioCompletado === "" || appController.userSettings.settings.ejercicioCompletado === null) {
+      if (
+        appController.userSettings.settings.ejercicioCompletado === undefined ||
+        appController.userSettings.settings.ejercicioCompletado === "" ||
+        appController.userSettings.settings.ejercicioCompletado === null
+      ) {
         state = "";
-      } 
-        else if (appController.userSettings.settings.ejercicioCompletado === false) {
+      } else if (
+        appController.userSettings.settings.ejercicioCompletado === false
+      ) {
         state = "";
-      } else {      
+      } else {
         // Caso de que ejercicioCompletado sea true
         appController.userSettings.settings.ejercicioCompletado = false;
         state = appController.userSettings.settings;
@@ -93,8 +94,6 @@ export class PgEvent {
       state = appController.userSettings.settings;
     }
 
-    console.log("Estoy guardando el evento: ", eventType, " con el estado: ", state);
-
     const dataObject = {
       event: eventType,
       message: message,
@@ -104,8 +103,6 @@ export class PgEvent {
 
     this.postToPg(dataObject);
   }
-
-
 
   // onSuccessEvent(message) {
   //   // console.log("El mensaje on success es: ", message);
