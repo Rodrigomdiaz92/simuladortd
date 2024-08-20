@@ -54,6 +54,10 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad04b/act.html"
         ),
+        actividad05b: path.resolve(
+          __dirname,
+          "pages/actividades-data/hojas-de-calculo-01/recuentos-condicionales/actividad05b/act.html"
+        ),
         actividadTD1_01a: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad01a/act.html"
