@@ -44,7 +44,7 @@ export class DataTableView {
     // Crear filas de datos con enumeración
     this.crearFilasEnumeradas(rowsCache);
 
-    this.cantidadFilas = dataTable.data.length;
+    this.cantidadFilas = dataTable.data.length + 1;
     this.dataTable.data.unshift(this.dataTable.headers);
 
     // Limpiar contenedor y añadir la tabla

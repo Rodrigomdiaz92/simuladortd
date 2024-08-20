@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { crearHojaTabla } from "../utils/sheet";
+import { crearHojaGrafico, crearHojaTabla } from "../utils/sheet";
 import { llenarListas } from "../utils/config";
 import { pgEvent } from "../utils/pgEvent";
 import { appController } from "../appController";
@@ -87,6 +87,10 @@ export class UserSettings {
       intervalo,
       filas,
       columnas,
+      etiqueta,
+      tipoGrafico,
+      huecoCirculo,
+      valorGrafico,
       valores,
       conversationHistory,
       ejercicioCompletado,
@@ -94,6 +98,11 @@ export class UserSettings {
     } = this.settings;
     console.log("Los settings de pg son: ", this.settings);
 
+    state.seleccionGraficos.ejercicioCompletado = ejercicioCompletado;
+    state.seleccionGraficos.seleccion.etiqueta=etiqueta;
+    state.seleccionGraficos.seleccion.tipoGrafico=tipoGrafico;
+    state.seleccionGraficos.seleccion.huecoCirculo=huecoCirculo;
+    state.seleccionGraficos.seleccion.valorGrafico=valorGrafico;
     tab.conversationHistory = conversationHistory;
     state.seleccionTablaDinamica.ejercicioCompletado = ejercicioCompletado;
     state.seleccionTablaDinamica.filas = filas;
@@ -103,7 +112,11 @@ export class UserSettings {
     this.dataTableView.seleccion.selectedCellsExtremes = intervalo.split(":");
     this.dataTableView.seleccion.selectedCellsAsComplexRangeString = intervalo;
     this.dataTableView.getSelectedDataCollection();
-    crearHojaTabla();
+    if (appController.app.baseSettings.tipoGrafico) {
+      crearHojaGrafico(); 
+    } else {
+      crearHojaTabla();
+    }
     llenarListas(state.seleccionTablaDinamica);
     state.actualizarIntervaloYRenderizar();
     state.armarTD();

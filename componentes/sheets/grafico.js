@@ -132,6 +132,7 @@ customElements.define(
           }
           #ejeX {
             margin-top: 1.6%;
+            max-width: 40%;
           }
           #titulo-grafico-x{
             cursor: text;
@@ -344,8 +345,29 @@ customElements.define(
         state.validarTipoGrafico(tipoGrafico.value);
       });
 
+    // Boton confirm
+
       const controlConfirm = this.querySelector("#control-confirm");
-      controlConfirm.addEventListener("click", this.createChart.bind(this));
+
+      controlConfirm.addEventListener("click", () => {
+      console.log("Botón de confirmar clickeado");
+
+    // Crear el gráfico primero
+      this.createChart();
+
+    // Verificar que createChart haya creado el gráfico
+      console.log("Gráfico creado");
+
+    // Obtener los valores necesarios para la validación
+      const tipoGrafico = this.querySelector("#tipoGrafico").value;
+      const valorColumna = this.querySelector("#etiquetas-grafico").value;
+      const valorGrafico = this.querySelector("#valor-grafico").value;
+      const valorHueco = this.querySelector("#porcentaje-circulo").value;
+      const valorEjeX = this.querySelector("#ejeX").value;
+
+    // Llamar a la función de validación después de crear el gráfico
+      state.graficoTortaCompletado(tipoGrafico, valorColumna, valorGrafico, valorHueco);
+});
 
       const mostraSeries = this.querySelector("#dropdown-toggle");
       mostraSeries.addEventListener("click", this.toggleDropdown.bind(this));
@@ -375,34 +397,32 @@ customElements.define(
       selectEjex.addEventListener("change", () => {
         state.agregarEjeX(selectEjex.value);
       });
+
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
       selectEjex.addEventListener("change", () => {
         state.validarEjeXBarras(selectEjex.value);
       }); 
 
-      /*const selectSerie = this.querySelector("#serie");
-      selectSerie.addEventListener("change", () => {
-        state.agregarSerie(selectSerie.value);
-      });*/
-
-      //Validacion Series
-
-      const checkboxes = this.querySelectorAll('input[name="opciones"]:checked');
-      const opcionesSeleccionadas = [];
-      checkboxes.forEach((checkbox) => {
-        opcionesSeleccionadas.push(checkbox.value);
+      //Validacion Series barras
+      const selectedOptions = [];
+      const series = this.querySelector("#dropdown-content");
+      series.addEventListener("change", (event) => {
+        const value = state.quitarAcentosYCaracteresEspeciales(event.target.value);
+        console.log(value)
+            if (event.target.checked) {
+              // Agregar la opción al array si se selecciona
+              selectedOptions.push(value);
+            } else {
+              // Eliminar la opción del array si se deselecciona
+              const index = selectedOptions.indexOf(value);
+              if (index > -1) {
+                selectedOptions.splice(index, 1);
+              }
+            }
+            console.log(selectedOptions);
+            state.validarSerieBarras(selectedOptions)
       });
-/* Bug validacion series
-      checkboxes.addEventListener("change", this.updateOptions.bind(this));
-      checkboxes.addEventListener("change", () => {
-        state.validarSerieBarras(opcionesSeleccionadas);
-      });*/
       
-      //const selectSerie = this.querySelector("#serie");
-      //selectSerie.addEventListener("change", this.updateOptions.bind(this));
-      //selectSerie.addEventListener("change", () => {
-      //  state.validarSerieBarras(selectSerie.value);
-      //});
     }
 
     toggleMenu() {

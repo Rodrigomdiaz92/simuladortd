@@ -19,16 +19,16 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbxIFda25W6cvbM3RtDx4MxONwZTaDwk7L4sbhxwdQQJ_VQf68QGR11DNeQGDbHZz2KLnA/exec",
+    "https://script.google.com/macros/s/AKfycbwKb8ezOa_o-N-sh1eJ8LyyYdsmVAmu17nRbHnPRzOKe9OcbHKIFY7WIF1M8KaROd0NLw/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "torta",
   ejeX: "",
   serie: "",
-  etiqueta: "FAMILIA_CONSOLAS",
-  valorGrafico: "UNIDADES_VENDIDAS",
-  huecoCirculo: "0"
+  etiqueta: "Empanadas_Sabor_Elegido",
+  valorGrafico: "Cantidad",
+  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -101,7 +101,7 @@ async function main() {
     parsedJSONfromPG.data !== null &&
     parsedJSONfromPG.data !== undefined
   ) {
-    console.log("vengo de PG", parsedJSONfromPG.data);
+    //console.log("vengo de PG");
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
     appController.userSettings = new UserSettings(
