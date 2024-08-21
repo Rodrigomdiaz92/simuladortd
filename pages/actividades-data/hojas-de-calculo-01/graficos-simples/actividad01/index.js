@@ -28,7 +28,7 @@ const BASE_SETTINGS = {
   serie: "",
   etiqueta: "FAMILIA_CONSOLAS",
   valorGrafico: "UNIDADES_VENDIDAS",
-  huecoCirculo: ""
+  huecoCirculo: "0"
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -101,7 +101,7 @@ async function main() {
     parsedJSONfromPG.data !== null &&
     parsedJSONfromPG.data !== undefined
   ) {
-    //console.log("vengo de PG");
+    console.log("vengo de PG", parsedJSONfromPG.data);
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
     appController.userSettings = new UserSettings(

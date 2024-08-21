@@ -19,16 +19,16 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbyvZGQaimutASxneVIUK0l8hi7oBNf8qrEadJBEwOhQvBkLojZ-HxaLQE3-Z9rm3iOr/exec",
+    "https://script.google.com/macros/s/AKfycbwKb8ezOa_o-N-sh1eJ8LyyYdsmVAmu17nRbHnPRzOKe9OcbHKIFY7WIF1M8KaROd0NLw/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "AÑO_FABRICACIÓN",
-  serie: ["Diesel","Nafta"],
-  apilado: true, // sin caracteres especiales
-  funcion: " ",
-  escala:"1000", //Predeterminado
+  tipoGrafico: "torta",
+  ejeX: "",
+  serie: "",
+  etiqueta: "Empanadas_Sabor_Elegido",
+  valorGrafico: "Cantidad",
+  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();

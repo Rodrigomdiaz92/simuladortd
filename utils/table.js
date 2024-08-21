@@ -9,7 +9,7 @@ export function getComplexRangeString(
   const cols = table.rows[0].cells;
 
   const startRowLabel = startRowIndex === 0 ? "" : startRowIndex + 1;
-  const endRowLabel = endRowIndex === rows.length - 3 ? "" : endRowIndex + 1;
+  const endRowLabel = endRowIndex === rows.length - 1 ? "" : endRowIndex + 1;
 
   const startColLabel = String.fromCharCode(65 + startColIndex);
   const endColLabel = String.fromCharCode(65 + endColIndex);
