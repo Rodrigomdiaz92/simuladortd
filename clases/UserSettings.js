@@ -86,9 +86,10 @@ export class UserSettings {
       columnas,
       etiqueta,
       tipoGrafico,
-      ejex,//
-      serie,//
-      apilado,//
+      ejex,
+      serie,
+      apilado,
+      escala,
       huecoCirculo,
       valorGrafico,
       valores,
@@ -103,6 +104,7 @@ export class UserSettings {
     state.seleccionGraficos.seleccion.tipoGrafico=tipoGrafico;
     state.seleccionGraficos.seleccion.ejeX= ejex;
     state.seleccionGraficos.seleccion.serie=serie;
+    state.seleccionGraficos.seleccion.escala=escala;
     state.seleccionGraficos.seleccion.apilado=apilado;
     state.seleccionGraficos.seleccion.huecoCirculo=huecoCirculo;
     state.seleccionGraficos.seleccion.valorGrafico=valorGrafico;

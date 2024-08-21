@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../../../index.css" />
+    <link rel="stylesheet" href="../../../../../header.css" />
+    <link rel="stylesheet" href="../../../../../sheetsBar.css" />
+    <link rel="stylesheet" href="../../../../../variables.css" />
+    <script
+      src="https://kit.fontawesome.com/1b983b7a93.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./index.js"></script>
+
+    <!-- <script src="pages.js"></script> -->
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="sheets-bar__container">
+        <img
+          class="sheets-img"
+          src="../../../../../assets/logo tablas dinamicas dh.png"
+          alt=""
+        />
+        <div class="sheets-bar-content__container">
+          <h2 id="titulo-dataset">Titulo</h2>
+          <div class="options">
+            <button disabled>
+              <archivo-menu></archivo-menu>
+            </button>
+            <button disabled>
+              <p>Editar</p>
+            </button>
+            <button disabled>
+              <p>Ver</p>
+            </button>
+            <insert-menu></insert-menu>
+            <button disabled>
+              <p>Formato</p>
+            </button>
+            <button disabled>
+              <p>Herramientas</p>
+            </button>
+            <button disabled>
+              <p>Extensiones</p>
+            </button>
+            <button disabled>
+              <p>Ayuda</p>
+            </button>
+            <timer-menu></timer-menu>
+            <div id="loading-spinner"></div>
+          </div>
+          <div class="white-bar">
+            <input id="rango-celda" disabled />
+          </div>
+        </div>
+        <div id="menu-popup"></div>
+      </div>
+      <loader-el></loader-el>
+      <div class="sheets-container">
+        <sheet-el id="1">
+          <section class="table-section">
+            <div class="table-container">
+              <div class="table-wrapper" data-simplebar>
+                <table id="main-table">
+                  <thead class="table-head"></thead>
+                </table>
+              </div>
+            </div>
+          </section>
+        </sheet-el>
+      </div>
+      <tab-el> </tab-el>
+    </div>
+  </body>
+</html>

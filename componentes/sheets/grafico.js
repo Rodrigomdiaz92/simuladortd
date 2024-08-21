@@ -365,7 +365,7 @@ customElements.define(
             const valorColumna = this.querySelector("#etiquetas-grafico").value;
             const valorGrafico = this.querySelector("#valor-grafico").value;
             const valorHueco = this.querySelector("#porcentaje-circulo").value;
-            const valorEjeX = this.querySelector("#ejeX").value;
+            
             //Escala
       
           // Llamar a la función de validación después de crear el gráfico
@@ -380,15 +380,16 @@ customElements.define(
       
           // Obtener los valores necesarios para la validación
           const selectEjex = this.querySelector("#ejeX").value;
-          //selectedOptions
+          //selectedOptions ARRAY CON LAS SERIES
           const checkbox = this.querySelector('#graficoApilado');
           const isChecked = checkbox.checked;
-
-      
+          const escalaBarras = this.querySelector("#escala");      
           // Llamar a la función de validación después de crear el gráfico
             state.graficoBarrasCompletado(tipoGrafico, selectEjex, selectedOptions, isChecked);
 
-        } /*else if(){    //proximo grafico
+        } /*else if(HISTOGRAMA){    //proximo grafico
+
+        } else if(DISPERSION){    //proximo grafico
 
         }*/
       });
