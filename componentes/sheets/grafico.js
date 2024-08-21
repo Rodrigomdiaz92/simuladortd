@@ -60,7 +60,7 @@ customElements.define(
                   </div>
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
-                    <select class="graph-select" id="ejeX" disabled></select>                    
+                    <select class="graph-select" id="ejeX"></select>                    
                     <div class="dropdown-toggle" id="dropdown-toggle" >
                         Seleccionar Series
                     </div>
@@ -349,25 +349,49 @@ customElements.define(
 
       const controlConfirm = this.querySelector("#control-confirm");
 
+      //validacion de graficos   Torta y barras
       controlConfirm.addEventListener("click", () => {
-      console.log("Botón de confirmar clickeado");
+        const tipoGrafico = this.querySelector("#tipoGrafico").value;
 
-    // Crear el gráfico primero
-      this.createChart();
+        if(tipoGrafico == "torta"){
+          // Crear el gráfico primero
+          this.createChart();
 
-    // Verificar que createChart haya creado el gráfico
-      console.log("Gráfico creado");
+          // Verificar que createChart haya creado el gráfico
+            console.log("Gráfico creado");
+      
+          // Obtener los valores necesarios para la validación
 
-    // Obtener los valores necesarios para la validación
-      const tipoGrafico = this.querySelector("#tipoGrafico").value;
-      const valorColumna = this.querySelector("#etiquetas-grafico").value;
-      const valorGrafico = this.querySelector("#valor-grafico").value;
-      const valorHueco = this.querySelector("#porcentaje-circulo").value;
-      const valorEjeX = this.querySelector("#ejeX").value;
+            const valorColumna = this.querySelector("#etiquetas-grafico").value;
+            const valorGrafico = this.querySelector("#valor-grafico").value;
+            const valorHueco = this.querySelector("#porcentaje-circulo").value;
+            const valorEjeX = this.querySelector("#ejeX").value;
+            //Escala
+      
+          // Llamar a la función de validación después de crear el gráfico
+            state.graficoTortaCompletado(tipoGrafico, valorColumna, valorGrafico, valorHueco);
 
-    // Llamar a la función de validación después de crear el gráfico
-      state.graficoTortaCompletado(tipoGrafico, valorColumna, valorGrafico, valorHueco);
-});
+        }else if(tipoGrafico == "barras"){
+          // Crear el gráfico primero
+          this.createChart();
+
+          // Verificar que createChart haya creado el gráfico
+            console.log("Gráfico creado");
+      
+          // Obtener los valores necesarios para la validación
+          const selectEjex = this.querySelector("#ejeX").value;
+          //selectedOptions
+          const checkbox = this.querySelector('#graficoApilado');
+          const isChecked = checkbox.checked;
+
+      
+          // Llamar a la función de validación después de crear el gráfico
+            state.graficoBarrasCompletado(tipoGrafico, selectEjex, selectedOptions, isChecked);
+
+        } /*else if(){    //proximo grafico
+
+        }*/
+      });
 
       const mostraSeries = this.querySelector("#dropdown-toggle");
       mostraSeries.addEventListener("click", this.toggleDropdown.bind(this));
@@ -391,13 +415,9 @@ customElements.define(
       });
       
 
-      //const selectEjex = this.querySelector("#ejeX");
+      
 
       const selectEjex = this.querySelector("#ejeX");
-      selectEjex.addEventListener("change", () => {
-        state.agregarEjeX(selectEjex.value);
-      });
-
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
       selectEjex.addEventListener("change", () => {
         state.validarEjeXBarras(selectEjex.value);
@@ -422,6 +442,19 @@ customElements.define(
             console.log(selectedOptions);
             state.validarSerieBarras(selectedOptions)
       });
+
+      //apilado 
+      const checkbox = this.querySelector('#graficoApilado');
+      checkbox.addEventListener("change", () => {
+        state.validarApiladoBarras(checkbox.checked);
+      });
+
+      //Escala
+      const escalaBarras = this.querySelector("#escala");      
+      escalaBarras.addEventListener("change", () => {
+        state.validarEscalaBarras(escalaBarras.value);
+      }); 
+
       
     }
 
@@ -472,16 +505,17 @@ customElements.define(
         .join("");
       const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
       const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
-      /* const defaultOptionEjeX = `<option value="none" selected>Agregar Eje X</option>`;
-      const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi */
+      const defaultOptionEjeX = `<option value="none" selected> --- </option>`;
+      //const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi 
 
       const finalOptionsHTMLEtiqueta = defaultOptionEtiqueta + optionsHTML;
       const finalOptionsHTMLValorGrafico = defaultOptionValorGrafico + optionsHTML;
-      /*const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
-      const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi */
+      const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
+      //const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi 
 
       this.querySelector("#etiquetas-grafico").innerHTML = finalOptionsHTMLEtiqueta;
-      this.querySelector("#ejeX").innerHTML = optionsHTML;
+      //this.querySelector("#ejeX").innerHTML = optionsHTML;
+      this.querySelector("#ejeX").innerHTML = finalOptionsHTMLEjeX;
       /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */ 
       this.querySelector("#valor-grafico").innerHTML = finalOptionsHTMLValorGrafico; // Agrega esta línea
 

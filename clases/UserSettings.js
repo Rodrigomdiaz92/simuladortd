@@ -86,6 +86,9 @@ export class UserSettings {
       columnas,
       etiqueta,
       tipoGrafico,
+      ejex,//
+      serie,//
+      apilado,//
       huecoCirculo,
       valorGrafico,
       valores,
@@ -98,6 +101,9 @@ export class UserSettings {
     state.seleccionGraficos.ejercicioCompletado = ejercicioCompletado;
     state.seleccionGraficos.seleccion.etiqueta=etiqueta;
     state.seleccionGraficos.seleccion.tipoGrafico=tipoGrafico;
+    state.seleccionGraficos.seleccion.ejeX= ejex;
+    state.seleccionGraficos.seleccion.serie=serie;
+    state.seleccionGraficos.seleccion.apilado=apilado;
     state.seleccionGraficos.seleccion.huecoCirculo=huecoCirculo;
     state.seleccionGraficos.seleccion.valorGrafico=valorGrafico;
     tab.conversationHistory = conversationHistory;

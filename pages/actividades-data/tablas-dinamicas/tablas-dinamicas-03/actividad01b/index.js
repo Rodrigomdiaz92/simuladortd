@@ -24,10 +24,11 @@ const BASE_SETTINGS = {
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: " ",
+  ejeX: "AÑO_FABRICACIÓN",
   serie: ["Diesel","Nafta"],
+  apilado: true, // sin caracteres especiales
   funcion: " ",
-  escala:100,
+  escala:"1000", //Predeterminado
 };
 let df;
 window.onload = pgEvent.getValues();

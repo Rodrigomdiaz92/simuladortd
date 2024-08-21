@@ -23,6 +23,9 @@ export const state = {
       etiqueta: "",
       huecoCirculo: "",
       valorGrafico: "",
+      serie:"",
+      apilado:"",
+      escala:"",
     },
     intervalo: {},
     datos: [],
@@ -681,23 +684,7 @@ validarValorGrafico(valorGrafico) {
   },
 
 
-// validarEjeXBarras(valorEjeX) {
-//   appController.app.userSettings.settings.ejeX = valorEjeX;
-//   if (valorEjeX == appController.app.baseSettings.ejeX) {
-//     window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-//   } else {
-//     window.tabEl.handleChat(`La columna seleccionada no es la pedida por el ejercicio.`, "error");
-//   }
-// },
 
-// validarSerieBarras(valorSerie) {
-  
-//   if (valorSerie == appController.app.baseSettings.serie) {
-//     window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-//   } else {
-//     window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
-//   }
-// },
 
 //Validaciones de arrays y textos
 validarTexto(texto) { //Formatea strings con caracteres extraños (ñ,´)
@@ -712,28 +699,30 @@ return array.map(texto => texto.replace(regex, ''));
 ordenarAlfabeticamente(array) { //ordena alfabeticamente un array
 return array.sort((a, b) => a.localeCompare(b));
 },
+
 quitarAcentosYCaracteresEspeciales(texto) {
 // Normaliza el texto a forma descompuesta
 const textoNormalizado = texto.normalize('NFD');
 // Elimina los caracteres diacríticos y otros caracteres especiales
 return textoNormalizado.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z\s]/g, '');
 },
+
+
 arraysIguales(array1, array2) {
-// Primero, verifica si ambos arrays tienen la misma longitud
 if (array1.length !== array2.length) {
     return false;
-}
-// Luego, compara los elementos en cada índice
+  }
 for (let i = 0; i < array1.length; i++) {
     if (array1[i] !== array2[i]) {
         return false;
     }
 }
-// Si todos los elementos son iguales, los arrays son iguales
 return true;
 },
+
+
 validarEjeXBarras(valorEjeX) {
-appController.app.userSettings.settings.ejeX = valorEjeX;
+appController.userSettings.settings.ejeX = valorEjeX;
 let ingresado = this.quitarAcentosYCaracteresEspeciales(valorEjeX);
 let correcto = this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX);
 if(ingresado == correcto){
@@ -742,8 +731,10 @@ if(ingresado == correcto){
   window.tabEl.handleChat(`La columna seleccionada "${valorEjeX}" no es la pedida para eje X.`, "error");
 }
 },
+
+
 validarSerieBarras(valorSerie) {
-appController.app.userSettings.settings.serie = valorSerie;
+appController.userSettings.settings.serie = valorSerie;
 let ingresado= this.ordenarAlfabeticamente(valorSerie);
 let correcto= this.ordenarAlfabeticamente(appController.app.baseSettings.serie);
 if (this.arraysIguales(ingresado,correcto)) {
@@ -752,4 +743,50 @@ if (this.arraysIguales(ingresado,correcto)) {
   window.tabEl.handleChat(`La Serie seleccionada no es la pedida por el ejercicio.`, "error");
 }
 },
+
+validarEscalaBarras(escala){
+  appController.userSettings.settings.escala = escala;
+
+if (escala == appController.app.baseSettings.escala ) {
+  window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+} else {
+  window.tabEl.handleChat(`La escala seleccionada no es la pedida por la consigna.`, "error");
+}
+
+},
+
+//Apilado
+
+validarApiladoBarras(checkApilado){
+  appController.userSettings.settings.apilado = checkApilado;
+  let ingresado= checkApilado;
+  let correcto= appController.app.baseSettings.apilado;
+  if (ingresado == correcto) {
+    window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
+  } else {
+    window.tabEl.handleChat(`El gráfico tiene que ser apilado.`, "error");
+  }
+  },
+
+  graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento){
+    let serieIngresada= series;
+    let serieCorrecta = this.ordenarAlfabeticamente(appController.app.baseSettings.serie)
+  if (tipoGrafico == appController.app.baseSettings.tipoGrafico && 
+    this.quitarAcentosYCaracteresEspeciales(ejeX) == this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX) &&
+    this.arraysIguales(serieIngresada,serieCorrecta) &&
+    apilamiento == appController.app.baseSettings.apilado) {
+        window.tabEl.handleChat(
+          `El grafico esta completo`,
+          "correct");
+        appController.userSettings.settings.ejercicioCompletado = true;
+        pgEvent.postEvent("SUCCESS","Bien hecho","","");
+      } else {
+        window.tabEl.handleChat(
+          `Hay errores en tu grafico.`,
+          "error"
+        );
+        pgEvent.postEvent("Failure","Mal hecho","","");
+      }
+  },
+
 };
