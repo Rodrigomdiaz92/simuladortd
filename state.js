@@ -1,5 +1,6 @@
 import { appController } from "./appController";
 import { pgEvent } from "./utils/pgEvent";
+import { quitarAcentosYCaracteresEspeciales } from "./utils/text";
 //
 export const state = {
   firstChangeMade: false,
@@ -26,6 +27,7 @@ export const state = {
       serie:"",
       apilado:"",
       escala:"",
+      ejecutado:false,
     },
     intervalo: {},
     datos: [],
@@ -700,12 +702,6 @@ ordenarAlfabeticamente(array) { //ordena alfabeticamente un array
 return array.sort((a, b) => a.localeCompare(b));
 },
 
-quitarAcentosYCaracteresEspeciales(texto) {
-// Normaliza el texto a forma descompuesta
-const textoNormalizado = texto.normalize('NFD');
-// Elimina los caracteres diacríticos y otros caracteres especiales
-return textoNormalizado.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z\s]/g, '');
-},
 
 
 arraysIguales(array1, array2) {
@@ -723,8 +719,8 @@ return true;
 
 validarEjeXBarras(valorEjeX) {
 appController.userSettings.settings.ejeX = valorEjeX;
-let ingresado = this.quitarAcentosYCaracteresEspeciales(valorEjeX);
-let correcto = this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX);
+let ingresado = quitarAcentosYCaracteresEspeciales(valorEjeX);
+let correcto = quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX);
 if(ingresado == correcto){
   window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
 } else {
@@ -772,7 +768,7 @@ validarApiladoBarras(checkApilado){
     let serieIngresada= series;
     let serieCorrecta = this.ordenarAlfabeticamente(appController.app.baseSettings.serie)
   if (tipoGrafico == appController.app.baseSettings.tipoGrafico && 
-    this.quitarAcentosYCaracteresEspeciales(ejeX) == this.quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX) &&
+    quitarAcentosYCaracteresEspeciales(ejeX) == quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX) &&
     this.arraysIguales(serieIngresada,serieCorrecta) &&
     apilamiento == appController.app.baseSettings.apilado) {
         window.tabEl.handleChat(

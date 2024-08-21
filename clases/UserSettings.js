@@ -1,6 +1,6 @@
 import { state } from "../state";
 import { crearHojaGrafico, crearHojaTabla } from "../utils/sheet";
-import { llenarListas } from "../utils/config";
+import { llenarListas,completarHojaGraficos } from "../utils/config";
 import { pgEvent } from "../utils/pgEvent";
 import { appController } from "../appController";
 const tab = window.tabEl;
@@ -122,11 +122,12 @@ export class UserSettings {
     this.dataTableView.getSelectedDataCollection();
     if (appController.app.baseSettings.tipoGrafico) {
       crearHojaGrafico(); 
+      completarHojaGraficos(state.seleccionGraficos.seleccion)
     } else {
       crearHojaTabla();
+      llenarListas(state.seleccionTablaDinamica);
+      state.actualizarIntervaloYRenderizar();
+      state.armarTD();
     }
-    llenarListas(state.seleccionTablaDinamica);
-    state.actualizarIntervaloYRenderizar();
-    state.armarTD();
   }
 }

@@ -1,5 +1,6 @@
 import Chart from "chart.js/auto";
 import { state } from "../../state";
+import { quitarAcentosYCaracteresEspeciales } from "@utils/text";
 
 customElements.define(
   "grafico-el",
@@ -425,22 +426,22 @@ customElements.define(
       }); 
 
       //Validacion Series barras
-      const selectedOptions = [];
+      this.selectedOptions = state.seleccionGraficos.seleccion.serie || [];
       const selectOptions = [];
       const series = this.querySelector("#dropdown-content");
       series.addEventListener("change", (event) => {
-        const value = state.quitarAcentosYCaracteresEspeciales(event.target.value);
+        const value = quitarAcentosYCaracteresEspeciales(event.target.value);
         const value1 = event.target.value;
         console.log(value)
             if (event.target.checked) {
               // Agregar la opción al array si se selecciona
-              selectedOptions.push(value);
+              this.selectedOptions.push(value);
               selectOptions.push(value1);
             } else {
               // Eliminar la opción del array si se deselecciona
-              const index = selectedOptions.indexOf(value);
+              const index = this.selectedOptions.indexOf(value);
               if (index > -1) {
-                selectedOptions.splice(index, 1);
+                this.selectedOptions.splice(index, 1);
               }
               const index1 = selectOptions.indexOf(value1);
               if (index1 > -1) {
@@ -448,8 +449,8 @@ customElements.define(
               }
             }
             
-            console.log(selectedOptions);
-            state.validarSerieBarras(selectedOptions,selectOptions)
+            console.log(this.selectedOptions);
+            state.validarSerieBarras(this.selectedOptions,selectOptions)
       });
 
       //apilado 
@@ -467,7 +468,7 @@ customElements.define(
       
     }
 
-    toggleMenu() {
+      toggleMenu() {
       const insertData = this.querySelector(".insert-data-grafic");
       insertData.classList.toggle("active");
       const botonMostrar = this.querySelector("#menu-mostrar");
@@ -476,7 +477,7 @@ customElements.define(
     }
 
     toggleDropdown() {
-      const dropdownContent = this.querySelector('#dropdown-content');
+      const dropdownContent = this.querySelector('#<dropdown-content>');
       dropdownContent.classList.toggle('show');
   }
 
@@ -549,7 +550,7 @@ customElements.define(
       const contenedorGrafico = this.querySelector("#plot_div");
       const context = contenedorGrafico.getContext("2d");
       const data = state.seleccion.datos;
-      //console.log(data)
+      console.log(data)
 
       const contenedorPresentacion = this.querySelector(
         "#presentacion-grafico"
