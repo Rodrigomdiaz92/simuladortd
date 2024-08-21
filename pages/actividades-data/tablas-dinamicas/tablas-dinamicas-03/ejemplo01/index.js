@@ -1,32 +1,37 @@
-import { DataTable } from "@clases/DataTable";
-import { DataTableView } from "@clases/DataTableView";
-import { DataTableController } from "@clases/DataTableController";
-import { pgEvent } from "@utils/pgEvent"; // Importar PgEvent
-import "@componentes/menu/menu";
-import "@componentes/menu/archivo-menu";
-import "@componentes/menu/reloj";
-import "@componentes/loader";
-import "@componentes/sheets-tab/sheet";
-import "@componentes/sheets-tab/sheet-button";
-import "@componentes/sheets-tab/tab";
-import "@componentes/sheets/grafico";
-import "@componentes/sheets/tabladinamica/tabladinamica";
-import "@componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "@componentes/sheets/tabladinamica/data-controls";
-import { App } from "@clases/App";
-import { UserSettings } from "@clases/UserSettings";
+import { DataTable } from "../../../../../clases/DataTable";
+import { DataTableView } from "../../../../../clases/DataTableView";
+import { DataTableController } from "../../../../../clases/DataTableController";
+import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
+import "../../../../../componentes/menu/menu";
+import "../../../../../componentes/menu/archivo-menu";
+import "../../../../../componentes/menu/reloj";
+import "../../../../../componentes/loader";
+import "../../../../../componentes/sheets-tab/sheet";
+import "../../../../../componentes/sheets-tab/sheet-button";
+import "../../../../../componentes/sheets-tab/tab";
+import "../../../../../componentes/sheets/grafico";
+import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
+import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "../../../../../componentes/sheets/tabladinamica/data-controls";
+import { App } from "../../../../../clases/App";
+import { UserSettings } from "../../../../../clases/UserSettings";
 import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/a/macros/digitalhouse.com/s/AKfycbwe1IgihqLHBLRsriFebe2c6tR4tetWU15rTneVrEsBADPfOoeB694l3oQ5nZGdsIA/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
+  "https://script.google.com/macros/s/AKfycbzghWF7-234VjY1hNsa7LTqBWd9lFjwqhjZJho1Ty2alVzxget3RRECui-jUFi-2hmK/exec",
+  graphEnabled: true,
+  pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["COMBUSTIBLE"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["ID_AUTO"],
-  funcionesSeleccionadasTD: ["count"],
+  tipoGrafico: "torta",
+  ejeX: "",
+  etiqueta:"GÉNERO",
+  valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
+  huecoCirculo:"0",
+  serie: [""],
+  apilado: true, // sin caracteres especiales
+  funcion: " ",
+  escala:"", //Predeterminado
 };
 let df;
 window.onload = pgEvent.getValues();
