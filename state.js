@@ -733,8 +733,8 @@ if(ingresado == correcto){
 },
 
 
-validarSerieBarras(valorSerie) {
-appController.userSettings.settings.serie = valorSerie;
+validarSerieBarras(valorSerie, series) {
+appController.userSettings.settings.serie = series;
 let ingresado= this.ordenarAlfabeticamente(valorSerie);
 let correcto= this.ordenarAlfabeticamente(appController.app.baseSettings.serie);
 if (this.arraysIguales(ingresado,correcto)) {

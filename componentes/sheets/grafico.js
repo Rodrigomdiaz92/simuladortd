@@ -426,22 +426,30 @@ customElements.define(
 
       //Validacion Series barras
       const selectedOptions = [];
+      const selectOptions = [];
       const series = this.querySelector("#dropdown-content");
       series.addEventListener("change", (event) => {
         const value = state.quitarAcentosYCaracteresEspeciales(event.target.value);
+        const value1 = event.target.value;
         console.log(value)
             if (event.target.checked) {
               // Agregar la opción al array si se selecciona
               selectedOptions.push(value);
+              selectOptions.push(value1);
             } else {
               // Eliminar la opción del array si se deselecciona
               const index = selectedOptions.indexOf(value);
               if (index > -1) {
                 selectedOptions.splice(index, 1);
               }
+              const index1 = selectOptions.indexOf(value1);
+              if (index1 > -1) {
+                selectOptions.splice(index1, 1);
+              }
             }
+            
             console.log(selectedOptions);
-            state.validarSerieBarras(selectedOptions)
+            state.validarSerieBarras(selectedOptions,selectOptions)
       });
 
       //apilado 
