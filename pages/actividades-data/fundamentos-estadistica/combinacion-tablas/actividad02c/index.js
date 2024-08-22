@@ -19,14 +19,16 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/a/macros/digitalhouse.com/s/AKfycbwe1IgihqLHBLRsriFebe2c6tR4tetWU15rTneVrEsBADPfOoeB694l3oQ5nZGdsIA/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
-  selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["COMBUSTIBLE"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["ID_AUTO"],
-  funcionesSeleccionadasTD: ["count"],
+    "https://script.google.com/macros/s/AKfycbzDrXPDlxx9wYO_qUbRCq2TVTGVD-gK50bI3YICzyzAA7UMUx0z6J9wNjjFmtqOnTAoWQ/exec",
+    graphEnabled: true,
+    pivotEnabled: false,
+    selectionRequirements: { minRows: 3, minCols: 2 },
+    tipoGrafico: "torta",
+    ejeX: "",
+    serie: "",
+    etiqueta: "¿RECIBE_BECA?",
+    valorGrafico: "Conteo_de_MEDALLISTA_ORO",
+    huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();
