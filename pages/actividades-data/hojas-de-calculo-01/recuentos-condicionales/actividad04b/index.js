@@ -23,11 +23,12 @@ const BASE_SETTINGS = {
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "torta",
-  ejeX: "",
-  serie: "",
-  etiqueta: "Marcas",
-  valorGrafico: "Suma_precio_por_marca",
+  tipoGrafico: "barras",
+  ejeX: "Marcas",
+  serie: ["Promediopreciopormarca"],
+  etiqueta: "",
+  apilado: false,
+  valorGrafico: "",
   huecoCirculo: ""
 };
 let df;

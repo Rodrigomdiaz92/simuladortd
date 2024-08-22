@@ -105,10 +105,43 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01b/act.html"
         ),
+        actividadTD3_ej01: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo01/act.html"
+        ),
         actividadTD3_ej02a: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo02a/act.html"
         ),
+        actividadTD3_ej02b: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo02b/act.html"
+        ),
+        actividadFE_01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad01b/act.html"
+        ),
+        actividadFE_01c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad01c/act.html"
+        ),
+        actividadFE_02b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad02b/act.html"
+        ),
+        actividadFE_02c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad02c/act.html"
+        ),
+        actividadFE_D01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/desafio01b/act.html"
+        ),
+        actividadFE_D01c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/desafio01c/act.html"
+        ),
+        
       },
     },
   },
