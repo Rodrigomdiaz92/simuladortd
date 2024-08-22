@@ -92,6 +92,18 @@ async function main() {
     columnas: [],
     valores: [],
     conversationHistory: [],
+    esEjemplo: true,
+    intervalo: "A1:E5",
+    ejercicioCompletado: true,
+    tipoGrafico: "barras",
+    ejeX: "AÑO_PUBLICACIÓN",
+    etiqueta:"",
+    valorGrafico:"",
+    huecoCirculo:"",
+    serie: ["Nintendo","PC (Computadora)","PlayStation","XBox (Microsoft)"],
+    apilado: false, // sin caracteres especiales
+    funcion: " ",
+    escala:"1000",
   };
   const parsedJSONfromPG = validateJson(informacion)
     ? JSON.parse(informacion)
@@ -120,7 +132,7 @@ async function main() {
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
     // Al comentar la siguiente línea, se evita que se inicialice con los valores por defecto en la tabla dinámica
-    // appController.userSettings.init();
+     appController.userSettings.init();
   }
 }
 main();

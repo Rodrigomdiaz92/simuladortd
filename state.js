@@ -738,7 +738,7 @@ export const state = {
     if (ingresado == correcto) {
       window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
     } else {
-      window.tabEl.handleChat(`El gráfico tiene que ser apilado.`, "error");
+      window.tabEl.handleChat(`Revisa si tu grafico debe ser apilado o no.`, "error");
     }
   },
 
