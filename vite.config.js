@@ -1,7 +1,6 @@
 // vite.config.js
 import { defineConfig } from "vite";
 import path from "path";
-console.log(path.resolve(__dirname, "clases"));
 export default defineConfig({
   base: "/",
   server: {
@@ -78,6 +77,10 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/actividad04/act.html"
         ),
+        actividadTD1_ejemplo: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-01/ejemplo/act.html"
+        ),
         actividadTD2_01: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad01/act.html"
@@ -90,6 +93,10 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/actividad03/act.html"
         ),
+        actividadTD2_ejemplo: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-02/ejemplo/act.html"
+        ),
         actividadTD3_01a: path.resolve(
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01a/act.html"
@@ -98,6 +105,43 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/actividad01b/act.html"
         ),
+        actividadTD3_ej01: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo01/act.html"
+        ),
+        actividadTD3_ej02a: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo02a/act.html"
+        ),
+        actividadTD3_ej02b: path.resolve(
+          __dirname,
+          "pages/actividades-data/tablas-dinamicas/tablas-dinamicas-03/ejemplo02b/act.html"
+        ),
+        actividadFE_01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad01b/act.html"
+        ),
+        actividadFE_01c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad01c/act.html"
+        ),
+        actividadFE_02b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad02b/act.html"
+        ),
+        actividadFE_02c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/actividad02c/act.html"
+        ),
+        actividadFE_D01b: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/desafio01b/act.html"
+        ),
+        actividadFE_D01c: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/desafio01c/act.html"
+        ),
+        
       },
     },
   },

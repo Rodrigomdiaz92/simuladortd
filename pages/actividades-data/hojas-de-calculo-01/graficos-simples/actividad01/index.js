@@ -28,7 +28,7 @@ const BASE_SETTINGS = {
   serie: "",
   etiqueta: "FAMILIA_CONSOLAS",
   valorGrafico: "UNIDADES_VENDIDAS",
-  huecoCirculo: "0"
+  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();
