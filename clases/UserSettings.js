@@ -1,6 +1,6 @@
 import { state } from "../state";
 import { crearHojaGrafico, crearHojaTabla } from "../utils/sheet";
-import { llenarListas } from "../utils/config";
+import { llenarListas, completarHojaGraficos } from "../utils/config";
 import { pgEvent } from "../utils/pgEvent";
 import { appController } from "../appController";
 const tab = window.tabEl;
@@ -89,7 +89,7 @@ export class UserSettings {
       columnas,
       etiqueta,
       tipoGrafico,
-      ejex,
+      ejeX,
       serie,
       apilado,
       escala,
@@ -99,18 +99,26 @@ export class UserSettings {
       conversationHistory,
       ejercicioCompletado,
       firstChangeMade,
+      tituloEjeX,
+      tituloEjeY,
+      tituloGrafico,
+      ejecutado,
     } = this.settings;
     console.log("Los settings de pg son: ", this.settings);
 
     state.seleccionGraficos.ejercicioCompletado = ejercicioCompletado;
-    state.seleccionGraficos.seleccion.etiqueta=etiqueta;
-    state.seleccionGraficos.seleccion.tipoGrafico=tipoGrafico;
-    state.seleccionGraficos.seleccion.ejeX= ejex;
-    state.seleccionGraficos.seleccion.serie=serie;
-    state.seleccionGraficos.seleccion.escala=escala;
-    state.seleccionGraficos.seleccion.apilado=apilado;
-    state.seleccionGraficos.seleccion.huecoCirculo=huecoCirculo;
-    state.seleccionGraficos.seleccion.valorGrafico=valorGrafico;
+    state.seleccionGraficos.seleccion.etiqueta = etiqueta;
+    state.seleccionGraficos.seleccion.tipoGrafico = tipoGrafico;
+    state.seleccionGraficos.seleccion.ejeX = ejeX;
+    state.seleccionGraficos.seleccion.serie = serie;
+    state.seleccionGraficos.seleccion.escala = escala;
+    state.seleccionGraficos.seleccion.apilado = apilado;
+    state.seleccionGraficos.seleccion.huecoCirculo = huecoCirculo;
+    state.seleccionGraficos.seleccion.tituloEjeX = tituloEjeX;
+    state.seleccionGraficos.seleccion.tituloEjeY = tituloEjeY;
+    state.seleccionGraficos.seleccion.tituloGrafico = tituloGrafico;
+    state.seleccionGraficos.seleccion.ejecutado = ejecutado;
+    state.seleccionGraficos.seleccion.valorGrafico = valorGrafico;
     tab.conversationHistory = conversationHistory;
     state.seleccionTablaDinamica.ejercicioCompletado = ejercicioCompletado;
     state.seleccionTablaDinamica.filas = filas;
@@ -121,12 +129,13 @@ export class UserSettings {
     this.dataTableView.seleccion.selectedCellsAsComplexRangeString = intervalo;
     this.dataTableView.getSelectedDataCollection();
     if (appController.app.baseSettings.tipoGrafico) {
-      crearHojaGrafico(); 
+      crearHojaGrafico();
+      completarHojaGraficos(state.seleccionGraficos.seleccion);
     } else {
       crearHojaTabla();
+      llenarListas(state.seleccionTablaDinamica);
+      state.actualizarIntervaloYRenderizar();
+      state.armarTD();
     }
-    llenarListas(state.seleccionTablaDinamica);
-    state.actualizarIntervaloYRenderizar();
-    state.armarTD();
   }
 }

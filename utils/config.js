@@ -59,3 +59,28 @@ function eliminarElemento(item) {
   item.parentNode.removeChild(item); // Eliminar el elemento de la lista
   state.armarTD();
 }
+export function completarHojaGraficos(seleccion) {
+  const graficoEl = document.querySelector("grafico-el");
+  graficoEl.querySelector("#tipoGrafico").value = seleccion.tipoGrafico;
+  graficoEl.updateOptions();
+  graficoEl.querySelector("#etiquetas-grafico").value = seleccion.etiqueta;
+  graficoEl.querySelector("#porcentaje-circulo").value = seleccion.huecoCirculo;
+  graficoEl.querySelector("#valor-grafico").value = seleccion.valorGrafico;
+  graficoEl.querySelector("#ejeX").value = seleccion.ejeX;
+  graficoEl.querySelector("#graficoApilado").checked = seleccion.apilado;
+  graficoEl.querySelector("#escala").value = seleccion.escala;
+  graficoEl.querySelector("#titulo-grafico").value = seleccion.tituloGrafico;
+  graficoEl.querySelector("#titulo-grafico-x").value = seleccion.tituloEjeX;
+  graficoEl.querySelector("#titulo-grafico-y").value = seleccion.tituloEjeY;
+  const dropdownColumnas = graficoEl
+    .querySelector("#dropdown-content")
+    .querySelectorAll("input");
+  dropdownColumnas.forEach((input) => {
+    if (seleccion.serie.includes(input.id)) {
+      input.checked = true;
+    }
+  });
+  if (seleccion.ejecutado) {
+    graficoEl.createChart();
+  }
+}

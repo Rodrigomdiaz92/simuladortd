@@ -410,6 +410,8 @@ customElements.define(
        .controls-container.tabla-dinamica{
         margin:0 15px;
         padding-top:15px;
+        overflow: auto;
+
        }
       #menu-editar{
         border-top-left-radius:10%;
