@@ -1,35 +1,32 @@
-import { DataTable } from "../../../../../clases/DataTable";
-import { DataTableView } from "../../../../../clases/DataTableView";
-import { DataTableController } from "../../../../../clases/DataTableController";
-import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
-import "../../../../../componentes/menu/menu";
-import "../../../../../componentes/menu/archivo-menu";
-import "../../../../../componentes/menu/reloj";
-import "../../../../../componentes/loader";
-import "../../../../../componentes/sheets-tab/sheet";
-import "../../../../../componentes/sheets-tab/sheet-button";
-import "../../../../../componentes/sheets-tab/tab";
-import "../../../../../componentes/sheets/grafico";
-import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../../../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../../../../clases/App";
-import { UserSettings } from "../../../../../clases/UserSettings";
+import { DataTable } from "@clases/DataTable";
+import { DataTableView } from "@clases/DataTableView";
+import { DataTableController } from "@clases/DataTableController";
+import { pgEvent } from "@utils/pgEvent"; // Importar PgEvent
+import "@componentes/menu/menu";
+import "@componentes/menu/archivo-menu";
+import "@componentes/menu/reloj";
+import "@componentes/loader";
+import "@componentes/sheets-tab/sheet";
+import "@componentes/sheets-tab/sheet-button";
+import "@componentes/sheets-tab/tab";
+import "@componentes/sheets/grafico";
+import "@componentes/sheets/tabladinamica/tabladinamica";
+import "@componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "@componentes/sheets/tabladinamica/data-controls";
+import { App } from "@clases/App";
+import { UserSettings } from "@clases/UserSettings";
 import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbys35qsxqtK-XZZZMhrnoI1bL1Wj1eNY-6x-Wh9S5W4v6tgYU6I8dOduLmG3OjwUxEADA/exec",
-  graphEnabled: true,
-  pivotEnabled: false,
+    "https://script.google.com/a/macros/digitalhouse.com/s/AKfycbwe1IgihqLHBLRsriFebe2c6tR4tetWU15rTneVrEsBADPfOoeB694l3oQ5nZGdsIA/exec",
+  graphEnabled: false,
+  pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "Marcas",
-  serie: ["Promediopreciopormarca"],
-  etiqueta: "",
-  apilado: false,
-  valorGrafico: "",
-  huecoCirculo: ""
+  filaSeleccionadaTD: ["COMBUSTIBLE"],
+  columnaSeleccionadaTD: [],
+  valorSeleccionadaTD: ["ID_AUTO"],
+  funcionesSeleccionadasTD: ["count"],
 };
 let df;
 window.onload = pgEvent.getValues();

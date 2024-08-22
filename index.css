@@ -358,14 +358,16 @@ tr .celda-encabezado-filas {
   flex-direction: column;
   gap: 20px;
   width: 80%;
+  height: 100%;
+  padding-bottom: 10%;
   margin: 2% auto;
 }
-#controles-grafico{
-  padding:10px 1px 40px;
-  padding-bottom:80px;
+#controles-grafico {
+  padding: 10px 1px 40px;
+  padding-bottom: 80px;
   overflow: auto;
   height: 560px;
-  margin-left:-5%;
+  margin-left: -5%;
   width: 100%;
   margin: 15% auto;
   margin-top: 0;

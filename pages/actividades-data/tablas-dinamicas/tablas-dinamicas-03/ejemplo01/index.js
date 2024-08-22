@@ -19,17 +19,19 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbys35qsxqtK-XZZZMhrnoI1bL1Wj1eNY-6x-Wh9S5W4v6tgYU6I8dOduLmG3OjwUxEADA/exec",
+  "https://script.google.com/macros/s/AKfycbzghWF7-234VjY1hNsa7LTqBWd9lFjwqhjZJho1Ty2alVzxget3RRECui-jUFi-2hmK/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
-  ejeX: "Marcas",
-  serie: ["Promediopreciopormarca"],
-  etiqueta: "",
-  apilado: false,
-  valorGrafico: "",
-  huecoCirculo: ""
+  tipoGrafico: "torta",
+  ejeX: "",
+  etiqueta:"GÉNERO",
+  valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
+  huecoCirculo:"0",
+  serie: [""],
+  apilado: true, // sin caracteres especiales
+  funcion: " ",
+  escala:"", //Predeterminado
 };
 let df;
 window.onload = pgEvent.getValues();

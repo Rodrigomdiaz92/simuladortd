@@ -19,17 +19,19 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbys35qsxqtK-XZZZMhrnoI1bL1Wj1eNY-6x-Wh9S5W4v6tgYU6I8dOduLmG3OjwUxEADA/exec",
+  "https://script.google.com/macros/s/AKfycbxtfdG5loZX5eTdPeqhIj3l104bbzutZFRP0zRAcuxMpa6RShcZHJfXFeTPqWJTtQDHcA/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
-  ejeX: "Marcas",
-  serie: ["Promediopreciopormarca"],
-  etiqueta: "",
-  apilado: false,
-  valorGrafico: "",
-  huecoCirculo: ""
+  ejeX: "AÑO_PUBLICACIÓN",
+  etiqueta:"",
+  valorGrafico:"",
+  huecoCirculo:"",
+  serie: ["Nintendo","PC Computadora","PlayStation","XBox Microsoft"],
+  apilado: false, // sin caracteres especiales
+  funcion: " ",
+  escala:"1000", //Predeterminado
 };
 let df;
 window.onload = pgEvent.getValues();
