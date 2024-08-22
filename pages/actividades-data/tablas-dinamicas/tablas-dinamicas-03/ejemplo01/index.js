@@ -91,6 +91,14 @@ async function main() {
     filas: [],
     columnas: [],
     valores: [],
+    esEjemplo: true,
+    intervalo: "A1:B13",
+    ejercicioCompletado: true,
+    tipoGrafico: "torta",
+    ejeX: "",
+    etiqueta:"GÉNERO",
+    valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
+    huecoCirculo:"0",
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -120,7 +128,7 @@ async function main() {
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
     // Al comentar la siguiente línea, se evita que se inicialice con los valores por defecto en la tabla dinámica
-    // appController.userSettings.init();
+    appController.userSettings.init();
   }
 }
 main();

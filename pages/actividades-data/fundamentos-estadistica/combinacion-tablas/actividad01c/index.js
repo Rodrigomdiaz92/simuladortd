@@ -19,15 +19,18 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/a/macros/digitalhouse.com/s/AKfycbwe1IgihqLHBLRsriFebe2c6tR4tetWU15rTneVrEsBADPfOoeB694l3oQ5nZGdsIA/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
-  selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["COMBUSTIBLE"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["ID_AUTO"],
-  funcionesSeleccionadasTD: ["count"],
-};
+    "https://script.google.com/macros/s/AKfycbyg5GUwwVPZ-iTU36RbOmjFePAO4-qtl5l3zCI9Y9Owq_8TcjWRfRpFlDTR2oGMIKemuA/exec",
+    graphEnabled: true,
+    pivotEnabled: false,
+    selectionRequirements: { minRows: 5, minCols: 2 },
+    tipoGrafico: "barras",
+    ejeX: "PAÍS",
+    serie: ["ConteodeMEDALLISTA ORO"],
+    apilado: false,
+    etiqueta: "",
+    valorGrafico: "",
+    huecoCirculo: ""
+  };
 let df;
 window.onload = pgEvent.getValues();
 //Capaz hay que darle una vuelta a esto para delegarselo a App

@@ -19,13 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/a/macros/digitalhouse.com/s/AKfycbwe1IgihqLHBLRsriFebe2c6tR4tetWU15rTneVrEsBADPfOoeB694l3oQ5nZGdsIA/exec",
+    "https://script.google.com/macros/s/AKfycby8YlGqtvspmYYm1-EMbAv8rU33xuQcQeSEiEfWQWt0sMhW5T2KuO54r-FsXt9Qr788/exec",
   graphEnabled: false,
   pivotEnabled: true,
-  selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["COMBUSTIBLE"],
+  selectionRequirements: { minRows: 5, minCols: 4 },
+  filaSeleccionadaTD: ["PAÍS"],
   columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["ID_AUTO"],
+  valorSeleccionadaTD: ["MEDALLISTA ORO"],
   funcionesSeleccionadasTD: ["count"],
 };
 let df;
