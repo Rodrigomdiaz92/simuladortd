@@ -49,6 +49,7 @@ customElements.define(
                       <option value="none">---</option>
                       <option value="torta">Gráfico de Torta</option>
                       <option value="barras">Gráfico de Barras</option>
+                      <option value="histograma">Histograma</option>
                     </select>
                   </div>
                   <div id="confi-torta" class="hidden">              
@@ -59,6 +60,21 @@ customElements.define(
                     <label>Hueco del círculo(%)</label>
                     <input class="graph-input" type="number" id="porcentaje-circulo">
                   </div>
+                  <div id="confi-histograma" class="hidden">              
+                    <label>Valor:</label>
+                    <select class="graph-select" id="valor-histograma"></select> 
+                    <label>Tamaño de los Segmentos</label>
+                    <select class="graph-select" id="tamaño-segmento">
+                      <option value="1000">Predeterminado</option>
+                      <option value="0.01">0,01</option>
+                      <option value="0.1">0,1</option> 
+                      <option value="100">100</option> 
+                      <option value="1000">1.000</option> 
+                      <option value="1000000">1.000.000</option> 
+                      <option value="1000000000">1.000.000.000</option> 
+                      <option value="1000000000000">1.000.000.000.000</option>                 
+                    </select>
+                  </div>  
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
                     <select class="graph-select" id="ejeX"></select>                    
@@ -144,6 +160,10 @@ customElements.define(
             width: 345px;
           }
           #confi-torta label {
+              display: block;
+              margin-top: 10px
+          }
+          #confi-histograma label {
               display: block;
               margin-top: 10px
           }
@@ -396,9 +416,13 @@ customElements.define(
             this.selectedOptions,
             isChecked
           );
-        } /*else if(HISTOGRAMA){    //proximo grafico
+        } else if(tipoGrafico == "histograma") { 
+          this.createChart();
+
+          // Verificar que createChart haya creado el gráfico
+          console.log("Gráfico creado");   //proximo grafico
         
-        } else if(DISPERSION){    //proximo grafico
+        } /*else if(DISPERSION){    //proximo grafico
         
         }*/
         state.fueEjecutado();
@@ -423,6 +447,12 @@ customElements.define(
       valorGrafico.addEventListener("change", this.updateOptions.bind(this));
       valorGrafico.addEventListener("change", () => {
         state.validarValorGrafico(valorGrafico.value);
+      });
+
+      const valorHistograma = this.querySelector("#valor-histograma");
+      valorHistograma.addEventListener("change", this.updateOptions.bind(this));
+      valorHistograma.addEventListener("change", () => {
+        state.validarvalorHistograma(valorHistograma.value);
       });
 
       const selectEjex = this.querySelector("#ejeX");
@@ -501,6 +531,7 @@ customElements.define(
       const tipoGrafico = this.querySelector("#tipoGrafico");
       const contenedorOpciones1 = this.querySelector("#confi-torta");
       const contenedorOpciones2 = this.querySelector("#confi-barras");
+      const contenedorOpciones3 = this.querySelector("#confi-histograma");
 
       contenedorOpciones1.classList.toggle(
         "hidden",
@@ -509,6 +540,10 @@ customElements.define(
       contenedorOpciones2.classList.toggle(
         "hidden",
         tipoGrafico.value !== "barras"
+      );
+      contenedorOpciones3.classList.toggle(
+        "hidden",
+        tipoGrafico.value !== "histograma"
       );
 
       state.agregarTipoGrafico(tipoGrafico.value);
@@ -530,12 +565,17 @@ customElements.define(
       const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
       const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
       const defaultOptionEjeX = `<option value="none" selected> --- </option>`;
+
+      //histograma
+
+      const defaultOptionValorHistograma = `<option value="none" selected>Agregar Valor</option>`;
       //const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi
 
       const finalOptionsHTMLEtiqueta = defaultOptionEtiqueta + optionsHTML;
       const finalOptionsHTMLValorGrafico =
         defaultOptionValorGrafico + optionsHTML;
       const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
+      const finalOptionsHTMLValorHistograma = defaultOptionValorHistograma + optionsHTML;
       //const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi
 
       this.querySelector("#etiquetas-grafico").innerHTML =
@@ -543,8 +583,13 @@ customElements.define(
       //this.querySelector("#ejeX").innerHTML = optionsHTML;
       this.querySelector("#ejeX").innerHTML = finalOptionsHTMLEjeX;
       /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */
+      // histograma
+      this.querySelector("#valor-histograma").innerHTML =
+      finalOptionsHTMLValorHistograma; // Agrega esta línea
+
+      
       this.querySelector("#valor-grafico").innerHTML =
-        finalOptionsHTMLValorGrafico; // Agrega esta línea
+        finalOptionsHTMLValorGrafico;
 
       const serieOptionHTML = columns
         .map(
@@ -584,6 +629,9 @@ customElements.define(
         this.createPieChart(context, data);
       } else if (tipoGrafico === "barras") {
         this.createBarChart(context, data);
+      }
+      else if (tipoGrafico === "histograma") {
+        this.createHistogram(context, data);
       }
     }
 
@@ -1216,5 +1264,99 @@ customElements.define(
         });
       }
     }
-  }
-);
+
+    
+    // Histograma
+    // Definir la función isNumericArray
+    isNumericArray(arr) {
+      return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
+    }
+  
+    // Método para crear un histograma
+    createHistogram(context, data) {
+      const selectValorHistograma = this.querySelector("#valor-histograma");
+      console.log("selectValorHistograma:", selectValorHistograma);
+      const selectTamañoSegmento = this.querySelector("#tamaño-segmento");
+      console.log("selectTamañoSegmento:", selectTamañoSegmento);
+  
+      if (!selectValorHistograma) {
+        console.error("Elemento con id 'valor-histograma' no encontrado");
+        return;
+      }
+  
+      const selectedValue = selectValorHistograma.value;
+      if (!data.hasOwnProperty(selectedValue)) {
+        console.error("Invalid column selected");
+        return;
+      }
+  
+      const valorGraficoData = data[selectedValue];
+      const tamañoSegmento = parseFloat(selectTamañoSegmento.value);
+  
+      if (!this.isNumericArray(valorGraficoData)) {
+        console.error("Data for selected value is undefined or not numeric");
+        return;
+      }
+  
+      // const minValue = Math.min(...valorGraficoData);
+      const minValue = 0;
+      const maxValue = Math.max(...valorGraficoData);
+
+      
+      // Ajustar el número de bins y el ancho del bin según el tamaño del segmento seleccionado
+      const numBins = Math.ceil((maxValue - minValue) / tamañoSegmento);
+      const bins = Array(numBins).fill(0);
+
+      valorGraficoData.forEach((value) => {
+        const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmento), numBins - 1);
+        bins[binIndex]++;
+      });
+  
+      const binLabels = Array.from({ length: numBins }, (_, i) => {
+        const lowerBound = minValue + i * tamañoSegmento;
+        const upperBound = lowerBound + tamañoSegmento;
+        return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
+      });
+  
+      const tituloGrafico = "Histograma"; // Asignar un valor de título por defecto
+  
+      this.myChart = new Chart(context, {
+        type: "bar",
+        data: {
+          labels: binLabels,
+          datasets: [{
+            label: selectedValue,
+            data: bins,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Intervalos'
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Frecuencia'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: tituloGrafico,
+            },
+          },
+        }
+      });
+  
+      state.cambiarTitulos({ grafico: tituloGrafico });
+    }})

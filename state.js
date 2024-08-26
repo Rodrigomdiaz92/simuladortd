@@ -32,6 +32,7 @@ export const state = {
       apilado: "",
       escala: "",
       ejecutado: false,
+      valorHistograma: "",
     },
     intervalo: {},
     datos: [],
@@ -621,6 +622,14 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+  agregarValorHistograma(nuevoValorHistograma) {
+    this.seleccionGraficos.seleccion.valorHistograma = nuevoValorHistograma;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
   //  Validacion Graficos
   validarTipoGrafico(tipo) {
@@ -652,6 +661,15 @@ export const state = {
       window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
     } else {
       window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+    }
+  },
+  
+  validarvalorHistograma(valorHistograma) {
+    appController.userSettings.settings.valorHistograma = valorHistograma;
+    if (valorHistograma == appController.app.baseSettings.valorHistograma) {
+      window.tabEl.handleChat(`El valor seleccionado es correcto h.`, "correct");
+    } else {
+      window.tabEl.handleChat(`El valor seleccionado NO es correcto h.`, "error");
     }
   },
 
