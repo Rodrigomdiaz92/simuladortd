@@ -50,6 +50,7 @@ customElements.define(
                       <option value="torta">Gráfico de Torta</option>
                       <option value="barras">Gráfico de Barras</option>
                       <option value="histograma">Histograma</option>
+                      <option value="dispersion">Dispersion</option>
                     </select>
                   </div>
                   <div id="confi-torta" class="hidden">              
@@ -115,6 +116,29 @@ customElements.define(
                       <option value="1000000000000">1.000.000.000.000</option>                 
                     </select>
                   </div>
+
+                  <div id="confi-dispersion" class="hidden">              
+                    <label>Eje X:</label>
+                    <select class="graph-select" id="ejeX-dispersion"></select>
+                    <br>
+                    <label>Serie</label>
+                    <select class="graph-select" id="ejeY-dispersion"></select>
+                    
+                    <label for="lineaTendencia" style=" margin-left: 290px;">Linea de Tendencia</label>
+                    <input type="checkbox" id="linea-tendencia"> 
+                    <h3>Personalizar</h3> 
+                    <div>              
+                    <label>Titulo eje X</label>
+                    <input class="graph-input" type="text" id="titulo-grafico-x">
+                    </div>
+                    <div>
+                    <label>Titulo eje Y</label>
+                    <input class="graph-input" type="text" id="titulo-grafico-y">
+                    
+                    </div>
+                    
+                  </div>
+                  
                   <button id="control-confirm" class="control-button">Confirmar</button>             
                 </ul>
 
@@ -422,6 +446,9 @@ customElements.define(
           // Verificar que createChart haya creado el gráfico
           console.log("Gráfico creado");   //proximo grafico
         
+        } else if(tipoGrafico == "dispersion"){
+          this.createChart();
+        
         } /*else if(DISPERSION){    //proximo grafico
         
         }*/
@@ -532,6 +559,7 @@ customElements.define(
       const contenedorOpciones1 = this.querySelector("#confi-torta");
       const contenedorOpciones2 = this.querySelector("#confi-barras");
       const contenedorOpciones3 = this.querySelector("#confi-histograma");
+      const contenedorOpciones4 = this.querySelector("#confi-dispersion");
 
       contenedorOpciones1.classList.toggle(
         "hidden",
@@ -544,6 +572,10 @@ customElements.define(
       contenedorOpciones3.classList.toggle(
         "hidden",
         tipoGrafico.value !== "histograma"
+      );
+      contenedorOpciones4.classList.toggle(
+        "hidden",
+        tipoGrafico.value !== "dispersion"
       );
 
       state.agregarTipoGrafico(tipoGrafico.value);
@@ -582,10 +614,13 @@ customElements.define(
         finalOptionsHTMLEtiqueta;
       //this.querySelector("#ejeX").innerHTML = optionsHTML;
       this.querySelector("#ejeX").innerHTML = finalOptionsHTMLEjeX;
+      //Dispersion
+      this.querySelector("#ejeX-dispersion").innerHTML = finalOptionsHTMLEjeX;
+      this.querySelector("#ejeY-dispersion").innerHTML = finalOptionsHTMLEjeX;
       /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */
       // histograma
       this.querySelector("#valor-histograma").innerHTML =
-      finalOptionsHTMLValorHistograma; // Agrega esta línea
+      finalOptionsHTMLValorHistograma; 
 
       
       this.querySelector("#valor-grafico").innerHTML =
@@ -609,8 +644,9 @@ customElements.define(
     }
 
     createChart() {
-      state.fueEjecutado();
+      //state.fueEjecutado();
       const tipoGrafico = this.querySelector("#tipoGrafico").value;
+      console.log(tipoGrafico)
       const contenedorGrafico = this.querySelector("#plot_div");
       const context = contenedorGrafico.getContext("2d");
       const data = state.seleccion.datos;
@@ -632,6 +668,9 @@ customElements.define(
       }
       else if (tipoGrafico === "histograma") {
         this.createHistogram(context, data);
+      }
+      else if (tipoGrafico === "dispersion") {
+        this.createDispersion(context, data);
       }
     }
 
@@ -1359,4 +1398,138 @@ customElements.define(
       });
   
       state.cambiarTitulos({ grafico: tituloGrafico });
-    }})
+    }
+
+    
+  
+    createDispersion(context, data) {
+      const selectEjeXDispersion = this.querySelector("#ejeX-dispersion").value;
+      //console.log("selectEjeXDispersion:", selectEjeXDispersion);
+      const selectEjeYDispersion = this.querySelector("#ejeY-dispersion").value;
+      //console.log("selectEjeYDispersion:", selectEjeYDispersion);
+      const tituloGrafico = this.querySelector("#titulo-grafico").value;
+      //const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
+      //const tituloEjeY = this.querySelector("#titulo-grafico-y").value;
+      const checkbox = this.querySelector("#linea-tendencia");
+      const isChecked = checkbox.checked;
+          
+      
+      console.log(data)
+      let dataEjeX= data[selectEjeXDispersion];
+      let dataEjeY=data[selectEjeYDispersion];
+
+      const datosDispersion=[]
+
+      for (let i = 0; i < dataEjeX.length; i++) {
+        let obj= {x:dataEjeX[i], y:dataEjeY[i]}
+        datosDispersion.push(obj)
+        
+    }
+    console.log(datosDispersion)
+
+    let colores = [
+      "#ffdc76", // dh
+      "#ff8d7a", // dh
+      "#8383fd", // dh
+      "#00cc7e", // dh
+      "#FFA500", // Naranja
+      "#800080", // Púrpura
+      "#00FFFF", // Cian
+      "#FFC0CB", // Rosa
+      "#000000", // Negro
+    ];
+
+    let datos;
+
+    function calcularLineaTendencia(data) {
+      const n = data.length;
+      let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+      for (let i = 0; i < n; i++) {
+          sumX += data[i].x;
+          sumY += data[i].y;
+          sumXY += data[i].x * data[i].y;
+          sumX2 += data[i].x * data[i].x;
+      }
+
+      const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+      const intercept = (sumY - slope * sumX) / n;
+
+      return data.map(point => {
+          return { x: point.x, y: slope * point.x + intercept };
+      });
+  }
+
+    if(isChecked){
+      let trendlineData = calcularLineaTendencia(datosDispersion);
+
+      datos= [{
+        label: "Datos",
+        data: datosDispersion,
+        backgroundColor: colores[0],
+        borderColor: colores[1],
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      },
+      {
+        label: 'Línea de Tendencia',
+        data: trendlineData,
+        type: 'line',
+        fill: false,
+        borderColor: colores[2],
+        borderWidth: 2,
+        pointRadius: 0,
+    }
+    ];
+
+    }else{
+
+      datos= [{
+        label: "Datos",
+        data: datosDispersion,
+        backgroundColor: colores[0],
+        borderColor: colores[1],
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+
+    }
+
+
+
+
+    this.myChart = new Chart(context, {
+      type: 'scatter',
+      data: {
+        labels: " ",
+        datasets: datos
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            title: {
+                display: true,
+                text: selectEjeXDispersion
+            }
+        },
+          y: {
+            title: {
+                display: true,
+                text: selectEjeYDispersion
+            }
+        }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: tituloGrafico,
+          },
+        },
+      }
+    });
+
+
+    }
+  })
