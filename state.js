@@ -713,7 +713,7 @@ export const state = {
       valorGrafico == appController.app.baseSettings.valorGrafico &&
       valorHueco == appController.app.baseSettings.huecoCirculo
     ) {
-      window.tabEl.handleChat(`El grafico esta completo`, "correct");
+      window.tabEl.handleChat(`El gráfico esta completo`, "correct");
       appController.userSettings.settings.ejercicioCompletado = true;
       pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
@@ -746,7 +746,7 @@ export const state = {
       window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
     } else {
       window.tabEl.handleChat(
-        `La Serie seleccionada no es la pedida por el ejercicio.`,
+        `La serie seleccionada no es la pedida por el ejercicio.`,
         "error"
       );
     }
