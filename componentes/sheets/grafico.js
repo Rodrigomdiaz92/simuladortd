@@ -1350,27 +1350,31 @@ customElements.define(
       }
   
       // const minValue = Math.min(...valorGraficoData);
-      const minValue = 0;
+      const minValue = Math.min(...valorGraficoData);
       const maxValue = Math.max(...valorGraficoData);
-      
-      const minSegmento = maxValue * 0.1; // Minimo Tamaño de segmentos = 10% del maxValue
-      if (tamañoSegmento < minSegmento) {
-        window.tabEl.handleChat(`El tamaño del segmento debe ser mas alto.`, "error");
+
+      const minSegmento = maxValue * 0.1; // Mínimo Tamaño de segmentos = 10% del maxValue
+      if (Segmento < minSegmento) {
+        window.tabEl.handleChat("El tamaño del segmento debe ser más alto.", "error");
         return;
       }
-     
+
       // Ajustar el número de bins y el ancho del bin según el tamaño del segmento seleccionado
-      const numBins = Math.ceil((maxValue - minValue) / minSegmento);
+      const numBins = Math.ceil((maxValue - minValue) / Segmento);
       const bins = Array(numBins).fill(0);
 
       valorGraficoData.forEach((value) => {
-        const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmento), numBins - 1);
+        const binIndex = Math.min(Math.floor((value - minValue) / Segmento), numBins - 1);
         bins[binIndex]++;
       });
-  
+
+      // Ajuste final para que el último bin no sobrepase el valor máximo
       const binLabels = Array.from({ length: numBins }, (_, i) => {
-        const lowerBound = minValue + i * tamañoSegmento;
-        const upperBound = lowerBound + tamañoSegmento;
+        const lowerBound = minValue + i * Segmento;
+        let upperBound = lowerBound + Segmento;
+        if (i === numBins - 1) {
+          upperBound = maxValue; // Ajuste el último intervalo al valor máximo
+        }
         return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
       });
   
