@@ -644,9 +644,9 @@ export const state = {
   validarTipoGrafico(tipo) {
     appController.userSettings.settings.tipoGrafico = tipo;
     if (tipo == appController.app.baseSettings.tipoGrafico) {
-      window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
+      window.tabEl.handleChat(`El tipo de gráfico es correcto.`, "correct");
     } else {
-      window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+      window.tabEl.handleChat(`El tipo de gráfico NO es correcto.`, "error");
     }
   },
 
@@ -717,7 +717,7 @@ export const state = {
       appController.userSettings.settings.ejercicioCompletado = true;
       pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
-      window.tabEl.handleChat(`Hay errores en tu grafico.`, "error");
+      window.tabEl.handleChat(`Hay errores en tu gráfico.`, "error");
       pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
   },
@@ -774,7 +774,7 @@ export const state = {
     if (ingresado == correcto) {
       window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
     } else {
-      window.tabEl.handleChat(`El gráfico tiene que ser apilado.`, "error");
+      window.tabEl.handleChat(`Revisa si tu gráfico debe ser apilado o no.`, "error");
     }
   },
 
@@ -792,11 +792,11 @@ export const state = {
       arraysIguales(serieIngresada, serieCorrecta) &&
       apilamiento == appController.app.baseSettings.apilado
     ) {
-      window.tabEl.handleChat(`El grafico esta completo`, "correct");
+      window.tabEl.handleChat(`El gráfico esta completo`, "correct");
       appController.userSettings.settings.ejercicioCompletado = true;
       pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
-      window.tabEl.handleChat(`Hay errores en tu grafico.`, "error");
+      window.tabEl.handleChat(`Hay errores en tu gráfico.`, "error");
       pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
   },
