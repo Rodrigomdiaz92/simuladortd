@@ -65,16 +65,7 @@ customElements.define(
                     <label>Valor:</label>
                     <select class="graph-select" id="valor-histograma"></select> 
                     <label>Tamaño de los Segmentos</label>
-                    <select class="graph-select" id="tamaño-segmento">
-                      <option value="1000">Predeterminado</option>
-                      <option value="0.01">0,01</option>
-                      <option value="0.1">0,1</option> 
-                      <option value="100">100</option> 
-                      <option value="1000">1.000</option> 
-                      <option value="1000000">1.000.000</option> 
-                      <option value="1000000000">1.000.000.000</option> 
-                      <option value="1000000000000">1.000.000.000.000</option>                 
-                    </select>
+                    <input class="graph-input" type="number" id="tamaño-segmento">
                   </div>  
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
@@ -482,6 +473,12 @@ customElements.define(
         state.validarvalorHistograma(valorHistograma.value);
       });
 
+      const Segmento = this.querySelector("#tamaño-segmento");
+      Segmento.addEventListener("change", this.updateOptions.bind(this));
+      Segmento.addEventListener("change", () => {
+        state.validarSegmento(Segmento.value);
+      });
+
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
       selectEjex.addEventListener("change", () => {
@@ -591,14 +588,23 @@ customElements.define(
       const newDf = new dfd.DataFrame(data);
       const columns = newDf.columns;
 
-      const optionsHTML = columns
+      const optionsHTML = columns // Todas las col
         .map((col) => `<option value=${col}>${col}</option>`)
         .join("");
+      
+      const numericColumns = columns.filter(col => {  //Filtrar numericos
+        const sampleData = data[col]; 
+        return Array.isArray(sampleData) && sampleData.every(value => typeof value === 'number' && !isNaN(value));
+      });
+
+      const optionsHTMLNumeric = numericColumns //Valores solo numericos
+        .map((col) => `<option value="${col}">${col}</option>`)
+        .join("");
+
       const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
       const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
       const defaultOptionEjeX = `<option value="none" selected> --- </option>`;
-
-      //histograma
+       //histograma
 
       const defaultOptionValorHistograma = `<option value="none" selected>Agregar Valor</option>`;
       //const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi
@@ -607,9 +613,8 @@ customElements.define(
       const finalOptionsHTMLValorGrafico =
         defaultOptionValorGrafico + optionsHTML;
       const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
-      const finalOptionsHTMLValorHistograma = defaultOptionValorHistograma + optionsHTML;
-      //const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi
-
+      const finalOptionsHTMLValorHistograma = defaultOptionValorHistograma + optionsHTMLNumeric;
+      
       this.querySelector("#etiquetas-grafico").innerHTML =
         finalOptionsHTMLEtiqueta;
       //this.querySelector("#ejeX").innerHTML = optionsHTML;
@@ -1315,8 +1320,9 @@ customElements.define(
     createHistogram(context, data) {
       const selectValorHistograma = this.querySelector("#valor-histograma");
       console.log("selectValorHistograma:", selectValorHistograma);
-      const selectTamañoSegmento = this.querySelector("#tamaño-segmento");
-      console.log("selectTamañoSegmento:", selectTamañoSegmento);
+      const selectSegmento = this.querySelector("#tamaño-segmento");
+      console.log("selectTamañoSegmento:", selectSegmento);
+      
   
       if (!selectValorHistograma) {
         console.error("Elemento con id 'valor-histograma' no encontrado");
@@ -1330,20 +1336,31 @@ customElements.define(
       }
   
       const valorGraficoData = data[selectedValue];
-      const tamañoSegmento = parseFloat(selectTamañoSegmento.value);
-  
+      const Segmento = parseFloat(selectSegmento.value);
+
+      if (isNaN(Segmento) || Segmento <= 0) {
+        window.tabEl.handleChat(`El tamaño del segmento debe ser un número positivo mayor que cero.`, "error");
+        return false;
+      }
+
+
       if (!this.isNumericArray(valorGraficoData)) {
-        console.error("Data for selected value is undefined or not numeric");
+        window.tabEl.handleChat(`La columna seleccionada debe ser numerica.`, "error");
         return;
       }
   
       // const minValue = Math.min(...valorGraficoData);
       const minValue = 0;
       const maxValue = Math.max(...valorGraficoData);
-
       
+      const minSegmento = maxValue * 0.1; // Minimo Tamaño de segmentos = 10% del maxValue
+      if (tamañoSegmento < minSegmento) {
+        window.tabEl.handleChat(`El tamaño del segmento debe ser mas alto.`, "error");
+        return;
+      }
+     
       // Ajustar el número de bins y el ancho del bin según el tamaño del segmento seleccionado
-      const numBins = Math.ceil((maxValue - minValue) / tamañoSegmento);
+      const numBins = Math.ceil((maxValue - minValue) / minSegmento);
       const bins = Array(numBins).fill(0);
 
       valorGraficoData.forEach((value) => {

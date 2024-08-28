@@ -33,6 +33,7 @@ export const state = {
       escala: "",
       ejecutado: false,
       valorHistograma: "",
+      Segmento: "",
     },
     intervalo: {},
     datos: [],
@@ -630,6 +631,14 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+  agregarSegmento(nuevoSegmento) {
+    this.seleccionGraficos.seleccion.Segmento = nuevoSegmento;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
   //  Validacion Graficos
   validarTipoGrafico(tipo) {
@@ -667,9 +676,18 @@ export const state = {
   validarvalorHistograma(valorHistograma) {
     appController.userSettings.settings.valorHistograma = valorHistograma;
     if (valorHistograma == appController.app.baseSettings.valorHistograma) {
-      window.tabEl.handleChat(`El valor seleccionado es correcto h.`, "correct");
+      window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
     } else {
-      window.tabEl.handleChat(`El valor seleccionado NO es correcto h.`, "error");
+      window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+    }
+  },
+  
+  validarSegmento(Segmento) {
+    appController.userSettings.settings.Segmento = Segmento;
+    if (Segmento == appController.app.baseSettings.Segmento) {
+      window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
+    } else {
+      window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
     }
   },
 
