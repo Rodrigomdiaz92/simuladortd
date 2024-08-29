@@ -27,7 +27,7 @@ const BASE_SETTINGS = {
   ejeX: "",
   etiqueta:"GÉNERO",
   valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-  huecoCirculo:"0",
+  huecoCirculo:"",
   serie: [""],
   apilado: true, // sin caracteres especiales
   funcion: " ",

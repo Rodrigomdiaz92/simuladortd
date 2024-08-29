@@ -59,7 +59,7 @@ customElements.define(
                     <label>Valor:</label>
                     <select class="graph-select" id="valor-grafico"></select> 
                     <label>Hueco del círculo(%)</label>
-                    <input class="graph-input" type="number" id="porcentaje-circulo">
+                    <input class="graph-input" type="number" id="porcentaje-circulo" value="0">
                   </div>
                   <div id="confi-histograma" class="hidden">              
                     <label>Valor:</label>
@@ -467,6 +467,7 @@ customElements.define(
         state.validarValorGrafico(valorGrafico.value);
       });
 
+        // Histograma 
       const valorHistograma = this.querySelector("#valor-histograma");
       valorHistograma.addEventListener("change", this.updateOptions.bind(this));
       valorHistograma.addEventListener("change", () => {
@@ -478,6 +479,29 @@ customElements.define(
       Segmento.addEventListener("change", () => {
         state.validarSegmento(Segmento.value);
       });
+        //
+
+        // Dispersión
+
+      const ejeXDispersion = this.querySelector("#ejeX-dispersion");
+      ejeXDispersion.addEventListener("change", this.updateOptions.bind(this));
+      ejeXDispersion.addEventListener("change", () => {
+        state.validarEjeXDispersion(ejeXDispersion.value);
+      });
+
+      const ejeYDispersion = this.querySelector("#ejeY-dispersion");
+      ejeYDispersion.addEventListener("change", this.updateOptions.bind(this));
+      ejeYDispersion.addEventListener("change", () => {
+        state.validarEjeYDispersion(ejeYDispersion.value);
+      });
+
+      const lineaDeTendencia = this.querySelector("#linea-tendencia");
+      lineaDeTendencia.addEventListener("change", this.updateOptions.bind(this));
+      lineaDeTendencia.addEventListener("change", () => {
+        state.validarLineaDeTendencia(lineaDeTendencia.checked);
+      });
+          
+      //
 
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
@@ -604,6 +628,7 @@ customElements.define(
       const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
       const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
       const defaultOptionEjeX = `<option value="none" selected> --- </option>`;
+      const defaultOptionHuecoCirculo = `<option value= "none" selected> 0 </option>`;
        //histograma
 
       const defaultOptionValorHistograma = `<option value="none" selected>Agregar Valor</option>`;
@@ -626,6 +651,8 @@ customElements.define(
       // histograma
       this.querySelector("#valor-histograma").innerHTML =
       finalOptionsHTMLValorHistograma; 
+      this.querySelector("#porcentaje-circulo").innerHTML =
+      defaultOptionHuecoCirculo;
 
       
       this.querySelector("#valor-grafico").innerHTML =
