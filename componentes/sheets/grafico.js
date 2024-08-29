@@ -1343,6 +1343,8 @@ customElements.define(
       return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
     }
   
+  
+  
     // Método para crear un histograma
     createHistogram(context, data) {
       const selectValorHistograma = this.querySelector("#valor-histograma");
@@ -1365,47 +1367,100 @@ customElements.define(
       const valorGraficoData = data[selectedValue];
       const Segmento = parseFloat(selectSegmento.value);
 
-      if (isNaN(Segmento) || Segmento <= 0) {
+      /*if (isNaN(Segmento) || Segmento <= 0) {
         window.tabEl.handleChat(`El tamaño del segmento debe ser un número positivo mayor que cero.`, "error");
         return false;
-      }
+      }*/
 
 
-      if (!this.isNumericArray(valorGraficoData)) {
-        window.tabEl.handleChat(`La columna seleccionada debe ser numerica.`, "error");
-        return;
-      }
+      // Verifica si todos los elementos del array son números válidos
+  const isNumericArray = (arr) => {
+    return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
+  };
+
+  // Obtiene el múltiplo adecuado basado en el rango
+  const obtenerMultiploAdecuado = (rango) => {
+    if (rango > 0 && rango < 10) return 1;
+    if (rango >= 10 && rango < 50) return 5;
+    if (rango >= 50 && rango < 200) return 10;
+    if (rango >= 200 && rango < 800) return 50;
+    if (rango >= 800 && rango < 1500) return 100;
+    if (rango >= 1500 && rango <= 10000) return 500;
+    if (rango > 10000) return 1000;
+    return 1; // Valor por defecto si no se cumple ninguna condición
+  };
+
+  const ajustarTamañoSegmento = (Segmento, minValue, maxValue) => {
+    const rango = maxValue - minValue;
+    const multiplo = obtenerMultiploAdecuado(rango);
+
+    // Ajustar el tamaño del segmento al múltiplo más cercano sin exceder el rango
+    let tamañoSegmento = Math.floor(Segmento / multiplo) * multiplo;
+
+    // Asegurarse de que el tamaño del segmento no exceda el rango
+    if (tamañoSegmento > rango) {
+      tamañoSegmento = Math.floor(rango / multiplo) * multiplo;
+    }
+
+    return tamañoSegmento;
+  };
+
+  if (!this.isNumericArray(valorGraficoData)) {
+    window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
+    return;
+  }
+
+  const minValue = Math.min(...valorGraficoData);
+  const maxValue = Math.max(...valorGraficoData);
+  const rango = maxValue - minValue;
+
+  // Calcular el tamaño máximo permitido
+  const maxSegmentoPermitido = (rango / 2) + 1;
+ // Determinar el múltiplo adecuado para el rango
+  const multiploAdecuado = obtenerMultiploAdecuado(rango);
+
+  // Validar el tamaño del segmento
+  if (Segmento > maxSegmentoPermitido) {
+    window.tabEl.handleChat(`El tamaño del segmento no puede ser mayor a ${maxSegmentoPermitido}.`, "error");
+    return;
+  }
+
+  if (Segmento < multiploAdecuado) {
+    window.tabEl.handleChat(`El tamaño del segmento debe ser al menos ${multiploAdecuado}.`, "error");
+    return;
+  }
+
+  // Ajustar el tamaño del segmento
+  const tamañoSegmentoAjustado = ajustarTamañoSegmento(Segmento, minValue, maxValue);
+
+  // Validar el tamaño del segmento
+  if (Segmento < tamañoSegmentoAjustado) {
+    window.tabEl.handleChat("El tamaño del segmento debe ser un múltiplo válido.", "error");
+    return;
+  }
+
+  // Determinar el número de bins
+  const numBins = (Segmento >= rango) ? 1 : Math.ceil(rango / tamañoSegmentoAjustado);
   
-      // const minValue = Math.min(...valorGraficoData);
-      const minValue = Math.min(...valorGraficoData);
-      const maxValue = Math.max(...valorGraficoData);
+  // Si el tamaño del segmento es mayor o igual al rango, solo debe haber un bin
+  const bins = Array(numBins).fill(0);
 
-      const minSegmento = maxValue * 0.1; // Mínimo Tamaño de segmentos = 10% del maxValue
-      if (Segmento < minSegmento) {
-        window.tabEl.handleChat("El tamaño del segmento debe ser más alto.", "error");
-        return;
-      }
+  valorGraficoData.forEach((value) => {
+    const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmentoAjustado), bins.length - 1);
+    bins[binIndex]++;
+  });
 
-      // Ajustar el número de bins y el ancho del bin según el tamaño del segmento seleccionado
-      const numBins = Math.ceil((maxValue - minValue) / Segmento);
-      const bins = Array(numBins).fill(0);
+  // Ajuste final para que el último bin no sobrepase el valor máximo
+  const binLabels = Array.from({ length: bins.length }, (_, i) => {
+    const lowerBound = minValue + i * tamañoSegmentoAjustado;
+    let upperBound = lowerBound + tamañoSegmentoAjustado;
+    if (i === bins.length - 1) {
+      upperBound = maxValue; // Ajuste el último intervalo al valor máximo
+    }
+    return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
+  });
 
-      valorGraficoData.forEach((value) => {
-        const binIndex = Math.min(Math.floor((value - minValue) / Segmento), numBins - 1);
-        bins[binIndex]++;
-      });
-
-      // Ajuste final para que el último bin no sobrepase el valor máximo
-      const binLabels = Array.from({ length: numBins }, (_, i) => {
-        const lowerBound = minValue + i * Segmento;
-        let upperBound = lowerBound + Segmento;
-        if (i === numBins - 1) {
-          upperBound = maxValue; // Ajuste el último intervalo al valor máximo
-        }
-        return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
-      });
-  
-      const tituloGrafico = "Histograma"; // Asignar un valor de título por defecto
+  const tituloGrafico = "Histograma"; // Asignar un valor de título por defecto
   
       this.myChart = new Chart(context, {
         type: "bar",
