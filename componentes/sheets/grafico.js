@@ -385,7 +385,7 @@ customElements.define(
 
       const controlConfirm = this.querySelector("#control-confirm");
 
-      //validacion de graficos   Torta y barras
+      //validacion de graficos
       controlConfirm.addEventListener("click", () => {
         const tipoGrafico = this.querySelector("#tipoGrafico").value;
 
@@ -435,14 +435,41 @@ customElements.define(
           this.createChart();
 
           // Verificar que createChart haya creado el gráfico
-          console.log("Gráfico creado");   //proximo grafico
+          console.log("Gráfico creado");
+
+          // Obtener los valores necesarios para la validación
+
+          const valorHistograma = this.querySelector("#valor-histograma").value;
+
+          //Escala
+
+          // Llamar a la función de validación después de crear el gráfico
+          state.graficoDeHistogramaCompletado(
+            valorHistograma
+
+          );
         
         } else if(tipoGrafico == "dispersion"){
           this.createChart();
-        
-        } /*else if(DISPERSION){    //proximo grafico
-        
-        }*/
+
+          // Verificar que createChart haya creado el gráfico
+          console.log("Gráfico creado");
+
+          // Obtener los valores necesarios para la validación
+
+          const ejeXDispersion = this.querySelector("#ejeX-dispersion").value;
+          const ejeYDispersion = this.querySelector("#ejeY-dispersion").value;
+          const lineaDeTendencia = this.querySelector("#linea-tendencia").value;
+
+          //Escala
+
+          // Llamar a la función de validación después de crear el gráfico
+          state.graficoDeDispersionCompletado(
+            ejeXDispersion, 
+            ejeYDispersion, 
+            lineaDeTendencia
+          );  
+        } 
         state.fueEjecutado();
       });
 
@@ -474,11 +501,11 @@ customElements.define(
         state.validarvalorHistograma(valorHistograma.value);
       });
 
-      const Segmento = this.querySelector("#tamaño-segmento");
-      Segmento.addEventListener("change", this.updateOptions.bind(this));
-      Segmento.addEventListener("change", () => {
-        state.validarSegmento(Segmento.value);
-      });
+      /*const segmento = this.querySelector("#tamaño-segmento");
+      segmento.addEventListener("change", this.updateOptions.bind(this));
+      segmento.addEventListener("change", () => {
+        state.validarsegmento(segmento.value);
+      });*/
         //
 
         // Dispersión
@@ -1351,73 +1378,85 @@ customElements.define(
       console.log("selectValorHistograma:", selectValorHistograma);
       const selectSegmento = this.querySelector("#tamaño-segmento");
       console.log("selectTamañoSegmento:", selectSegmento);
-      
-  
-      if (!selectValorHistograma) {
-        console.error("Elemento con id 'valor-histograma' no encontrado");
-        return;
+    
+      if (!selectValorHistograma || !selectSegmento) {
+          console.error("Elemento(s) no encontrado(s)");
+          return;
       }
-  
+    
       const selectedValue = selectValorHistograma.value;
       if (!data.hasOwnProperty(selectedValue)) {
-        console.error("Invalid column selected");
-        return;
+          console.error("Invalid column selected");
+          return;
       }
-  
+    
       const valorGraficoData = data[selectedValue];
       const Segmento = parseFloat(selectSegmento.value);
-
-      /*if (isNaN(Segmento) || Segmento <= 0) {
-        window.tabEl.handleChat(`El tamaño del segmento debe ser un número positivo mayor que cero.`, "error");
-        return false;
-      }*/
-
-
+  
       // Verifica si todos los elementos del array son números válidos
-  const isNumericArray = (arr) => {
-    return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
-  };
+      const isNumericArray = (arr) => {
+          return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
+      };
+  
+      // Obtiene el múltiplo adecuado basado en el rango
+      const obtenerMultiploAdecuado = (rango) => {
+          if (rango > 0 && rango < 10) return 1;
+          if (rango >= 10 && rango < 50) return 5;
+          if (rango >= 50 && rango < 200) return 10;
+          if (rango >= 200 && rango < 800) return 50;
+          if (rango >= 800 && rango < 1500) return 100;
+          if (rango >= 1500 && rango <= 10000) return 500;
+          if (rango > 10000) return 1000;
+          return 1; // Valor por defecto si no se cumple ninguna condición
+      };
+  
+      const ajustarTamañoSegmento = (Segmento, minValue, maxValue) => {
+          const rango = maxValue - minValue;
+          const multiplo = obtenerMultiploAdecuado(rango);
+          let tamañoSegmento = Math.floor(Segmento / multiplo) * multiplo;
+          if (tamañoSegmento > rango) {
+              tamañoSegmento = Math.floor(rango / multiplo) * multiplo;
+          }
+          return tamañoSegmento;
+      };
+  
+      if (!isNumericArray(valorGraficoData)) {
+          window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
+          return;
+      }
+  
+      const minValue = Math.min(...valorGraficoData);
+      const maxValue = Math.max(...valorGraficoData);
+      const rango = maxValue - minValue;
+      const mitadMasUno = Math.floor(rango / 2) + 1;
+      const multiploAdecuado = obtenerMultiploAdecuado(rango);
+      let maxSegmentoPermitido = Math.floor(mitadMasUno / multiploAdecuado) * multiploAdecuado;
+  
+      // Generar una lista de múltiplos aceptados
+      const multiplosAceptados = [];
+      for (let i = multiploAdecuado; i <= maxSegmentoPermitido; i += multiploAdecuado) {
+          multiplosAceptados.push(i);
+      }
+  
+      // Validar el segmento
+      const validateSegmento = () => {
+          const Segmento = parseFloat(selectSegmento.value);
+          let segmentoValido = 0;  // Inicializa como inválido
+          if (Segmento % multiploAdecuado === 0 && Segmento >= multiploAdecuado && Segmento <= maxSegmentoPermitido) {
+              segmentoValido = 1;  // Cambia a válido solo si cumple las condiciones
+          }
+  
+          if (segmentoValido === 0) {
+              window.tabEl.handleChat(`El tamaño del segmento debe ser un múltiplo de ${multiploAdecuado} entre ${multiploAdecuado} y ${maxSegmentoPermitido} y no debe contener decimales.`, "error");
+          } //else {
+              state.validarSegmento(segmentoValido);
+          //}
+      };
+  
+      // Agregar el event listener para validar el segmento en tiempo real
+      //selectSegmento.addEventListener("input", validateSegmento);
 
-  // Obtiene el múltiplo adecuado basado en el rango
-  const obtenerMultiploAdecuado = (rango) => {
-    if (rango > 0 && rango < 10) return 1;
-    if (rango >= 10 && rango < 50) return 5;
-    if (rango >= 50 && rango < 200) return 10;
-    if (rango >= 200 && rango < 800) return 50;
-    if (rango >= 800 && rango < 1500) return 100;
-    if (rango >= 1500 && rango <= 10000) return 500;
-    if (rango > 10000) return 1000;
-    return 1; // Valor por defecto si no se cumple ninguna condición
-  };
-
-  const ajustarTamañoSegmento = (Segmento, minValue, maxValue) => {
-    const rango = maxValue - minValue;
-    const multiplo = obtenerMultiploAdecuado(rango);
-
-    // Ajustar el tamaño del segmento al múltiplo más cercano sin exceder el rango
-    let tamañoSegmento = Math.floor(Segmento / multiplo) * multiplo;
-
-    // Asegurarse de que el tamaño del segmento no exceda el rango
-    if (tamañoSegmento > rango) {
-      tamañoSegmento = Math.floor(rango / multiplo) * multiplo;
-    }
-
-    return tamañoSegmento;
-  };
-
-  if (!this.isNumericArray(valorGraficoData)) {
-    window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
-    return;
-  }
-
-  const minValue = Math.min(...valorGraficoData);
-  const maxValue = Math.max(...valorGraficoData);
-  const rango = maxValue - minValue;
-
-  // Calcular el tamaño máximo permitido
-  const maxSegmentoPermitido = (rango / 2) + 1;
- // Determinar el múltiplo adecuado para el rango
-  const multiploAdecuado = obtenerMultiploAdecuado(rango);
+      validateSegmento();
 
   // Validar el tamaño del segmento
   if (Segmento > maxSegmentoPermitido) {
@@ -1501,6 +1540,7 @@ customElements.define(
       });
   
       state.cambiarTitulos({ grafico: tituloGrafico });
+
     }
 
     

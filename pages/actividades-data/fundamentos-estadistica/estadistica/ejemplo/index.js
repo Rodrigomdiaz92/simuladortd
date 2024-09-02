@@ -25,7 +25,6 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "histograma",
   valorHistograma: "EDAD CLIENTE",
-  segmento: "",
 };
 let df;
 window.onload = pgEvent.getValues();
