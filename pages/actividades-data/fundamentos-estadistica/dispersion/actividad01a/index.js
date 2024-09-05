@@ -19,14 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbx37zyCa2XqMzxrE61b6-i9Y3h7KnHfXYJlQidpPOXImONFBrV1-n-JxQ2ZbnGB5Ql_/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
+    "https://script.google.com/macros/s/AKfycbzlkcJQg_OjC5shYStAdvTTh93FAmI1zHm91wD2F04NhHT83gfv5t43WGjpWfNMkw-d1Q/exec",
+  graphEnabled: true,
+  pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  funcionesSeleccionadasTD: ["count"],
+  tipoGrafico: "dispersion",
+  ejeXDispersion: "Cantidad_Vendida",
+  ejeYDispersion: "Precio_del_Producto_USD",
 };
 let df;
 window.onload = pgEvent.getValues();

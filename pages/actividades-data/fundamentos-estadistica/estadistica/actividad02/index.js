@@ -19,13 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbxQvlTkI3cgdnrXPOo6xCwysmKcDvTV0V8YFJiAuuO4uYvvBnxdp6YY4q4v7xLDQTrJ/exec",
+    "https://script.google.com/macros/s/AKfycbwaqOlZTnpYJ4n1G4qpWvGchDmHI4Ay4c5gnuZh3DvWwcI4CNAEpy1fYdN5FU2N6QV7zw/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "histograma",
-  valorHistograma: "EDAD CLIENTE",
-  segmento: "",
+  valorHistograma: "BAÑOS",
+  segmento: 1,
 };
 let df;
 window.onload = pgEvent.getValues();

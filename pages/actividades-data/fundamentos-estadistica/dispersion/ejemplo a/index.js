@@ -19,14 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbx37zyCa2XqMzxrE61b6-i9Y3h7KnHfXYJlQidpPOXImONFBrV1-n-JxQ2ZbnGB5Ql_/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
+    "https://script.google.com/macros/s/AKfycbwYszSx3tXe47wNmSlhkS_m0XtCWRro8BK47WBEG_tZl6qsuKGRbiZ62Vay52d6oHNGrQ/exec",
+  graphEnabled: true,
+  pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  funcionesSeleccionadasTD: ["count"],
+  tipoGrafico: "dispersion",
+  ejeXDispersion: "GEOGRAFÍA",
+  ejeYDispersion: "SOCIALES",
 };
 let df;
 window.onload = pgEvent.getValues();

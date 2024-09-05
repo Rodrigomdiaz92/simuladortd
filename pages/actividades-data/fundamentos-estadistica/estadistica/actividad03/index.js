@@ -19,13 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbxQvlTkI3cgdnrXPOo6xCwysmKcDvTV0V8YFJiAuuO4uYvvBnxdp6YY4q4v7xLDQTrJ/exec",
+    "https://script.google.com/macros/s/AKfycbyPLPxsson-EDwY9YofPlwsQ85Yb3zJWgDaUjdqHIRhwXFLGWiwoT9Ok1cXQSYuEFJU/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "histograma",
-  valorHistograma: "EDAD CLIENTE",
-  segmento: "",
+  valorHistograma: "ALTURA_CM",
+  segmento: 5,
 };
 let df;
 window.onload = pgEvent.getValues();

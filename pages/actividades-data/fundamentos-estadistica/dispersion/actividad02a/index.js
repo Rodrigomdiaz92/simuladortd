@@ -19,14 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbx37zyCa2XqMzxrE61b6-i9Y3h7KnHfXYJlQidpPOXImONFBrV1-n-JxQ2ZbnGB5Ql_/exec",
-  graphEnabled: false,
-  pivotEnabled: true,
+    "https://script.google.com/macros/s/AKfycbwwOjAS4juAnV0QNPKErOo-8Eemhf1G4b0Iyx9p6G2qmjtulW2fMv2kDf0dNCjdO5oXKA/exec",
+  graphEnabled: true,
+  pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["TAMAÑO_EMPRESA"],
-  funcionesSeleccionadasTD: ["count"],
+  tipoGrafico: "dispersion",
+  ejeXDispersion: "Fotos_En_Instagram",
+  ejeYDispersion: "Edad",
 };
 let df;
 window.onload = pgEvent.getValues();

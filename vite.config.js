@@ -157,6 +157,22 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/fundamentos-estadistica/estadistica/actividad03/act.html"
         ),
+        ejemploADispersion: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/ejemplo a/act.html"
+        ),
+        ejemploBDispersion: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/ejemplo b/act.html"
+        ),
+        actividadDispersion01a: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/actividad01a/act.html"
+        ),
+        actividadDispersion02a: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/actividad02a/act.html"
+        ),
         
       },
     },

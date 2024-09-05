@@ -626,6 +626,8 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+
+  //Histograma
   agregarValorHistograma(nuevoValorHistograma) {
     this.seleccionGraficos.seleccion.valorHistograma = nuevoValorHistograma;
     this.timer = true;
@@ -635,13 +637,40 @@ export const state = {
     console.log(this.seleccionGraficos.seleccion);
   },
   agregarSegmento(nuevoSegmento) {
-    this.seleccionGraficos.seleccion.Segmento = nuevoSegmento;
+    this.seleccionGraficos.seleccion.segmento = nuevoSegmento;
     this.timer = true;
     this.editingBlocked = true;
     this.actualizarIntervaloYRenderizar();
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+
+  // Dispersion
+  agregarEjeXDispersion(nuevoEjeXDispersion) {
+    this.seleccionGraficos.seleccion.ejeXDispersion = nuevoEjeXDispersion;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarEjeYDispersion(nuevoEjeYDispersion) {
+    this.seleccionGraficos.seleccion.ejeYDispersion = nuevoEjeYDispersion;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarLineaDeTendencia(nuevLineaDeTendencia) {
+    this.seleccionGraficos.seleccion.lineaDeTendencia = nuevLineaDeTendencia;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+
 
   //  Validacion Graficos
   validarTipoGrafico(tipo) {
@@ -729,44 +758,44 @@ export const state = {
     }
   },
   
-  validarSegmento(segmentoValido) {
-    appController.userSettings.settings.segmento = segmentoValido;
-    console.log("Valor del Segmenssto:", segmentoValido);
-    // Proporcionar retroalimentación basada en si el segmento es válido o no
-    if (segmentoValido === 1) {
-        window.tabEl.handleChat("El segmento seleccionado es correcto.", "correct");
+  validarSegmento(segmento) {
+    appController.userSettings.settings.segmento = segmento;
+    if (segmento == appController.app.baseSettings.segmento) {
+      window.tabEl.handleChat(`El segmento es correcto.`, "correct");
+    } else {
+      window.tabEl.handleChat(`La segmento NO es correcto.`, "error");
     }
 },
 
-graficoDeHistogramaCompletado(valorHistograma) {
+validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
   let errores = [];
 
-  // Validación del valor de histograma
-  if (valorHistograma !== appController.app.baseSettings.valorHistograma) {
+  if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+    errores.push("El tipo de gráfico no es correcto.");
+}
+
+  // Validar valorHistograma
+  if (valorHistograma != appController.app.baseSettings.valorHistograma) {
       errores.push("El valor del histograma no es correcto.");
   }
 
-  // Obtener el valor del segmento desde la configuración
-  const segmentoValido = appController.userSettings.settings.segmento;
-
-  // Validación del segmento (asegurarse de que `segmentoValido` es un booleano o el valor esperado)
-  if (segmentoValido !== 1) {
-      errores.push("El valor del segmento no es correcto.");
+  // Validar segmento
+  if (segmento != appController.app.baseSettings.segmento) {
+      errores.push("El segmento no es correcto.");
   }
 
-  console.log("Valor del Histograma:", valorHistograma);
-  console.log("Valor del Segmento:", segmentoValido);
-
-  // Si no hay errores, se completa el gráfico
+  // Mostrar errores
   if (errores.length === 0) {
-      window.tabEl.handleChat("El gráfico está completo", "correct");
-      appController.userSettings.settings.ejercicioCompletado = true;
+      window.tabEl.handleChat(`El gráfico está completo.`, "correct");
+      appController.userSettings.settings.valorHistograma = valorHistograma;
+      appController.userSettings.settings.segmento = segmento;
       pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
   } else {
-      window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
+      window.tabEl.handleChat(`Hay errores: ${errores.join(', ')}`, "error");
       pgEvent.postEvent("Failure", "Mal hecho", "", "");
   }
 },
+
 
     //
 
@@ -790,41 +819,44 @@ graficoDeHistogramaCompletado(valorHistograma) {
     }
   },
   
-  validarLineaDeTendencia(lineaDeTendencia) {
+  /*validarLineaDeTendencia(lineaDeTendencia) {
     appController.userSettings.settings.lineaDeTendencia = lineaDeTendencia;
     if (lineaDeTendencia == appController.app.baseSettings.lineaDeTendencia) {
       window.tabEl.handleChat(`Linea de tendencia seleccionada.`, "correct");
     } else {
       window.tabEl.handleChat(`La linea de tendencia NO esta seleccionada.`, "error");
     }
-  },
+  },*/
 
 
-  graficoDeDispersionCompletado(ejeXDispersion, ejeYDispersion, lineaDeTendencia) {
+  graficoDispersionCompletado(tipoGrafico, ejeXDispersion, ejeYDispersion, lineaDeTendencia) {
     let errores = [];
 
-    // Validación del eje X
+    console.log("ifejuif", lineaDeTendencia)
+
+    if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+      errores.push("El tipo de gráfico no es correcto.");
+  }
+
+
     if (ejeXDispersion != appController.app.baseSettings.ejeXDispersion) {
-        errores.push("El valor del eje X de dispersión no es correcto.");
+        errores.push("El valor del eje X no es correcto.");
     }
 
-    // Validación del eje Y
     if (ejeYDispersion != appController.app.baseSettings.ejeYDispersion) {
-        errores.push("El valor del eje Y de dispersión no es correcto.");
+        errores.push("El valor del eje Y no es correcto.");
     }
 
-    // Validación de la línea de tendencia
-    if (lineaDeTendencia != appController.app.baseSettings.lineaDeTendencia) {
-        errores.push("El valor de la línea de tendencia no es correcto.");
-    }
+    /*if (lineaDeTendencia != appController.app.baseSettings.lineaDeTendencia) {
+        errores.push("La línea de tendencia no es correcta.");
+    }*/
 
-    // Si no hay errores, se completa el gráfico
     if (errores.length === 0) {
-        window.tabEl.handleChat(`El gráfico está completo`, "correct");
+        window.tabEl.handleChat(`El gráfico de dispersión está completo`, "correct");
         appController.userSettings.settings.ejercicioCompletado = true;
         pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
-        window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
+        window.tabEl.handleChat(`Hay errores en tu gráfico de dispersión: ${errores.join(' ')}`, "error");
         pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
 },

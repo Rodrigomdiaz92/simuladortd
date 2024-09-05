@@ -440,13 +440,13 @@ customElements.define(
           // Obtener los valores necesarios para la validación
 
           const valorHistograma = this.querySelector("#valor-histograma").value;
-
-          //Escala
+          const segmento = this.querySelector("#tamaño-segmento").value;
 
           // Llamar a la función de validación después de crear el gráfico
-          state.graficoDeHistogramaCompletado(
-            valorHistograma
-
+          state.validarHistogramaYSector(
+            tipoGrafico,
+            valorHistograma,
+            segmento
           );
         
         } else if(tipoGrafico == "dispersion"){
@@ -459,15 +459,16 @@ customElements.define(
 
           const ejeXDispersion = this.querySelector("#ejeX-dispersion").value;
           const ejeYDispersion = this.querySelector("#ejeY-dispersion").value;
-          const lineaDeTendencia = this.querySelector("#linea-tendencia").value;
+          //const lineaDeTendencia = this.querySelector("#linea-tendencia").value;
 
           //Escala
 
           // Llamar a la función de validación después de crear el gráfico
-          state.graficoDeDispersionCompletado(
+          state.graficoDispersionCompletado(
+            tipoGrafico,
             ejeXDispersion, 
             ejeYDispersion, 
-            lineaDeTendencia
+            //lineaDeTendencia
           );  
         } 
         state.fueEjecutado();
@@ -501,11 +502,11 @@ customElements.define(
         state.validarvalorHistograma(valorHistograma.value);
       });
 
-      /*const segmento = this.querySelector("#tamaño-segmento");
+      const segmento = this.querySelector("#tamaño-segmento");
       segmento.addEventListener("change", this.updateOptions.bind(this));
       segmento.addEventListener("change", () => {
-        state.validarsegmento(segmento.value);
-      });*/
+        state.validarSegmento(segmento.value);
+      });
         //
 
         // Dispersión
@@ -1375,9 +1376,9 @@ customElements.define(
     // Método para crear un histograma
     createHistogram(context, data) {
       const selectValorHistograma = this.querySelector("#valor-histograma");
-      console.log("selectValorHistograma:", selectValorHistograma);
+      //console.log("selectValorHistograma:", selectValorHistograma);
       const selectSegmento = this.querySelector("#tamaño-segmento");
-      console.log("selectTamañoSegmento:", selectSegmento);
+      //console.log("selectTamañoSegmento:", selectSegmento);
     
       if (!selectValorHistograma || !selectSegmento) {
           console.error("Elemento(s) no encontrado(s)");
@@ -1400,8 +1401,8 @@ customElements.define(
   
       // Obtiene el múltiplo adecuado basado en el rango
       const obtenerMultiploAdecuado = (rango) => {
-          if (rango > 0 && rango < 10) return 1;
-          if (rango >= 10 && rango < 50) return 5;
+          if (rango > 0 && rango < 11) return 1;
+          if (rango >= 11 && rango < 50) return 5;
           if (rango >= 50 && rango < 200) return 10;
           if (rango >= 200 && rango < 800) return 50;
           if (rango >= 800 && rango < 1500) return 100;
@@ -1424,82 +1425,49 @@ customElements.define(
           window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
           return;
       }
-  
-      const minValue = Math.min(...valorGraficoData);
-      const maxValue = Math.max(...valorGraficoData);
-      const rango = maxValue - minValue;
-      const mitadMasUno = Math.floor(rango / 2) + 1;
-      const multiploAdecuado = obtenerMultiploAdecuado(rango);
-      let maxSegmentoPermitido = Math.floor(mitadMasUno / multiploAdecuado) * multiploAdecuado;
-  
-      // Generar una lista de múltiplos aceptados
-      const multiplosAceptados = [];
-      for (let i = multiploAdecuado; i <= maxSegmentoPermitido; i += multiploAdecuado) {
-          multiplosAceptados.push(i);
-      }
-  
-      // Validar el segmento
-      const validateSegmento = () => {
-          const Segmento = parseFloat(selectSegmento.value);
-          let segmentoValido = 0;  // Inicializa como inválido
-          if (Segmento % multiploAdecuado === 0 && Segmento >= multiploAdecuado && Segmento <= maxSegmentoPermitido) {
-              segmentoValido = 1;  // Cambia a válido solo si cumple las condiciones
-          }
-  
-          if (segmentoValido === 0) {
-              window.tabEl.handleChat(`El tamaño del segmento debe ser un múltiplo de ${multiploAdecuado} entre ${multiploAdecuado} y ${maxSegmentoPermitido} y no debe contener decimales.`, "error");
-          } //else {
-              state.validarSegmento(segmentoValido);
-          //}
-      };
-  
-      // Agregar el event listener para validar el segmento en tiempo real
-      //selectSegmento.addEventListener("input", validateSegmento);
 
-      validateSegmento();
-
-  // Validar el tamaño del segmento
-  if (Segmento > maxSegmentoPermitido) {
-    window.tabEl.handleChat(`El tamaño del segmento no puede ser mayor a ${maxSegmentoPermitido}.`, "error");
-    return;
-  }
-
-  if (Segmento < multiploAdecuado) {
-    window.tabEl.handleChat(`El tamaño del segmento debe ser al menos ${multiploAdecuado}.`, "error");
-    return;
-  }
-
-  // Ajustar el tamaño del segmento
-  const tamañoSegmentoAjustado = ajustarTamañoSegmento(Segmento, minValue, maxValue);
-
-  // Validar el tamaño del segmento
-  if (Segmento < tamañoSegmentoAjustado) {
-    window.tabEl.handleChat("El tamaño del segmento debe ser un múltiplo válido.", "error");
-    return;
-  }
-
-  // Determinar el número de bins
-  const numBins = (Segmento >= rango) ? 1 : Math.ceil(rango / tamañoSegmentoAjustado);
-  
-  // Si el tamaño del segmento es mayor o igual al rango, solo debe haber un bin
-  const bins = Array(numBins).fill(0);
-
-  valorGraficoData.forEach((value) => {
-    const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmentoAjustado), bins.length - 1);
-    bins[binIndex]++;
-  });
-
-  // Ajuste final para que el último bin no sobrepase el valor máximo
-  const binLabels = Array.from({ length: bins.length }, (_, i) => {
-    const lowerBound = minValue + i * tamañoSegmentoAjustado;
-    let upperBound = lowerBound + tamañoSegmentoAjustado;
-    if (i === bins.length - 1) {
-      upperBound = maxValue; // Ajuste el último intervalo al valor máximo
+    // Verifica si todos los elementos del array son números válidos
+    if (!isNumericArray(valorGraficoData)) {
+        window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
+        return;
     }
-    return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
-  });
 
-  const tituloGrafico = "Histograma"; // Asignar un valor de título por defecto
+    const minValue = Math.min(...valorGraficoData);
+    const maxValue = Math.max(...valorGraficoData);
+    const rango = maxValue - minValue;
+    const mitadMasUno = Math.floor(rango / 2) + 1;
+    const multiploAdecuado = obtenerMultiploAdecuado(rango);
+    let maxSegmentoPermitido = Math.floor(mitadMasUno / multiploAdecuado) * multiploAdecuado;
+
+    // Validar el tamaño del segmento
+    if (Segmento < multiploAdecuado || Segmento > maxSegmentoPermitido || Segmento % multiploAdecuado !== 0) {
+        window.tabEl.handleChat(`El tamaño del segmento debe ser un múltiplo de ${multiploAdecuado} entre ${multiploAdecuado} y ${maxSegmentoPermitido} y no debe contener decimales.`, "error");
+        return;
+    }
+
+    // Ajustar el tamaño del segmento
+    const tamañoSegmentoAjustado = ajustarTamañoSegmento(Segmento, minValue, maxValue);
+
+    // Determinar el número de bins
+    const numBins = (Segmento >= rango) ? 1 : Math.ceil(rango / tamañoSegmentoAjustado);
+
+    // Si el tamaño del segmento es mayor o igual al rango, solo debe haber un bin
+    const bins = Array(numBins).fill(0);
+
+    valorGraficoData.forEach((value) => {
+        const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmentoAjustado), bins.length - 1);
+        bins[binIndex]++;
+    });
+
+    // Ajuste final para que el último bin no sobrepase el valor máximo
+    // Ajuste final para que el último bin no sobrepase el valor máximo
+    const binLabels = Array.from({ length: bins.length }, (_, i) => {
+      const lowerBound = minValue + i * tamañoSegmentoAjustado;
+      const upperBound = (i === bins.length - 1) ? maxValue : lowerBound + tamañoSegmentoAjustado - 1;
+      return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
+    });
+
+    const tituloGrafico = "Histograma";
   
       this.myChart = new Chart(context, {
         type: "bar",
