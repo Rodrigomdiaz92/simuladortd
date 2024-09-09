@@ -1,20 +1,20 @@
-import { DataTable } from "../../../../../clases/DataTable";
-import { DataTableView } from "../../../../../clases/DataTableView";
-import { DataTableController } from "../../../../../clases/DataTableController";
-import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
-import "../../../../../componentes/menu/menu";
-import "../../../../../componentes/menu/archivo-menu";
-import "../../../../../componentes/menu/reloj";
-import "../../../../../componentes/loader";
-import "../../../../../componentes/sheets-tab/sheet";
-import "../../../../../componentes/sheets-tab/sheet-button";
-import "../../../../../componentes/sheets-tab/tab";
-import "../../../../../componentes/sheets/grafico";
-import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../../../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../../../../clases/App";
-import { UserSettings } from "../../../../../clases/UserSettings";
+import { DataTable } from "@clases/DataTable";
+import { DataTableView } from "@clases/DataTableView";
+import { DataTableController } from "@clases/DataTableController";
+import { pgEvent } from "@utils/pgEvent"; // Importar PgEvent
+import "@componentes/menu/menu";
+import "@componentes/menu/archivo-menu";
+import "@componentes/menu/reloj";
+import "@componentes/loader";
+import "@componentes/sheets-tab/sheet";
+import "@componentes/sheets-tab/sheet-button";
+import "@componentes/sheets-tab/tab";
+import "@componentes/sheets/grafico";
+import "@componentes/sheets/tabladinamica/tabladinamica";
+import "@componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "@componentes/sheets/tabladinamica/data-controls";
+import { App } from "@clases/App";
+import { UserSettings } from "@clases/UserSettings";
 import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
@@ -99,7 +99,7 @@ async function main() {
     parsedJSONfromPG.data !== null &&
     parsedJSONfromPG.data !== undefined
   ) {
-    console.log("vengo de PG", parsedJSONfromPG.data);
+    //console.log("vengo de PG");
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
     appController.userSettings = new UserSettings(

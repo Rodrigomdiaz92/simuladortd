@@ -763,7 +763,7 @@ export const state = {
     if (segmento == appController.app.baseSettings.segmento) {
       window.tabEl.handleChat(`El segmento es correcto.`, "correct");
     } else {
-      window.tabEl.handleChat(`La segmento NO es correcto.`, "error");
+      window.tabEl.handleChat(`El segmento NO es correcto.`, "error");
     }
 },
 
