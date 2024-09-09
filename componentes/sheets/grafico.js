@@ -660,31 +660,30 @@ customElements.define(
        //histograma
 
       const defaultOptionValorHistograma = `<option value="none" selected>Agregar Valor</option>`;
+      const defaultOptionValorEjeXDispersion = `<option value="none" selected>Agregar Valor</option>`;
+      const defaultOptionValorEjeYDispersion = `<option value="none" selected>Agregar Valor</option>`;
       //const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi
 
       const finalOptionsHTMLEtiqueta = defaultOptionEtiqueta + optionsHTML;
-      const finalOptionsHTMLValorGrafico =
-        defaultOptionValorGrafico + optionsHTML;
+      const finalOptionsHTMLValorGrafico = defaultOptionValorGrafico + optionsHTML;
       const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
       const finalOptionsHTMLValorHistograma = defaultOptionValorHistograma + optionsHTMLNumeric;
+      const finalOptionsHTMLValorEjeXDispersion = defaultOptionValorEjeXDispersion + optionsHTMLNumeric;
+      const finalOptionsHTMLValorEjeYDispersion = defaultOptionValorEjeYDispersion + optionsHTMLNumeric;
       
       this.querySelector("#etiquetas-grafico").innerHTML =
         finalOptionsHTMLEtiqueta;
       //this.querySelector("#ejeX").innerHTML = optionsHTML;
       this.querySelector("#ejeX").innerHTML = finalOptionsHTMLEjeX;
       //Dispersion
-      this.querySelector("#ejeX-dispersion").innerHTML = finalOptionsHTMLEjeX;
-      this.querySelector("#ejeY-dispersion").innerHTML = finalOptionsHTMLEjeX;
-      /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */
+      this.querySelector("#ejeX-dispersion").innerHTML = finalOptionsHTMLValorEjeXDispersion;
+      this.querySelector("#ejeY-dispersion").innerHTML = finalOptionsHTMLValorEjeYDispersion;
       // histograma
-      this.querySelector("#valor-histograma").innerHTML =
-      finalOptionsHTMLValorHistograma; 
-      this.querySelector("#porcentaje-circulo").innerHTML =
-      defaultOptionHuecoCirculo;
+      this.querySelector("#valor-histograma").innerHTML = finalOptionsHTMLValorHistograma; 
+      this.querySelector("#porcentaje-circulo").innerHTML = defaultOptionHuecoCirculo;
 
       
-      this.querySelector("#valor-grafico").innerHTML =
-        finalOptionsHTMLValorGrafico;
+      this.querySelector("#valor-grafico").innerHTML = finalOptionsHTMLValorGrafico;
 
       const serieOptionHTML = columns
         .map(
