@@ -32,6 +32,11 @@ export const state = {
       apilado: "",
       escala: "",
       ejecutado: false,
+      valorHistograma: "",
+      segmento: "",
+      ejeXDispersion: "",
+      ejeYDispersion: "",
+      lineaDeTendencia: "",
     },
     intervalo: {},
     datos: [],
@@ -622,13 +627,58 @@ export const state = {
     console.log(this.seleccionGraficos.seleccion);
   },
 
+  //Histograma
+  agregarValorHistograma(nuevoValorHistograma) {
+    this.seleccionGraficos.seleccion.valorHistograma = nuevoValorHistograma;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarSegmento(nuevoSegmento) {
+    this.seleccionGraficos.seleccion.segmento = nuevoSegmento;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+
+  // Dispersion
+  agregarEjeXDispersion(nuevoEjeXDispersion) {
+    this.seleccionGraficos.seleccion.ejeXDispersion = nuevoEjeXDispersion;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarEjeYDispersion(nuevoEjeYDispersion) {
+    this.seleccionGraficos.seleccion.ejeYDispersion = nuevoEjeYDispersion;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+  agregarLineaDeTendencia(nuevLineaDeTendencia) {
+    this.seleccionGraficos.seleccion.lineaDeTendencia = nuevLineaDeTendencia;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
+
+
   //  Validacion Graficos
   validarTipoGrafico(tipo) {
     appController.userSettings.settings.tipoGrafico = tipo;
     if (tipo == appController.app.baseSettings.tipoGrafico) {
-      window.tabEl.handleChat(`El tipo de grafico es correcto.`, "correct");
+      window.tabEl.handleChat(`El tipo de gráfico es correcto.`, "correct");
     } else {
-      window.tabEl.handleChat(`El tipo de grafico NO es correcto.`, "error");
+      window.tabEl.handleChat(`El tipo de gráfico NO es correcto.`, "error");
     }
   },
 
@@ -657,34 +707,162 @@ export const state = {
 
   validarHuecoCirculo(valorHueco) {
     appController.userSettings.settings.huecoCirculo = valorHueco;
-    if (valorHueco == appController.app.baseSettings.huecoCirculo) {
+    if (valorHueco < 0 || valorHueco > 50) {
       window.tabEl.handleChat(
-        `El porcentaje del círculo es correcto.`,
-        "correct"
-      );
-    } else {
-      window.tabEl.handleChat(
-        `El porcentaje del círculo NO es correcto.`,
+        `El porcentaje del círculo debe ser entre 0 y 50.`,
         "error"
       );
     }
   },
 
   graficoTortaCompletado(tipoGrafico, valorColumna, valorGrafico, valorHueco) {
-    if (
-      tipoGrafico == appController.app.baseSettings.tipoGrafico &&
-      valorColumna == appController.app.baseSettings.etiqueta &&
-      valorGrafico == appController.app.baseSettings.valorGrafico &&
-      valorHueco == appController.app.baseSettings.huecoCirculo
-    ) {
-      window.tabEl.handleChat(`El grafico esta completo`, "correct");
-      appController.userSettings.settings.ejercicioCompletado = true;
-      pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
+    let errores = [];
+
+    if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+        errores.push("El tipo de gráfico no es correcto.");
+    }
+
+    if (valorColumna != appController.app.baseSettings.etiqueta) {
+        errores.push("El valor de la columna no es correcto.");
+    }
+
+    if (valorGrafico != appController.app.baseSettings.valorGrafico) {
+        errores.push("El valor del gráfico no es correcto.");
+    }
+
+    if (!(valorHueco >= 0 && valorHueco <= 50)) {
+        errores.push("El valor del hueco debe estar entre 0 y 50.");
+    }
+
+    if (errores.length === 0) {
+        window.tabEl.handleChat(`El gráfico está completo`, "correct");
+        appController.userSettings.settings.ejercicioCompletado = true;
+        pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
-      window.tabEl.handleChat(`Hay errores en tu grafico.`, "error");
-      pgEvent.postEvent("Failure", "Mal hecho", "", "");
+        window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
+        pgEvent.postEvent("Failure", "Mal hecho", "", "");
+    }
+},
+
+
+  //
+  
+  // Histograma
+
+  validarvalorHistograma(valorHistograma) {
+    appController.userSettings.settings.valorHistograma = valorHistograma;
+    if (valorHistograma == appController.app.baseSettings.valorHistograma) {
+      window.tabEl.handleChat(`La serie seleccionada es correcta.`, "correct");
+    } else {
+      window.tabEl.handleChat(`La serie seleccionada NO es correcta.`, "error");
     }
   },
+  
+  validarSegmento(segmento) {
+    appController.userSettings.settings.segmento = segmento;
+    if (segmento == appController.app.baseSettings.segmento) {
+      window.tabEl.handleChat(`El segmento es correcto.`, "correct");
+    } else {
+      window.tabEl.handleChat(`El segmento NO es correcto.`, "error");
+    }
+},
+
+validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
+  let errores = [];
+
+  if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+    errores.push("El tipo de gráfico no es correcto.");
+}
+
+  // Validar valorHistograma
+  if (valorHistograma != appController.app.baseSettings.valorHistograma) {
+      errores.push("El valor del histograma no es correcto.");
+  }
+
+  // Validar segmento
+  if (segmento != appController.app.baseSettings.segmento) {
+      errores.push("El segmento no es correcto.");
+  }
+
+  // Mostrar errores
+  if (errores.length === 0) {
+      window.tabEl.handleChat(`El gráfico está completo.`, "correct");
+      appController.userSettings.settings.valorHistograma = valorHistograma;
+      appController.userSettings.settings.segmento = segmento;
+      pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
+  } else {
+      window.tabEl.handleChat(`Hay errores: ${errores.join(', ')}`, "error");
+      pgEvent.postEvent("Failure", "Mal hecho", "", "");
+  }
+},
+
+
+    //
+
+    //Dispersion 
+
+  validarEjeXDispersion(ejeXDispersion) {
+    appController.userSettings.settings.ejeXDispersion = ejeXDispersion;
+    if (ejeXDispersion == appController.app.baseSettings.ejeXDispersion) {
+      window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
+    } else {
+      window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+    }
+  },
+  
+  validarEjeYDispersion(ejeYDispersion) {
+    appController.userSettings.settings.ejeYDispersion = ejeYDispersion;
+    if (ejeYDispersion == appController.app.baseSettings.ejeYDispersion) {
+      window.tabEl.handleChat(`El valor seleccionado es correcto.`, "correct");
+    } else {
+      window.tabEl.handleChat(`El valor seleccionado NO es correcto.`, "error");
+    }
+  },
+  
+  /*validarLineaDeTendencia(lineaDeTendencia) {
+    appController.userSettings.settings.lineaDeTendencia = lineaDeTendencia;
+    if (lineaDeTendencia == appController.app.baseSettings.lineaDeTendencia) {
+      window.tabEl.handleChat(`Linea de tendencia seleccionada.`, "correct");
+    } else {
+      window.tabEl.handleChat(`La linea de tendencia NO esta seleccionada.`, "error");
+    }
+  },*/
+
+
+  graficoDispersionCompletado(tipoGrafico, ejeXDispersion, ejeYDispersion, lineaDeTendencia) {
+    let errores = [];
+
+    console.log("ifejuif", lineaDeTendencia)
+
+    if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+      errores.push("El tipo de gráfico no es correcto.");
+  }
+
+
+    if (ejeXDispersion != appController.app.baseSettings.ejeXDispersion) {
+        errores.push("El valor del eje X no es correcto.");
+    }
+
+    if (ejeYDispersion != appController.app.baseSettings.ejeYDispersion) {
+        errores.push("El valor del eje Y no es correcto.");
+    }
+
+    /*if (lineaDeTendencia != appController.app.baseSettings.lineaDeTendencia) {
+        errores.push("La línea de tendencia no es correcta.");
+    }*/
+
+    if (errores.length === 0) {
+        window.tabEl.handleChat(`El gráfico de dispersión está completo`, "correct");
+        appController.userSettings.settings.ejercicioCompletado = true;
+        pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
+    } else {
+        window.tabEl.handleChat(`Hay errores en tu gráfico de dispersión: ${errores.join(' ')}`, "error");
+        pgEvent.postEvent("Failure", "Mal hecho", "", "");
+    }
+},
+
+    //
+
 
   validarEjeXBarras(valorEjeX) {
     appController.userSettings.settings.ejeX = valorEjeX;
@@ -710,7 +888,7 @@ export const state = {
       window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
     } else {
       window.tabEl.handleChat(
-        `La Serie seleccionada no es la pedida por el ejercicio.`,
+        `La serie seleccionada no es la pedida por el ejercicio.`,
         "error"
       );
     }
@@ -738,11 +916,51 @@ export const state = {
     if (ingresado == correcto) {
       window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
     } else {
-      window.tabEl.handleChat(`Revisa si tu grafico debe ser apilado o no.`, "error");
+      window.tabEl.handleChat(`Revisa si tu gráfico debe ser apilado o no.`, "error");
     }
   },
 
   graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
+    let errores = [];
+    let serieIngresada = ordenarAlfabeticamente(series);
+    let serieCorrecta = ordenarAlfabeticamente(appController.app.baseSettings.serie);
+
+    // Validación del tipo de gráfico
+    if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
+        errores.push("El tipo de gráfico no es correcto.");
+    }
+
+    // Validación del eje X
+    if (
+        quitarAcentosYCaracteresEspeciales(ejeX) == 
+        quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX)
+    ) {
+        errores.push("El eje X no es correcto.");
+    }
+
+    // Validación de las series
+    if (!arraysIguales(serieIngresada, serieCorrecta)) {
+        errores.push("Las series no son correctas.");
+    }
+
+    // Validación del apilamiento
+    if (apilamiento != appController.app.baseSettings.apilado) {
+        errores.push("El valor del apilamiento no es correcto.");
+    }
+
+    // Si no hay errores, se completa el gráfico
+    if (errores.length === 0) {
+        window.tabEl.handleChat(`El gráfico está completo`, "correct");
+        appController.userSettings.settings.ejercicioCompletado = true;
+        pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
+    } else {
+        window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
+        pgEvent.postEvent("Failure", "Mal hecho", "", "");
+    }
+},
+
+
+  /*graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
     let serieIngresada = series;
     let serieCorrecta = ordenarAlfabeticamente(
       appController.app.baseSettings.serie
@@ -756,14 +974,16 @@ export const state = {
       arraysIguales(serieIngresada, serieCorrecta) &&
       apilamiento == appController.app.baseSettings.apilado
     ) {
-      window.tabEl.handleChat(`El grafico esta completo`, "correct");
+      window.tabEl.handleChat(`El gráfico esta completo`, "correct");
       appController.userSettings.settings.ejercicioCompletado = true;
       pgEvent.postEvent("SUCCESS", "Bien hecho", "", "");
     } else {
-      window.tabEl.handleChat(`Hay errores en tu grafico.`, "error");
+      window.tabEl.handleChat(`Hay errores en tu gráfico.`, "error");
       pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
-  },
+  },*/
+
+
   fueEjecutado() {
     console.log("fue ejecutado");
 

@@ -27,7 +27,9 @@ const BASE_SETTINGS = {
   ejeX: "",
   serie: "",
   columna: "POSICION",
-  huecoCirculo: "0"
+  huecoCirculo: "",
+  valorGrafico: "sPublicaciones",
+  valorHistograma: "sPublicaciones",
 };
 let df;
 window.onload = pgEvent.getValues();

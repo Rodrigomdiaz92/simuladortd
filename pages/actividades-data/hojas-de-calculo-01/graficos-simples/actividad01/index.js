@@ -19,7 +19,7 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbxIFda25W6cvbM3RtDx4MxONwZTaDwk7L4sbhxwdQQJ_VQf68QGR11DNeQGDbHZz2KLnA/exec",
+    "https://script.google.com/macros/s/AKfycbyowtqFxdT2tc3z3yEvBFPrNb9ixnMsy7w1ilN952y_rumtdXASztY7UUfaUfY69dF3/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
@@ -28,7 +28,6 @@ const BASE_SETTINGS = {
   serie: "",
   etiqueta: "FAMILIA_CONSOLAS",
   valorGrafico: "UNIDADES_VENDIDAS",
-  huecoCirculo: ""
 };
 let df;
 window.onload = pgEvent.getValues();

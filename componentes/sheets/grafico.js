@@ -49,6 +49,8 @@ customElements.define(
                       <option value="none">---</option>
                       <option value="torta">Gráfico de Torta</option>
                       <option value="barras">Gráfico de Barras</option>
+                      <option value="histograma">Histograma</option>
+                      <option value="dispersion">Dispersion</option>
                     </select>
                   </div>
                   <div id="confi-torta" class="hidden">              
@@ -57,8 +59,14 @@ customElements.define(
                     <label>Valor:</label>
                     <select class="graph-select" id="valor-grafico"></select> 
                     <label>Hueco del círculo(%)</label>
-                    <input class="graph-input" type="number" id="porcentaje-circulo">
+                    <input class="graph-input" type="number" id="porcentaje-circulo" value="0">
                   </div>
+                  <div id="confi-histograma" class="hidden">              
+                    <label>Valor:</label>
+                    <select class="graph-select" id="valor-histograma"></select> 
+                    <label>Tamaño de los Segmentos</label>
+                    <input class="graph-input" type="number" id="tamaño-segmento">
+                  </div>  
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
                     <select class="graph-select" id="ejeX"></select>                    
@@ -99,6 +107,29 @@ customElements.define(
                       <option value="1000000000000">1.000.000.000.000</option>                 
                     </select>
                   </div>
+
+                  <div id="confi-dispersion" class="hidden">              
+                    <label>Eje X:</label>
+                    <select class="graph-select" id="ejeX-dispersion"></select>
+                    <br>
+                    <label>Serie</label>
+                    <select class="graph-select" id="ejeY-dispersion"></select>
+                    
+                    <label for="lineaTendencia" style=" margin-left: 290px;">Linea de Tendencia</label>
+                    <input type="checkbox" id="linea-tendencia"> 
+                    <h3>Personalizar</h3> 
+                    <div>              
+                    <label>Titulo eje X</label>
+                    <input class="graph-input" type="text" id="titulo-grafico-x">
+                    </div>
+                    <div>
+                    <label>Titulo eje Y</label>
+                    <input class="graph-input" type="text" id="titulo-grafico-y">
+                    
+                    </div>
+                    
+                  </div>
+                  
                   <button id="control-confirm" class="control-button">Confirmar</button>             
                 </ul>
 
@@ -144,6 +175,10 @@ customElements.define(
             width: 345px;
           }
           #confi-torta label {
+              display: block;
+              margin-top: 10px
+          }
+          #confi-histograma label {
               display: block;
               margin-top: 10px
           }
@@ -350,7 +385,7 @@ customElements.define(
 
       const controlConfirm = this.querySelector("#control-confirm");
 
-      //validacion de graficos   Torta y barras
+      //validacion de graficos
       controlConfirm.addEventListener("click", () => {
         const tipoGrafico = this.querySelector("#tipoGrafico").value;
 
@@ -396,11 +431,46 @@ customElements.define(
             this.selectedOptions,
             isChecked
           );
-        } /*else if(HISTOGRAMA){    //proximo grafico
+        } else if(tipoGrafico == "histograma") { 
+          this.createChart();
+
+          // Verificar que createChart haya creado el gráfico
+          console.log("Gráfico creado");
+
+          // Obtener los valores necesarios para la validación
+
+          const valorHistograma = this.querySelector("#valor-histograma").value;
+          const segmento = this.querySelector("#tamaño-segmento").value;
+
+          // Llamar a la función de validación después de crear el gráfico
+          state.validarHistogramaYSector(
+            tipoGrafico,
+            valorHistograma,
+            segmento
+          );
         
-        } else if(DISPERSION){    //proximo grafico
-        
-        }*/
+        } else if(tipoGrafico == "dispersion"){
+          this.createChart();
+
+          // Verificar que createChart haya creado el gráfico
+          console.log("Gráfico creado");
+
+          // Obtener los valores necesarios para la validación
+
+          const ejeXDispersion = this.querySelector("#ejeX-dispersion").value;
+          const ejeYDispersion = this.querySelector("#ejeY-dispersion").value;
+          //const lineaDeTendencia = this.querySelector("#linea-tendencia").value;
+
+          //Escala
+
+          // Llamar a la función de validación después de crear el gráfico
+          state.graficoDispersionCompletado(
+            tipoGrafico,
+            ejeXDispersion, 
+            ejeYDispersion, 
+            //lineaDeTendencia
+          );  
+        } 
         state.fueEjecutado();
       });
 
@@ -424,6 +494,42 @@ customElements.define(
       valorGrafico.addEventListener("change", () => {
         state.validarValorGrafico(valorGrafico.value);
       });
+
+        // Histograma 
+      const valorHistograma = this.querySelector("#valor-histograma");
+      valorHistograma.addEventListener("change", this.updateOptions.bind(this));
+      valorHistograma.addEventListener("change", () => {
+        state.validarvalorHistograma(valorHistograma.value);
+      });
+
+      const segmento = this.querySelector("#tamaño-segmento");
+      segmento.addEventListener("change", this.updateOptions.bind(this));
+      segmento.addEventListener("change", () => {
+        state.validarSegmento(segmento.value);
+      });
+        //
+
+        // Dispersión
+
+      const ejeXDispersion = this.querySelector("#ejeX-dispersion");
+      ejeXDispersion.addEventListener("change", this.updateOptions.bind(this));
+      ejeXDispersion.addEventListener("change", () => {
+        state.validarEjeXDispersion(ejeXDispersion.value);
+      });
+
+      const ejeYDispersion = this.querySelector("#ejeY-dispersion");
+      ejeYDispersion.addEventListener("change", this.updateOptions.bind(this));
+      ejeYDispersion.addEventListener("change", () => {
+        state.validarEjeYDispersion(ejeYDispersion.value);
+      });
+
+      const lineaDeTendencia = this.querySelector("#linea-tendencia");
+      lineaDeTendencia.addEventListener("change", this.updateOptions.bind(this));
+      lineaDeTendencia.addEventListener("change", () => {
+        state.validarLineaDeTendencia(lineaDeTendencia.checked);
+      });
+          
+      //
 
       const selectEjex = this.querySelector("#ejeX");
       selectEjex.addEventListener("change", this.updateOptions.bind(this));
@@ -501,6 +607,8 @@ customElements.define(
       const tipoGrafico = this.querySelector("#tipoGrafico");
       const contenedorOpciones1 = this.querySelector("#confi-torta");
       const contenedorOpciones2 = this.querySelector("#confi-barras");
+      const contenedorOpciones3 = this.querySelector("#confi-histograma");
+      const contenedorOpciones4 = this.querySelector("#confi-dispersion");
 
       contenedorOpciones1.classList.toggle(
         "hidden",
@@ -509,6 +617,14 @@ customElements.define(
       contenedorOpciones2.classList.toggle(
         "hidden",
         tipoGrafico.value !== "barras"
+      );
+      contenedorOpciones3.classList.toggle(
+        "hidden",
+        tipoGrafico.value !== "histograma"
+      );
+      contenedorOpciones4.classList.toggle(
+        "hidden",
+        tipoGrafico.value !== "dispersion"
       );
 
       state.agregarTipoGrafico(tipoGrafico.value);
@@ -524,27 +640,51 @@ customElements.define(
       const newDf = new dfd.DataFrame(data);
       const columns = newDf.columns;
 
-      const optionsHTML = columns
+      const optionsHTML = columns // Todas las col
         .map((col) => `<option value=${col}>${col}</option>`)
         .join("");
+      
+      const numericColumns = columns.filter(col => {  //Filtrar numericos
+        const sampleData = data[col]; 
+        return Array.isArray(sampleData) && sampleData.every(value => typeof value === 'number' && !isNaN(value));
+      });
+
+      const optionsHTMLNumeric = numericColumns //Valores solo numericos
+        .map((col) => `<option value="${col}">${col}</option>`)
+        .join("");
+
       const defaultOptionValorGrafico = `<option value="none" selected>Agregar Valor</option>`;
       const defaultOptionEtiqueta = `<option value="none" selected>Agregar Etiqueta</option>`;
       const defaultOptionEjeX = `<option value="none" selected> --- </option>`;
+      const defaultOptionHuecoCirculo = `<option value= "none" selected> 0 </option>`;
+       //histograma
+
+      const defaultOptionValorHistograma = `<option value="none" selected>Agregar Valor</option>`;
       //const defaultOptionSerie = `<option value="none" selected>Agregar Serie</option>`; Linea de Tomi
 
       const finalOptionsHTMLEtiqueta = defaultOptionEtiqueta + optionsHTML;
       const finalOptionsHTMLValorGrafico =
         defaultOptionValorGrafico + optionsHTML;
       const finalOptionsHTMLEjeX = defaultOptionEjeX + optionsHTML;
-      //const finalOptionsHTMLSerie = defaultOptionSerie + optionsHTML; Linea de Tomi
-
+      const finalOptionsHTMLValorHistograma = defaultOptionValorHistograma + optionsHTMLNumeric;
+      
       this.querySelector("#etiquetas-grafico").innerHTML =
         finalOptionsHTMLEtiqueta;
       //this.querySelector("#ejeX").innerHTML = optionsHTML;
       this.querySelector("#ejeX").innerHTML = finalOptionsHTMLEjeX;
+      //Dispersion
+      this.querySelector("#ejeX-dispersion").innerHTML = finalOptionsHTMLEjeX;
+      this.querySelector("#ejeY-dispersion").innerHTML = finalOptionsHTMLEjeX;
       /*this.querySelector("#serie").innerHTML = finalOptionsHTMLSerie; Linea de Tomi */
+      // histograma
+      this.querySelector("#valor-histograma").innerHTML =
+      finalOptionsHTMLValorHistograma; 
+      this.querySelector("#porcentaje-circulo").innerHTML =
+      defaultOptionHuecoCirculo;
+
+      
       this.querySelector("#valor-grafico").innerHTML =
-        finalOptionsHTMLValorGrafico; // Agrega esta línea
+        finalOptionsHTMLValorGrafico;
 
       const serieOptionHTML = columns
         .map(
@@ -564,8 +704,9 @@ customElements.define(
     }
 
     createChart() {
-      state.fueEjecutado();
+      //state.fueEjecutado();
       const tipoGrafico = this.querySelector("#tipoGrafico").value;
+      console.log(tipoGrafico)
       const contenedorGrafico = this.querySelector("#plot_div");
       const context = contenedorGrafico.getContext("2d");
       const data = state.seleccion.datos;
@@ -584,6 +725,12 @@ customElements.define(
         this.createPieChart(context, data);
       } else if (tipoGrafico === "barras") {
         this.createBarChart(context, data);
+      }
+      else if (tipoGrafico === "histograma") {
+        this.createHistogram(context, data);
+      }
+      else if (tipoGrafico === "dispersion") {
+        this.createDispersion(context, data);
       }
     }
 
@@ -1216,5 +1363,284 @@ customElements.define(
         });
       }
     }
+
+    
+    // Histograma
+    // Definir la función isNumericArray
+    isNumericArray(arr) {
+      return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
+    }
+  
+  
+  
+    // Método para crear un histograma
+    createHistogram(context, data) {
+      const selectValorHistograma = this.querySelector("#valor-histograma");
+      //console.log("selectValorHistograma:", selectValorHistograma);
+      const selectSegmento = this.querySelector("#tamaño-segmento");
+      //console.log("selectTamañoSegmento:", selectSegmento);
+    
+      if (!selectValorHistograma || !selectSegmento) {
+          console.error("Elemento(s) no encontrado(s)");
+          return;
+      }
+    
+      const selectedValue = selectValorHistograma.value;
+      if (!data.hasOwnProperty(selectedValue)) {
+          console.error("Invalid column selected");
+          return;
+      }
+    
+      const valorGraficoData = data[selectedValue];
+      const Segmento = parseFloat(selectSegmento.value);
+  
+      // Verifica si todos los elementos del array son números válidos
+      const isNumericArray = (arr) => {
+          return Array.isArray(arr) && arr.every(value => typeof value === 'number' && !isNaN(value));
+      };
+  
+      // Obtiene el múltiplo adecuado basado en el rango
+      const obtenerMultiploAdecuado = (rango) => {
+          if (rango > 0 && rango < 11) return 1;
+          if (rango >= 11 && rango < 50) return 5;
+          if (rango >= 50 && rango < 200) return 10;
+          if (rango >= 200 && rango < 800) return 50;
+          if (rango >= 800 && rango < 1500) return 100;
+          if (rango >= 1500 && rango <= 10000) return 500;
+          if (rango > 10000) return 1000;
+          return 1; // Valor por defecto si no se cumple ninguna condición
+      };
+  
+      const ajustarTamañoSegmento = (Segmento, minValue, maxValue) => {
+          const rango = maxValue - minValue;
+          const multiplo = obtenerMultiploAdecuado(rango);
+          let tamañoSegmento = Math.floor(Segmento / multiplo) * multiplo;
+          if (tamañoSegmento > rango) {
+              tamañoSegmento = Math.floor(rango / multiplo) * multiplo;
+          }
+          return tamañoSegmento;
+      };
+  
+      if (!isNumericArray(valorGraficoData)) {
+          window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
+          return;
+      }
+
+    // Verifica si todos los elementos del array son números válidos
+    if (!isNumericArray(valorGraficoData)) {
+        window.tabEl.handleChat(`La columna seleccionada debe ser numérica.`, "error");
+        return;
+    }
+
+    const minValue = Math.min(...valorGraficoData);
+    const maxValue = Math.max(...valorGraficoData);
+    const rango = maxValue - minValue;
+    const mitadMasUno = Math.floor(rango / 2) + 1;
+    const multiploAdecuado = obtenerMultiploAdecuado(rango);
+    let maxSegmentoPermitido = Math.floor(mitadMasUno / multiploAdecuado) * multiploAdecuado;
+
+    // Validar el tamaño del segmento
+    if (Segmento < multiploAdecuado || Segmento > maxSegmentoPermitido || Segmento % multiploAdecuado !== 0) {
+        window.tabEl.handleChat(`El tamaño del segmento debe ser un múltiplo de ${multiploAdecuado} entre ${multiploAdecuado} y ${maxSegmentoPermitido} y no debe contener decimales.`, "error");
+        return;
+    }
+
+    // Ajustar el tamaño del segmento
+    const tamañoSegmentoAjustado = ajustarTamañoSegmento(Segmento, minValue, maxValue);
+
+    // Determinar el número de bins
+    const numBins = (Segmento >= rango) ? 1 : Math.ceil(rango / tamañoSegmentoAjustado);
+
+    // Si el tamaño del segmento es mayor o igual al rango, solo debe haber un bin
+    const bins = Array(numBins).fill(0);
+
+    valorGraficoData.forEach((value) => {
+        const binIndex = Math.min(Math.floor((value - minValue) / tamañoSegmentoAjustado), bins.length - 1);
+        bins[binIndex]++;
+    });
+
+    // Ajuste final para que el último bin no sobrepase el valor máximo
+    // Ajuste final para que el último bin no sobrepase el valor máximo
+    const binLabels = Array.from({ length: bins.length }, (_, i) => {
+      const lowerBound = minValue + i * tamañoSegmentoAjustado;
+      const upperBound = (i === bins.length - 1) ? maxValue : lowerBound + tamañoSegmentoAjustado - 1;
+      return `${lowerBound.toLocaleString()} - ${upperBound.toLocaleString()}`;
+    });
+
+    const tituloGrafico = "Histograma";
+  
+      this.myChart = new Chart(context, {
+        type: "bar",
+        data: {
+          labels: binLabels,
+          datasets: [{
+            label: selectedValue,
+            data: bins,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Intervalos'
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Frecuencia'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: tituloGrafico,
+            },
+          },
+        }
+      });
+  
+      state.cambiarTitulos({ grafico: tituloGrafico });
+
+    }
+
+    
+  
+    createDispersion(context, data) {
+      const selectEjeXDispersion = this.querySelector("#ejeX-dispersion").value;
+      //console.log("selectEjeXDispersion:", selectEjeXDispersion);
+      const selectEjeYDispersion = this.querySelector("#ejeY-dispersion").value;
+      //console.log("selectEjeYDispersion:", selectEjeYDispersion);
+      const tituloGrafico = this.querySelector("#titulo-grafico").value;
+      //const tituloEjeX = this.querySelector("#titulo-grafico-x").value;
+      //const tituloEjeY = this.querySelector("#titulo-grafico-y").value;
+      const checkbox = this.querySelector("#linea-tendencia");
+      const isChecked = checkbox.checked;
+          
+      
+      console.log(data)
+      let dataEjeX= data[selectEjeXDispersion];
+      let dataEjeY=data[selectEjeYDispersion];
+
+      const datosDispersion=[]
+
+      for (let i = 0; i < dataEjeX.length; i++) {
+        let obj= {x:dataEjeX[i], y:dataEjeY[i]}
+        datosDispersion.push(obj)
+        
+    }
+    console.log(datosDispersion)
+
+    let colores = [
+      "#ffdc76", // dh
+      "#ff8d7a", // dh
+      "#8383fd", // dh
+      "#00cc7e", // dh
+      "#FFA500", // Naranja
+      "#800080", // Púrpura
+      "#00FFFF", // Cian
+      "#FFC0CB", // Rosa
+      "#000000", // Negro
+    ];
+
+    let datos;
+
+    function calcularLineaTendencia(data) {
+      const n = data.length;
+      let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+      for (let i = 0; i < n; i++) {
+          sumX += data[i].x;
+          sumY += data[i].y;
+          sumXY += data[i].x * data[i].y;
+          sumX2 += data[i].x * data[i].x;
+      }
+
+      const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+      const intercept = (sumY - slope * sumX) / n;
+
+      return data.map(point => {
+          return { x: point.x, y: slope * point.x + intercept };
+      });
   }
-);
+
+    if(isChecked){
+      let trendlineData = calcularLineaTendencia(datosDispersion);
+
+      datos= [{
+        label: "Datos",
+        data: datosDispersion,
+        backgroundColor: colores[0],
+        borderColor: colores[1],
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      },
+      {
+        label: 'Línea de Tendencia',
+        data: trendlineData,
+        type: 'line',
+        fill: false,
+        borderColor: colores[2],
+        borderWidth: 2,
+        pointRadius: 0,
+    }
+    ];
+
+    }else{
+
+      datos= [{
+        label: "Datos",
+        data: datosDispersion,
+        backgroundColor: colores[0],
+        borderColor: colores[1],
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+
+    }
+
+
+
+
+    this.myChart = new Chart(context, {
+      type: 'scatter',
+      data: {
+        labels: " ",
+        datasets: datos
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            title: {
+                display: true,
+                text: selectEjeXDispersion
+            }
+        },
+          y: {
+            title: {
+                display: true,
+                text: selectEjeYDispersion
+            }
+        }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: tituloGrafico,
+          },
+        },
+      }
+    });
+
+
+    }
+  })

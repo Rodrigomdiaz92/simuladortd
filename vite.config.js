@@ -141,6 +141,38 @@ export default defineConfig({
           __dirname,
           "pages/actividades-data/fundamentos-estadistica/combinacion-tablas/desafio01c/act.html"
         ),
+        ejemploHistograma: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/estadistica/ejemplo/act.html"
+        ),
+        actividadHistograma01: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/estadistica/actividad01/act.html"
+        ),
+        actividadHistograma02: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/estadistica/actividad02/act.html"
+        ),
+        actividadHistograma03: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/estadistica/actividad03/act.html"
+        ),
+        ejemploADispersion: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/ejemplo a/act.html"
+        ),
+        ejemploBDispersion: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/ejemplo b/act.html"
+        ),
+        actividadDispersion01a: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/actividad01a/act.html"
+        ),
+        actividadDispersion02a: path.resolve(
+          __dirname,
+          "pages/actividades-data/fundamentos-estadistica/dispersion/actividad02a/act.html"
+        ),
         
       },
     },
