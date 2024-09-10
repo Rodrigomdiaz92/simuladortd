@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   filaSeleccionadaTD: ["TAMAÑO_EMPRESA"],
   columnaSeleccionadaTD: [],
-  valorSeleccionadaTD: ["TAMAÑO_EMPRESA"],
+  valorSeleccionadaTD: ["AÑO"],
   funcionesSeleccionadasTD: ["count"],
 };
 let df;
