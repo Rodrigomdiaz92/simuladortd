@@ -25,6 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "histograma",
   valorHistograma: "EDAD CLIENTE",
+  segmento: 5,
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -80,10 +81,11 @@ async function main() {
   appController.app = new App(dataTableController, BASE_SETTINGS);
   appController.app.startEvents();
   const USER_SETTINGS_DEFAULT = {
-    intervalo: "",
-    filas: [],
-    columnas: [],
-    valores: [],
+    esEjemplo: true,
+    intervalo: "A1:I101",
+    tipoGrafico: "histograma",
+    valorHistograma: "EDAD CLIENTE",
+    segmento: 5,
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -113,7 +115,7 @@ async function main() {
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
     // Al comentar la siguiente línea, se evita que se inicialice con los valores por defecto en la tabla dinámica
-    // appController.userSettings.init();
+    appController.userSettings.init();
   }
 }
 main();

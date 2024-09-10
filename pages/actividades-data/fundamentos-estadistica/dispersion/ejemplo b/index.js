@@ -26,6 +26,7 @@ const BASE_SETTINGS = {
   tipoGrafico: "dispersion",
   ejeXDispersion: "ARTES",
   ejeYDispersion: "DEPORTES",
+  lineaTendencia: true,
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -81,10 +82,12 @@ async function main() {
   appController.app = new App(dataTableController, BASE_SETTINGS);
   appController.app.startEvents();
   const USER_SETTINGS_DEFAULT = {
-    intervalo: "",
-    filas: [],
-    columnas: [],
-    valores: [],
+    esEjemplo: true,
+    intervalo: "A1:G101",
+    tipoGrafico: "dispersion",
+    ejeXDispersion: "ARTES",
+    ejeYDispersion: "DEPORTES",
+    lineaTendencia: true,
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -114,7 +117,7 @@ async function main() {
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
     // Al comentar la siguiente línea, se evita que se inicialice con los valores por defecto en la tabla dinámica
-    // appController.userSettings.init();
+    appController.userSettings.init();
   }
 }
 main();
