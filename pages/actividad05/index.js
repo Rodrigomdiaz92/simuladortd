@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "HABILIDAD_ATAQUE",
-  serie: "EDAD",
+  serie: ["EDAD"],
   funcion: "promedio",
   escala:100,
 };
