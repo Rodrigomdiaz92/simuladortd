@@ -380,7 +380,7 @@ customElements.define(
           state.graficoBarrasCompletado(
             tipoGrafico,
             selectEjex,
-            state.seleccionGraficos.seleccion.serie,
+            this.selectedOptions,
             isChecked
           );
         } else if(tipoGrafico == "histograma") { 
@@ -489,36 +489,32 @@ customElements.define(
         state.validarEjeXBarras(selectEjex.value);
       });
 
-      //Validacion Series barras
+      // Validacion Series barras
       this.selectedOptions = [];
-      const selectOptions = [];
       const series = this.querySelector("#dropdown-content");
       const selectedSeriesContainer = document.getElementById('selected-series');
 
       series.addEventListener("change", (event) => {
-        const value = quitarAcentosYCaracteresEspeciales(event.target.value);
-        const value1 = event.target.value;
+        const value = event.target.value;  // Solo usamos el valor original sin quitar caracteres especiales
         console.log(value);
-      
+
+        let shouldValidate = true; // Variable para controlar la validación
+
         if (event.target.checked) {
           // Agregar la opción al array si se selecciona
           this.selectedOptions.push(value);
-          selectOptions.push(value1);
         } else {
           // Verificar si la opción que se está deseleccionando es recomendada
           const seriesRecomendadas = appController.app.baseSettings.serie || [];
           if (seriesRecomendadas.includes(value)) {
-            window.tabEl.handleChat(`Cuidado, has quitado una serie recomendada: ${value1}.`, "warning");
+            window.tabEl.handleChat(`Cuidado, has quitado una serie recomendada: ${value}.`, "warning");
+            shouldValidate = false; // No realizar la validación
           }
-      
+
           // Eliminar la opción del array si se deselecciona
           const index = this.selectedOptions.indexOf(value);
           if (index > -1) {
             this.selectedOptions.splice(index, 1);
-          }
-          const index1 = selectOptions.indexOf(value1);
-          if (index1 > -1) {
-            selectOptions.splice(index1, 1);
           }
         }
 
@@ -529,9 +525,14 @@ customElements.define(
           selectedSeriesContainer.textContent = 'Series seleccionadas: Ninguna';
         }
 
-        console.log(selectOptions);
-        state.validarSerieBarras(selectOptions);
+        console.log(this.selectedOptions);
+
+        // Solo validar si no se ha eliminado una serie recomendada
+        if (shouldValidate) {
+          state.validarSerieBarras(this.selectedOptions);
+        }
       });
+
 
       //apilado
       const checkbox = this.querySelector("#graficoApilado");
