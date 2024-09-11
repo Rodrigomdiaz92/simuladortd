@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "AÑO_FABRICACIÓN",
-  serie: ["Diesel","Nafta","NaftaGNC"],
+  serie: ["Diesel","Nafta","Nafta/GNC"],
   apilado: false, // sin caracteres especiales
   funcion: " ",
   escala:"1000", //Predeterminado
