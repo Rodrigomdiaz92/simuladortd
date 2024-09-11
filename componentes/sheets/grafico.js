@@ -561,8 +561,8 @@ customElements.define(
           }
         }
 
-        console.log(this.selectedOptions);
-        state.validarSerieBarras(this.selectedOptions, selectOptions);
+        console.log(selectOptions);
+        state.validarSerieBarras(selectOptions);
       });
 
       //apilado

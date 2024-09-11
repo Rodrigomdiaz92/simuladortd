@@ -28,7 +28,7 @@ export const state = {
       etiqueta: "",
       huecoCirculo: "",
       valorGrafico: "",
-      serie: "",
+      serie: [],
       apilado: "",
       escala: "",
       ejecutado: false,
@@ -880,19 +880,42 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
     }
   },
 
-  validarSerieBarras(valorSerie, series) {
+  validarSerieBarras(series) {
+
     appController.userSettings.settings.serie = series;
-    let ingresado = ordenarAlfabeticamente(valorSerie);
-    let correcto = ordenarAlfabeticamente(appController.app.baseSettings.serie);
-    if (arraysIguales(ingresado, correcto)) {
-      window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-    } else {
+    
+    let correcto = appController.app.baseSettings.serie || [];
+    
+    // Función para contar coincidencias entre dos arrays
+    function contarCoincidencias(series, correcto) {
+      return series.filter(valor => correcto.includes(valor));
+    }
+  
+    // Función para encontrar valores incorrectos
+    function encontrarIncorrectos(series, correcto) {
+      return series.filter(valor => !correcto.includes(valor));
+    }
+  
+    let coincidencias = contarCoincidencias(series, correcto);
+    let cantidadEsperada = correcto.length;
+    let incorrectos = encontrarIncorrectos(series, correcto);
+    
+    if (coincidencias.length === cantidadEsperada && incorrectos.length === 0) {
+      window.tabEl.handleChat(`¡Buen Trabajo, tus series son correctas!`, "correct");
+    } else if (coincidencias.length > 0 && incorrectos.length === 0) {
+      let faltantes = cantidadEsperada - coincidencias.length;
       window.tabEl.handleChat(
-        `La serie seleccionada no es la pedida por el ejercicio.`,
+        `Vas bien, pero faltan ${faltantes} series correctas.`,
+        "warning"
+      );
+    } else if (incorrectos.length > 0) {
+      window.tabEl.handleChat(
+        `Tienes series incorrectas son: ${incorrectos.join(", ")}.`,
         "error"
       );
     }
   },
+
 
   validarEscalaBarras(escala) {
     appController.userSettings.settings.escala = escala;
