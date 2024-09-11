@@ -882,7 +882,10 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
 
   validarSerieBarras(series) {
 
+    console.log("en valdiar: ", series);
+
     appController.userSettings.settings.serie = series;
+    this.seleccionGraficos.seleccion.serie = series;
     
     let correcto = appController.app.baseSettings.serie || [];
     
@@ -945,8 +948,7 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
 
   graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
     let errores = [];
-    let serieIngresada = ordenarAlfabeticamente(series);
-    let serieCorrecta = ordenarAlfabeticamente(appController.app.baseSettings.serie);
+    let serieCorrecta = appController.app.baseSettings.serie;
 
     // Validación del tipo de gráfico
     if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
@@ -955,19 +957,21 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
 
     // Validación del eje X
     if (
-        quitarAcentosYCaracteresEspeciales(ejeX) == 
+        quitarAcentosYCaracteresEspeciales(ejeX) != 
         quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX)
     ) {
         errores.push("El eje X no es correcto.");
     }
 
+    console.log("series", series);
+    console.log("serieCorrecta",serieCorrecta);
     // Validación de las series
-    if (!arraysIguales(serieIngresada, serieCorrecta)) {
+    if (!this.compararSeries(series, serieCorrecta)) {
         errores.push("Las series no son correctas.");
     }
 
     // Validación del apilamiento
-    if (apilamiento != appController.app.baseSettings.apilado) {
+    if (appController.app.baseSettings.apilado  && apilamiento !== appController.app.baseSettings.apilado) {
         errores.push("El valor del apilamiento no es correcto.");
     }
 
@@ -980,7 +984,20 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
         window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
         pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
-},
+  },
+
+  // Función para comparar las series
+  compararSeries(seriesIngresadas, seriesCorrectas) {
+    // Ordenar ambas series y luego comparar
+    const seriesIngresadasOrdenadas = [...seriesIngresadas].sort();
+    const seriesCorrectasOrdenadas = [...seriesCorrectas].sort();
+
+    // Comparar las series ordenadas
+    if (seriesIngresadasOrdenadas.length !== seriesCorrectasOrdenadas.length) return false;
+    return seriesIngresadasOrdenadas.every((valor, indice) => valor === seriesCorrectasOrdenadas[indice]);
+  },
+
+
 
 
   /*graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {

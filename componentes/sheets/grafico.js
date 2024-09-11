@@ -380,7 +380,7 @@ customElements.define(
           state.graficoBarrasCompletado(
             tipoGrafico,
             selectEjex,
-            this.selectedOptions,
+            state.seleccionGraficos.seleccion.serie,
             isChecked
           );
         } else if(tipoGrafico == "histograma") { 
@@ -490,7 +490,7 @@ customElements.define(
       });
 
       //Validacion Series barras
-      this.selectedOptions = state.seleccionGraficos.seleccion.serie || [];
+      this.selectedOptions = [];
       const selectOptions = [];
       const series = this.querySelector("#dropdown-content");
       const selectedSeriesContainer = document.getElementById('selected-series');
