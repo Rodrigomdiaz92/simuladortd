@@ -96,6 +96,11 @@ export class UserSettings {
       huecoCirculo,
       valorGrafico,
       valores,
+      valorHistograma,
+      segmento,
+      ejeXDispersion,
+      ejeYDispersion,
+      lineaDeTendencia,
       conversationHistory,
       ejercicioCompletado,
       firstChangeMade,
@@ -119,6 +124,11 @@ export class UserSettings {
     state.seleccionGraficos.seleccion.tituloGrafico = tituloGrafico;
     state.seleccionGraficos.seleccion.ejecutado = ejecutado;
     state.seleccionGraficos.seleccion.valorGrafico = valorGrafico;
+    state.seleccionGraficos.seleccion.valorHistograma = valorHistograma;
+    state.seleccionGraficos.seleccion.segmento = segmento;
+    state.seleccionGraficos.seleccion.ejeXDispersion = ejeXDispersion;
+    state.seleccionGraficos.seleccion.ejeYDispersion = ejeYDispersion;
+    state.seleccionGraficos.seleccion.lineaDeTendencia = lineaDeTendencia;
     tab.conversationHistory = conversationHistory;
     state.seleccionTablaDinamica.ejercicioCompletado = ejercicioCompletado;
     state.seleccionTablaDinamica.filas = filas;
@@ -131,6 +141,8 @@ export class UserSettings {
     if (appController.app.baseSettings.tipoGrafico) {
       crearHojaGrafico();
       completarHojaGraficos(state.seleccionGraficos.seleccion);
+      const controlConfirm = this.querySelector("#control-confirm");
+      controlConfirm.click()
     } else {
       crearHojaTabla();
       llenarListas(state.seleccionTablaDinamica);

@@ -72,6 +72,24 @@ export function completarHojaGraficos(seleccion) {
   graficoEl.querySelector("#titulo-grafico").value = seleccion.tituloGrafico;
   graficoEl.querySelector("#titulo-grafico-x").value = seleccion.tituloEjeX;
   graficoEl.querySelector("#titulo-grafico-y").value = seleccion.tituloEjeY;
+  graficoEl.querySelector("#valor-histograma").value = seleccion.valorHistograma;
+  graficoEl.querySelector("#tamaño-segmento").value = seleccion.segmento;
+  graficoEl.querySelector("#ejeX-dispersion").value = seleccion.ejeXDispersion;
+  graficoEl.querySelector("#ejeY-dispersion").value = seleccion.ejeYDispersion;
+  graficoEl.querySelector("#linea-tendencia").value = seleccion.lineaDeTendencia;
+
+  const tendenciaCheckbox = graficoEl.querySelector("#linea-tendencia");
+    if (tendenciaCheckbox) {
+      console.log("Checkbox #linea-tendencia encontrado");
+      tendenciaCheckbox.checked = true
+    }
+    
+  const confirmarButton = graficoEl.querySelector("#control-confirm");
+    if (confirmarButton) {
+      console.log("Botón #control-confirm encontrado, simulando clic");
+      confirmarButton.click();
+    } else {
+      console.error("Botón #control-confirm no encontrado");}
   const dropdownColumnas = graficoEl
     .querySelector("#dropdown-content")
     .querySelectorAll("input");

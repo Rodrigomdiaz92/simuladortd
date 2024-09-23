@@ -19,14 +19,14 @@ import { appController } from "../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-    "https://script.google.com/macros/s/AKfycbwRcJ06Um_d9zgVd_VhhTPM6t3h5or0mb5ON9qS1W2gFDjqP7uhbnLzMBVUSuYQiWRBFg/exec",
+    "https://script.google.com/macros/s/AKfycbzlkcJQg_OjC5shYStAdvTTh93FAmI1zHm91wD2F04NhHT83gfv5t43WGjpWfNMkw-d1Q/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "barras",
+  tipoGrafico: "dispersion",
   ejeX: "",
   serie: [],
-  columna: "POSICION",
+  columna: "",
   huecoCirculo: "0"
 };
 let df;

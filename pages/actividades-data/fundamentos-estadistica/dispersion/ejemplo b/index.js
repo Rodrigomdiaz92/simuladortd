@@ -19,19 +19,14 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-  "https://script.google.com/macros/s/AKfycbzghWF7-234VjY1hNsa7LTqBWd9lFjwqhjZJho1Ty2alVzxget3RRECui-jUFi-2hmK/exec",
+    "https://script.google.com/macros/s/AKfycbwYszSx3tXe47wNmSlhkS_m0XtCWRro8BK47WBEG_tZl6qsuKGRbiZ62Vay52d6oHNGrQ/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "torta",
-  ejeX: "",
-  etiqueta:"GÉNERO",
-  valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-  huecoCirculo:"",
-  serie: [""],
-  apilado: true, // sin caracteres especiales
-  funcion: " ",
-  escala:"", //Predeterminado
+  tipoGrafico: "dispersion",
+  ejeXDispersion: "ARTES",
+  ejeYDispersion: "DEPORTES",
+  lineaTendencia: true,
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -87,18 +82,12 @@ async function main() {
   appController.app = new App(dataTableController, BASE_SETTINGS);
   appController.app.startEvents();
   const USER_SETTINGS_DEFAULT = {
-    intervalo: "",
-    filas: [],
-    columnas: [],
-    valores: [],
     esEjemplo: true,
-    intervalo: "A1:B13",
-    ejercicioCompletado: true,
-    tipoGrafico: "torta",
-    ejeX: "",
-    etiqueta:"GÉNERO",
-    valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-    huecoCirculo:"0",
+    intervalo: "A1:G101",
+    tipoGrafico: "dispersion",
+    ejeXDispersion: "ARTES",
+    ejeYDispersion: "DEPORTES",
+    lineaTendencia: true,
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -112,7 +101,7 @@ async function main() {
     parsedJSONfromPG.data !== null &&
     parsedJSONfromPG.data !== undefined
   ) {
-    //console.log("vengo de PG");
+    console.log("vengo de PG", parsedJSONfromPG.data);
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
     appController.userSettings = new UserSettings(

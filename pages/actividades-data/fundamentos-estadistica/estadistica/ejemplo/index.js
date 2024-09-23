@@ -19,19 +19,13 @@ import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-  "https://script.google.com/macros/s/AKfycbzghWF7-234VjY1hNsa7LTqBWd9lFjwqhjZJho1Ty2alVzxget3RRECui-jUFi-2hmK/exec",
+    "https://script.google.com/macros/s/AKfycbxQvlTkI3cgdnrXPOo6xCwysmKcDvTV0V8YFJiAuuO4uYvvBnxdp6YY4q4v7xLDQTrJ/exec",
   graphEnabled: true,
   pivotEnabled: false,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "torta",
-  ejeX: "",
-  etiqueta:"GÉNERO",
-  valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-  huecoCirculo:"",
-  serie: [""],
-  apilado: true, // sin caracteres especiales
-  funcion: " ",
-  escala:"", //Predeterminado
+  tipoGrafico: "histograma",
+  valorHistograma: "EDAD CLIENTE",
+  segmento: 5,
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -87,18 +81,11 @@ async function main() {
   appController.app = new App(dataTableController, BASE_SETTINGS);
   appController.app.startEvents();
   const USER_SETTINGS_DEFAULT = {
-    intervalo: "",
-    filas: [],
-    columnas: [],
-    valores: [],
     esEjemplo: true,
-    intervalo: "A1:B13",
-    ejercicioCompletado: true,
-    tipoGrafico: "torta",
-    ejeX: "",
-    etiqueta:"GÉNERO",
-    valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-    huecoCirculo:"0",
+    intervalo: "A1:I101",
+    tipoGrafico: "histograma",
+    valorHistograma: "EDAD CLIENTE",
+    segmento: 5,
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -112,7 +99,7 @@ async function main() {
     parsedJSONfromPG.data !== null &&
     parsedJSONfromPG.data !== undefined
   ) {
-    //console.log("vengo de PG");
+    console.log("vengo de PG", parsedJSONfromPG.data);
 
     parsedJSONfromPG.data.intervalo = parsedJSONfromPG.data.intervalo;
     appController.userSettings = new UserSettings(

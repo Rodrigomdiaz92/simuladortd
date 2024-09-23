@@ -1,37 +1,32 @@
-import { DataTable } from "../../../../../clases/DataTable";
-import { DataTableView } from "../../../../../clases/DataTableView";
-import { DataTableController } from "../../../../../clases/DataTableController";
-import { pgEvent } from "../../../../../utils/pgEvent"; // Importar PgEvent
-import "../../../../../componentes/menu/menu";
-import "../../../../../componentes/menu/archivo-menu";
-import "../../../../../componentes/menu/reloj";
-import "../../../../../componentes/loader";
-import "../../../../../componentes/sheets-tab/sheet";
-import "../../../../../componentes/sheets-tab/sheet-button";
-import "../../../../../componentes/sheets-tab/tab";
-import "../../../../../componentes/sheets/grafico";
-import "../../../../../componentes/sheets/tabladinamica/tabladinamica";
-import "../../../../../componentes/sheets/tabladinamica/tabla-dinamica-view";
-import "../../../../../componentes/sheets/tabladinamica/data-controls";
-import { App } from "../../../../../clases/App";
-import { UserSettings } from "../../../../../clases/UserSettings";
+import { DataTable } from "@clases/DataTable";
+import { DataTableView } from "@clases/DataTableView";
+import { DataTableController } from "@clases/DataTableController";
+import { pgEvent } from "@utils/pgEvent"; // Importar PgEvent
+import "@componentes/menu/menu";
+import "@componentes/menu/archivo-menu";
+import "@componentes/menu/reloj";
+import "@componentes/loader";
+import "@componentes/sheets-tab/sheet";
+import "@componentes/sheets-tab/sheet-button";
+import "@componentes/sheets-tab/tab";
+import "@componentes/sheets/grafico";
+import "@componentes/sheets/tabladinamica/tabladinamica";
+import "@componentes/sheets/tabladinamica/tabla-dinamica-view";
+import "@componentes/sheets/tabladinamica/data-controls";
+import { App } from "@clases/App";
+import { UserSettings } from "@clases/UserSettings";
 import { appController } from "../../../../../appController";
 
 const BASE_SETTINGS = {
   datasetURL:
-  "https://script.google.com/macros/s/AKfycbzghWF7-234VjY1hNsa7LTqBWd9lFjwqhjZJho1Ty2alVzxget3RRECui-jUFi-2hmK/exec",
-  graphEnabled: true,
-  pivotEnabled: false,
+    "https://script.google.com/macros/s/AKfycbx37zyCa2XqMzxrE61b6-i9Y3h7KnHfXYJlQidpPOXImONFBrV1-n-JxQ2ZbnGB5Ql_/exec",
+  graphEnabled: false,
+  pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  tipoGrafico: "torta",
-  ejeX: "",
-  etiqueta:"GÉNERO",
-  valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-  huecoCirculo:"",
-  serie: [""],
-  apilado: true, // sin caracteres especiales
-  funcion: " ",
-  escala:"", //Predeterminado
+  filaSeleccionadaTD: ["TAMAÑO_EMPRESA"],
+  columnaSeleccionadaTD: [],
+  valorSeleccionadaTD: ["TAMAÑO_EMPRESA"],
+  funcionesSeleccionadasTD: ["count"],
 };
 let df;
 window.onload = pgEvent.getValues();
@@ -91,14 +86,6 @@ async function main() {
     filas: [],
     columnas: [],
     valores: [],
-    esEjemplo: true,
-    intervalo: "A1:B13",
-    ejercicioCompletado: true,
-    tipoGrafico: "torta",
-    ejeX: "",
-    etiqueta:"GÉNERO",
-    valorGrafico:"SUM_de_UNIDADES_VENDIDAS",
-    huecoCirculo:"0",
     conversationHistory: [],
   };
   const parsedJSONfromPG = validateJson(informacion)
@@ -128,7 +115,7 @@ async function main() {
     );
     appController.userSettings.default = USER_SETTINGS_DEFAULT;
     // Al comentar la siguiente línea, se evita que se inicialice con los valores por defecto en la tabla dinámica
-    appController.userSettings.init();
+    // appController.userSettings.init();
   }
 }
 main();
