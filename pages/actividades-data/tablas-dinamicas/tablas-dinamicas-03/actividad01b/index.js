@@ -30,6 +30,7 @@ const BASE_SETTINGS = {
   funcion: " ",
   escala:"1000", //Predeterminado
 };
+// dwdwj
 let df;
 window.onload = pgEvent.getValues();
 //Capaz hay que darle una vuelta a esto para delegarselo a App
