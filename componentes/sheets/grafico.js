@@ -1218,7 +1218,14 @@ customElements.define(
         console.log(data);
         console.log(selectEjex);
         const selectSerie = opcionesSeleccionadas[0];
-        console.log(opcionesSeleccionadas[0]);
+
+      // Verificar si no hay ninguna opción seleccionada
+      if (selectSerie === undefined) {
+          window.tabEl.handleChat(`No se seleccionó ninguna columna`, "error"); 
+          return;
+      }
+
+      console.log(selectSerie);
 
         // Inicializar el objeto Agrupado
         const agrupado = {};

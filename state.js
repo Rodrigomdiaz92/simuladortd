@@ -626,6 +626,14 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
+  agregarValorApilado(nuevoValorApilado) {
+    this.seleccionGraficos.seleccion.apilado = nuevoValorApilado;
+    this.timer = true;
+    this.editingBlocked = true;
+    this.actualizarIntervaloYRenderizar();
+    this.actualizarReloj();
+    console.log(this.seleccionGraficos.seleccion);
+  },
 
   //Histograma
   agregarValorHistograma(nuevoValorHistograma) {
@@ -881,6 +889,7 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
   },
 
   validarSerieBarras(valorSerie, series) {
+
     appController.userSettings.settings.serie = series;
     let ingresado = ordenarAlfabeticamente(valorSerie);
     let correcto = ordenarAlfabeticamente(appController.app.baseSettings.serie);
@@ -892,6 +901,7 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
         "error"
       );
     }
+    console.log(ingresado, correcto)
   },
 
   validarEscalaBarras(escala) {
@@ -920,7 +930,7 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
     }
   },
 
-  graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
+  graficoBarrasCompletado(tipoGrafico, ejeX, series, checkApilado) {
     let errores = [];
     let serieIngresada = ordenarAlfabeticamente(series);
     let serieCorrecta = ordenarAlfabeticamente(appController.app.baseSettings.serie);
@@ -932,21 +942,23 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
 
     // Validación del eje X
     if (
-        quitarAcentosYCaracteresEspeciales(ejeX) == 
+        quitarAcentosYCaracteresEspeciales(ejeX) != 
         quitarAcentosYCaracteresEspeciales(appController.app.baseSettings.ejeX)
     ) {
         errores.push("El eje X no es correcto.");
     }
-
+    
     // Validación de las series
     if (!arraysIguales(serieIngresada, serieCorrecta)) {
         errores.push("Las series no son correctas.");
     }
 
     // Validación del apilamiento
-    if (apilamiento != appController.app.baseSettings.apilado) {
-        errores.push("El valor del apilamiento no es correcto.");
+    let correcto = appController.app.baseSettings.apilado;
+    if (checkApilado != correcto) {
+        errores.push("Revisa si tu gráfico debe ser apilado o no.");
     }
+    console.log(checkApilado)
 
     // Si no hay errores, se completa el gráfico
     if (errores.length === 0) {
@@ -958,6 +970,7 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
         pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
 },
+
 
 
   /*graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
