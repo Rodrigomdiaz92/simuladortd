@@ -119,7 +119,7 @@ customElements.define(
             span.textContent = "🔒 Edición bloqueada";
             document.querySelector(".editor-header").appendChild(span);
           }
-
+          const tiempoBloqueo = 2000;
           // Iniciar temporizador de 5 segundos
           setTimeout(() => {
             const checkSpinnerInterval = setInterval(() => {
@@ -135,7 +135,7 @@ customElements.define(
                 window.dispatchEvent(event);
               }
             }, 100); // Verifica cada 100ms
-          }, 5000);
+          }, tiempoBloqueo);
         } else {
           if (candadoBloqueadoSpan) {
             candadoBloqueadoSpan.remove();
