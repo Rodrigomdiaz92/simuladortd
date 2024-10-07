@@ -25,9 +25,10 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "NACIONALIDAD",
-  serie: ["CANTIDAD_DE_JUGADORES"],
+  serie: ["CANTIDADDEJUGADORES"],
   funcion: "",
   escala:"",
+  apilado: false,
 };
 let df;
 window.onload = pgEvent.getValues();
