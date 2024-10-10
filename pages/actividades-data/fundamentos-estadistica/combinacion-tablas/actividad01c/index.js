@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
     selectionRequirements: { minRows: 5, minCols: 2 },
     tipoGrafico: "barras",
     ejeX: "PAÍS",
-    serie: ["ConteodeMEDALLISTA ORO"],
+    serie: ["Conteo_de_MEDALLISTA ORO"],
     apilado: false,
     etiqueta: "",
     valorGrafico: "",

@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "AÑO_PUBLICACION",
-  serie: ["NINTENDO","PlayStation","XBox (Microsoft)"],
+  serie: ["Nintendo","PlayStation","XBox (Microsoft)"],
   funcion: "",
   escala:"",
 };

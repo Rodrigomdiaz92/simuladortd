@@ -1,6 +1,7 @@
 import Chart from "chart.js/auto";
 import { state } from "../../state";
 import { quitarAcentosYCaracteresEspeciales } from "@utils/text";
+import { appController } from "../../appController";
 
 customElements.define(
   "grafico-el",
@@ -69,13 +70,25 @@ customElements.define(
                   </div>  
                   <div id="confi-barras" class="hidden">              
                     <label>Eje X:</label>
-                    <select class="graph-select" id="ejeX"></select>                    
-                    <div class="dropdown-toggle" id="dropdown-toggle" >
-                        Seleccionar Series
+                    <select class="graph-select" id="ejeX"></select>      
+
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" id="dropdown-toggle">
+                            Seleccionar Series
+                        </div>
+                        <div id="dropdown-content" class="dropdown-content">
+                        </div>
                     </div>
-                    <div id="dropdown-content" class="dropdown-content"></div>
-                    <label for="graficoApilado" style=" margin-left: 290px;">Gráfico Apilado</label>
-                    <input type="checkbox" id="graficoApilado">
+
+                    <!-- Contenedor para mostrar las series seleccionadas -->
+                    <div id="selected-series" class="selected-series">
+                        Series seleccionadas: Ninguna
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin: 20px 0;">
+                        <label for="graficoApilado" style="margin-right: 10px;">Gráfico Apilado</label>
+                        <input type="checkbox" id="graficoApilado" style="width: 18px; height: 18px; border: 2px solid #757575; border-radius: 4px; position: relative;">
+                    </div>
 
 
                     <label style="display: none;" style=" margin-left: 61%;">Función:</label>
@@ -231,78 +244,72 @@ customElements.define(
             width: 100%;
         }
       
-
-        
-          
-          /* Estilo para la opción "Mostrar opciones" NO BORRAR */
+        /* Estilos generales para el contenedor del dropdown */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
 
         .dropdown-toggle {
-            border: solid 1px;
-            border-radius: 10px;
-            width: 180px;
-            text-align: center;
-            background-color: white;
-            cursor: pointer;
-            user-select: none;
-            margin-left: 53%;
-            margin-top: -30px;
-            font-size: 18px;
+          background-color: #3498db;
+          color: white;
+          padding: 10px 20px;
+          font-size: 16px;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+          display: inline-block;
         }
 
+        .dropdown-toggle:hover {
+          background-color: #2980b9;
+        }
+
+        /* Estilos para el contenido del dropdown */
         .dropdown-content {
-            display: none;
-            background-color: #ffffff;
-            margin-top: 10px;
-            max-width: 300px;
-            margin-left: 136px;
-            text-align: right;
-            border-radius: 10px;
-            margin-top: 20px;
-
-            
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          border-radius: 5px;
+          box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+          padding: 12px 16px;
+          z-index: 1;
+          top: 100%; /* Posiciona justo debajo del botón */
+          left: 0; /* Alinea a la izquierda del botón */
         }
 
-        .dropdown-content.show {
-            display: block;
+        /* Muestra el contenido cuando se activa la clase 'show' */
+        .show {
+          display: block;
         }
 
+        /* Estilos para las opciones seleccionables */
         .dropdown-content label {
-            display: flex;
-            align-items: center;
-            padding: 5px 0;
-            flex-direction: row-reverse;
+          display: block;
+          margin-bottom: 10px;
+          font-size: 14px;
+          cursor: pointer;
         }
 
         .dropdown-content input[type="checkbox"] {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #757575;
-            border-radius: 4px;
-            margin-right: 10px;
-            position: relative;
-            cursor: pointer;
+          margin-right: 8px;
         }
 
-        .dropdown-content input[type="checkbox"]:checked {
-            background-color: #6200ea;
-            border-color: #6200ea;
+        .dropdown-content input[type="checkbox"]:checked + label {
+          font-weight: bold;
+          color: #2ecc71;
         }
 
-        .dropdown-content input[type="checkbox"]:checked::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+        /* Estilos para el contenedor de las series seleccionadas */
+        .selected-series {
+          margin-top: 15px;
+          font-size: 14px;
+          color: #555;
         }
         
         #graficoApilado{
-            
+          
             width: 18px;
             height: 18px;
             border: 2px solid #757575;
@@ -311,61 +318,6 @@ customElements.define(
             position: relative;
             margin-top: 5px; 
         }
-
-
-
-
-        /*Estilo para el menú desplegable */
-        /*.dropdown-content {
-            display: none;
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            margin-top: 10px;
-            padding: 10px;
-            max-width: 200px;
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        /* Estilo para los checkboxes del menú desplegable */
-        .dropdown-content label {
-            display: flex;
-            align-items: center;
-            padding: 5px 0;
-        }
-
-        .dropdown-content input[type="checkbox"] {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #757575;
-            border-radius: 4px;
-            margin-right: 10px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .dropdown-content input[type="checkbox"]:checked {
-            background-color: #6200ea;
-            border-color: #6200ea;
-        }
-
-        .dropdown-content input[type="checkbox"]:checked::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        } */
-
           
         </style>
       `;
@@ -537,33 +489,50 @@ customElements.define(
         state.validarEjeXBarras(selectEjex.value);
       });
 
-      //Validacion Series barras
-      this.selectedOptions = state.seleccionGraficos.seleccion.serie || [];
-      const selectOptions = [];
+      // Validacion Series barras
+      this.selectedOptions = [];
       const series = this.querySelector("#dropdown-content");
+      const selectedSeriesContainer = document.getElementById('selected-series');
+
       series.addEventListener("change", (event) => {
-        const value = quitarAcentosYCaracteresEspeciales(event.target.value);
-        const value1 = event.target.value;
+        const value = event.target.value;  // Solo usamos el valor original sin quitar caracteres especiales
         console.log(value);
+
+        let shouldValidate = true; // Variable para controlar la validación
+
         if (event.target.checked) {
           // Agregar la opción al array si se selecciona
           this.selectedOptions.push(value);
-          selectOptions.push(value1);
         } else {
+          // Verificar si la opción que se está deseleccionando es recomendada
+          const seriesRecomendadas = appController.app.baseSettings.serie || [];
+          if (seriesRecomendadas.includes(value)) {
+            window.tabEl.handleChat(`Cuidado, has quitado una serie recomendada: ${value}.`, "warning");
+            shouldValidate = false; // No realizar la validación
+          }
+
           // Eliminar la opción del array si se deselecciona
           const index = this.selectedOptions.indexOf(value);
           if (index > -1) {
             this.selectedOptions.splice(index, 1);
           }
-          const index1 = selectOptions.indexOf(value1);
-          if (index1 > -1) {
-            selectOptions.splice(index1, 1);
-          }
+        }
+
+        // Actualizar el contenedor de series seleccionadas
+        if (this.selectedOptions.length > 0) {
+          selectedSeriesContainer.textContent = 'Series seleccionadas: ' + this.selectedOptions.join(', ');
+        } else {
+          selectedSeriesContainer.textContent = 'Series seleccionadas: Ninguna';
         }
 
         console.log(this.selectedOptions);
-        state.validarSerieBarras(this.selectedOptions, selectOptions);
+
+        // Solo validar si no se ha eliminado una serie recomendada
+        if (shouldValidate) {
+          state.validarSerieBarras(this.selectedOptions);
+        }
       });
+
 
       //apilado
       const checkbox = this.querySelector("#graficoApilado");
@@ -1218,14 +1187,7 @@ customElements.define(
         console.log(data);
         console.log(selectEjex);
         const selectSerie = opcionesSeleccionadas[0];
-
-      // Verificar si no hay ninguna opción seleccionada
-      if (selectSerie === undefined) {
-          window.tabEl.handleChat(`No se seleccionó ninguna columna`, "error"); 
-          return;
-      }
-
-      console.log(selectSerie);
+        console.log(opcionesSeleccionadas[0]);
 
         // Inicializar el objeto Agrupado
         const agrupado = {};
