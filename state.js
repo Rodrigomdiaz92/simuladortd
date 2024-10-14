@@ -28,7 +28,7 @@ export const state = {
       etiqueta: "",
       huecoCirculo: "",
       valorGrafico: "",
-      serie: "",
+      serie: [],
       apilado: "",
       escala: "",
       ejecutado: false,
@@ -626,14 +626,6 @@ export const state = {
     this.actualizarReloj();
     console.log(this.seleccionGraficos.seleccion);
   },
-  agregarValorApilado(nuevoValorApilado) {
-    this.seleccionGraficos.seleccion.apilado = nuevoValorApilado;
-    this.timer = true;
-    this.editingBlocked = true;
-    this.actualizarIntervaloYRenderizar();
-    this.actualizarReloj();
-    console.log(this.seleccionGraficos.seleccion);
-  },
 
   //Histograma
   agregarValorHistograma(nuevoValorHistograma) {
@@ -888,21 +880,45 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
     }
   },
 
-  validarSerieBarras(valorSerie, series) {
+  validarSerieBarras(series) {
+
+    console.log("en valdiar: ", series);
 
     appController.userSettings.settings.serie = series;
-    let ingresado = ordenarAlfabeticamente(valorSerie);
-    let correcto = ordenarAlfabeticamente(appController.app.baseSettings.serie);
-    if (arraysIguales(ingresado, correcto)) {
-      window.tabEl.handleChat(`¡Buen Trabajo!`, "correct");
-    } else {
+    this.seleccionGraficos.seleccion.serie = series;
+    
+    let correcto = appController.app.baseSettings.serie || [];
+    
+    // Función para contar coincidencias entre dos arrays
+    function contarCoincidencias(series, correcto) {
+      return series.filter(valor => correcto.includes(valor));
+    }
+  
+    // Función para encontrar valores incorrectos
+    function encontrarIncorrectos(series, correcto) {
+      return series.filter(valor => !correcto.includes(valor));
+    }
+  
+    let coincidencias = contarCoincidencias(series, correcto);
+    let cantidadEsperada = correcto.length;
+    let incorrectos = encontrarIncorrectos(series, correcto);
+    
+    if (coincidencias.length === cantidadEsperada && incorrectos.length === 0) {
+      window.tabEl.handleChat(`¡Buen Trabajo, tus series son correctas!`, "correct");
+    } else if (coincidencias.length > 0 && incorrectos.length === 0) {
+      let faltantes = cantidadEsperada - coincidencias.length;
       window.tabEl.handleChat(
-        `La serie seleccionada no es la pedida por el ejercicio.`,
+        `Vas bien, pero faltan ${faltantes} series correctas.`,
+        "warning"
+      );
+    } else if (incorrectos.length > 0) {
+      window.tabEl.handleChat(
+        `Tienes series incorrectas son: ${incorrectos.join(", ")}.`,
         "error"
       );
     }
-    console.log(ingresado, correcto)
   },
+
 
   validarEscalaBarras(escala) {
     appController.userSettings.settings.escala = escala;
@@ -930,10 +946,9 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
     }
   },
 
-  graficoBarrasCompletado(tipoGrafico, ejeX, series, checkApilado) {
+  graficoBarrasCompletado(tipoGrafico, ejeX, series, apilamiento) {
     let errores = [];
-    let serieIngresada = ordenarAlfabeticamente(series);
-    let serieCorrecta = ordenarAlfabeticamente(appController.app.baseSettings.serie);
+    let serieCorrecta = appController.app.baseSettings.serie;
 
     // Validación del tipo de gráfico
     if (tipoGrafico != appController.app.baseSettings.tipoGrafico) {
@@ -947,18 +962,18 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
     ) {
         errores.push("El eje X no es correcto.");
     }
-    
+
+    console.log("series", series);
+    console.log("serieCorrecta",serieCorrecta);
     // Validación de las series
-    if (!arraysIguales(serieIngresada, serieCorrecta)) {
+    if (!this.compararSeries(series, serieCorrecta)) {
         errores.push("Las series no son correctas.");
     }
 
     // Validación del apilamiento
-    let correcto = appController.app.baseSettings.apilado;
-    if (checkApilado != correcto) {
-        errores.push("Revisa si tu gráfico debe ser apilado o no.");
+    if (appController.app.baseSettings.apilado  && apilamiento !== appController.app.baseSettings.apilado) {
+        errores.push("El valor del apilamiento no es correcto.");
     }
-    console.log(checkApilado)
 
     // Si no hay errores, se completa el gráfico
     if (errores.length === 0) {
@@ -969,7 +984,19 @@ validarHistogramaYSector(tipoGrafico, valorHistograma, segmento) {
         window.tabEl.handleChat(`Hay errores en tu gráfico: ${errores.join(' ')}`, "error");
         pgEvent.postEvent("Failure", "Mal hecho", "", "");
     }
-},
+  },
+
+  // Función para comparar las series
+  compararSeries(seriesIngresadas, seriesCorrectas) {
+    // Ordenar ambas series y luego comparar
+    const seriesIngresadasOrdenadas = [...seriesIngresadas].sort();
+    const seriesCorrectasOrdenadas = [...seriesCorrectas].sort();
+
+    // Comparar las series ordenadas
+    if (seriesIngresadasOrdenadas.length !== seriesCorrectasOrdenadas.length) return false;
+    return seriesIngresadasOrdenadas.every((valor, indice) => valor === seriesCorrectasOrdenadas[indice]);
+  },
+
 
 
 

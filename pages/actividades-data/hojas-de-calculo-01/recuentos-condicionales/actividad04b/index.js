@@ -25,7 +25,7 @@ const BASE_SETTINGS = {
   selectionRequirements: { minRows: 5, minCols: 5 },
   tipoGrafico: "barras",
   ejeX: "Marcas",
-  serie: ["Promediopreciopormarca"],
+  serie: ["Promedio_precio_por_marca"],
   etiqueta: "",
   apilado: false,
   valorGrafico: "",
