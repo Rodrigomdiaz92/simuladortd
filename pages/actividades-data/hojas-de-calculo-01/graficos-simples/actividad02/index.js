@@ -27,7 +27,7 @@ const BASE_SETTINGS = {
   ejeX: "AÑO_PUBLICACION",
   serie: ["Nintendo"],
   funcion: "",
-  escala:"",
+  escala: "",
 };
 let df;
 window.onload = pgEvent.getValues();
