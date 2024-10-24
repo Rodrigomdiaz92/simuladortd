@@ -118,109 +118,106 @@ class Tab extends HTMLElement {
     }, 1000);
   }
 
-
   processFloatingMessageQueue() {
     if (this.floatingMessageQueue.length > 0) {
-        const { message, status } = this.floatingMessageQueue.shift();
-        const floatingMessage = document.createElement("div");
-        floatingMessage.textContent = message;
-        floatingMessage.style.position = "fixed";
-        floatingMessage.style.right = "-300px"; // Comienza fuera de la pantalla para la animación de entrada
-        floatingMessage.style.padding = "15px";
-        floatingMessage.style.backgroundColor =
-            status === "error"
-                ? "#f44336"
-                : status === "warning"
-                ? "#FFA500"
-                : "#4CAF50";
-        floatingMessage.style.border = "none";
-        floatingMessage.style.borderRadius = "10px";
-        floatingMessage.style.color = "#fff";
-        floatingMessage.style.fontSize = "16px";
-        floatingMessage.style.zIndex = "1000";
-        floatingMessage.style.opacity = "0"; // Empieza invisible para animar la aparición
-        floatingMessage.style.transition =
-            "right 0.5s ease, opacity 0.5s ease"; // Animación de desplazamiento y opacidad
-        floatingMessage.classList.add("floating-message");
+      const { message, status } = this.floatingMessageQueue.shift();
+      const floatingMessage = document.createElement("div");
+      floatingMessage.textContent = message;
+      floatingMessage.style.position = "fixed";
+      floatingMessage.style.right = "-300px"; // Comienza fuera de la pantalla para la animación de entrada
+      floatingMessage.style.padding = "15px";
+      floatingMessage.style.backgroundColor =
+        status === "error"
+          ? "#f44336"
+          : status === "warning"
+          ? "#FFA500"
+          : "#4CAF50";
+      floatingMessage.style.border = "none";
+      floatingMessage.style.borderRadius = "10px";
+      floatingMessage.style.color = "#fff";
+      floatingMessage.style.fontSize = "16px";
+      floatingMessage.style.zIndex = "1000";
+      floatingMessage.style.opacity = "0"; // Empieza invisible para animar la aparición
+      floatingMessage.style.transition = "right 0.5s ease, opacity 0.5s ease"; // Animación de desplazamiento y opacidad
+      floatingMessage.classList.add("floating-message");
 
-        // Máximo ancho y envoltura de texto
-        floatingMessage.style.maxWidth = "300px";
-        floatingMessage.style.wordWrap = "break-word";
+      // Máximo ancho y envoltura de texto
+      floatingMessage.style.maxWidth = "300px";
+      floatingMessage.style.wordWrap = "break-word";
 
-        // Calcular la posición inferior del mensaje
-        const bottomPosition = 120 + this.activeFloatingMessages.length * 70;
-        floatingMessage.style.bottom = `${bottomPosition}px`;
-        floatingMessage.style.marginBottom = "5px";
+      // Calcular la posición inferior del mensaje
+      const bottomPosition = 120 + this.activeFloatingMessages.length * 70;
+      floatingMessage.style.bottom = `${bottomPosition}px`;
+      floatingMessage.style.marginBottom = "5px";
 
-        // Botón de cerrar
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "x";
-        closeButton.style.position = "absolute";
-        closeButton.style.top = "-5px";
-        closeButton.style.right = "2px";
-        closeButton.style.padding = "5px"; 
-        closeButton.style.backgroundColor = "transparent";
-        closeButton.style.border = "none";
-        closeButton.style.color = "#fff";
-        closeButton.style.cursor = "pointer";
-        closeButton.style.fontWeight = "bold";
-        closeButton.style.fontSize = "16px";
+      // Botón de cerrar
+      const closeButton = document.createElement("button");
+      closeButton.textContent = "x";
+      closeButton.style.position = "absolute";
+      closeButton.style.top = "-5px";
+      closeButton.style.right = "2px";
+      closeButton.style.padding = "5px";
+      closeButton.style.backgroundColor = "transparent";
+      closeButton.style.border = "none";
+      closeButton.style.color = "#fff";
+      closeButton.style.cursor = "pointer";
+      closeButton.style.fontWeight = "bold";
+      closeButton.style.fontSize = "16px";
 
-        closeButton.addEventListener("click", () => {
-            floatingMessage.style.opacity = "0"; // Desvanece el mensaje
-            floatingMessage.style.right = "-300px"; // Anima el mensaje hacia fuera de la pantalla
-            setTimeout(() => {
-                document.body.removeChild(floatingMessage);
-                this.activeFloatingMessages = this.activeFloatingMessages.filter(
-                    (msg) => msg !== floatingMessage
-                );
-                this.reorganizeFloatingMessages();
-            }, 500); // Espera a que termine la animación antes de eliminar el mensaje
-        });
-
-        floatingMessage.appendChild(closeButton);
-
-        // Si ya hay dos mensajes en pantalla, elimina el más antiguo
-        if (this.activeFloatingMessages.length >= 2) {
-            const oldestMessage = this.activeFloatingMessages.shift();
-            oldestMessage.style.opacity = "0"; // Desvanece el mensaje antiguo
-            oldestMessage.style.right = "-300px"; // Desplaza el mensaje hacia fuera
-            setTimeout(() => {
-                document.body.removeChild(oldestMessage);
-            }, 500); // Elimina después de la animación
-        }
-
-        // Agrega el nuevo mensaje a la pantalla
-        this.activeFloatingMessages.push(floatingMessage);
-        document.body.appendChild(floatingMessage);
-
-        // Animación de entrada: después de agregar el mensaje al DOM, lo hacemos aparecer
+      closeButton.addEventListener("click", () => {
+        floatingMessage.style.opacity = "0"; // Desvanece el mensaje
+        floatingMessage.style.right = "-300px"; // Anima el mensaje hacia fuera de la pantalla
         setTimeout(() => {
-            floatingMessage.style.right = "20px"; // Mueve el mensaje a la posición correcta
-            floatingMessage.style.opacity = "1"; // Hace visible el mensaje
-        }, 10); // Pequeño retraso para permitir que la transición se vea suave
+          document.body.removeChild(floatingMessage);
+          this.activeFloatingMessages = this.activeFloatingMessages.filter(
+            (msg) => msg !== floatingMessage
+          );
+          this.reorganizeFloatingMessages();
+        }, 500); // Espera a que termine la animación antes de eliminar el mensaje
+      });
 
-        this.enableDrag(floatingMessage);
+      floatingMessage.appendChild(closeButton);
 
-        this.reorganizeFloatingMessages();
-
-        // Desvanece el mensaje automáticamente después de 20 segundos
+      // Si ya hay dos mensajes en pantalla, elimina el más antiguo
+      if (this.activeFloatingMessages.length >= 2) {
+        const oldestMessage = this.activeFloatingMessages.shift();
+        oldestMessage.style.opacity = "0"; // Desvanece el mensaje antiguo
+        oldestMessage.style.right = "-300px"; // Desplaza el mensaje hacia fuera
         setTimeout(() => {
-            floatingMessage.style.opacity = "0"; // Desvanece el mensaje
-            floatingMessage.style.right = "-300px"; // Desplaza el mensaje hacia fuera de la pantalla
-            setTimeout(() => {
-                if (floatingMessage.parentElement) {
-                    document.body.removeChild(floatingMessage);
-                    this.activeFloatingMessages = this.activeFloatingMessages.filter(
-                        (msg) => msg !== floatingMessage
-                    );
-                    this.reorganizeFloatingMessages();
-                }
-            }, 500); // Espera a que termine la animación antes de eliminar el mensaje
-        }, 5000); // El mensaje desaparece después de 20 segundos
+          document.body.removeChild(oldestMessage);
+        }, 500); // Elimina después de la animación
+      }
+
+      // Agrega el nuevo mensaje a la pantalla
+      this.activeFloatingMessages.push(floatingMessage);
+      document.body.appendChild(floatingMessage);
+
+      // Animación de entrada: después de agregar el mensaje al DOM, lo hacemos aparecer
+      setTimeout(() => {
+        floatingMessage.style.right = "20px"; // Mueve el mensaje a la posición correcta
+        floatingMessage.style.opacity = "1"; // Hace visible el mensaje
+      }, 10); // Pequeño retraso para permitir que la transición se vea suave
+
+      this.enableDrag(floatingMessage);
+
+      this.reorganizeFloatingMessages();
+
+      // Desvanece el mensaje automáticamente después de 20 segundos
+      setTimeout(() => {
+        floatingMessage.style.opacity = "0"; // Desvanece el mensaje
+        floatingMessage.style.right = "-300px"; // Desplaza el mensaje hacia fuera de la pantalla
+        setTimeout(() => {
+          if (floatingMessage.parentElement) {
+            document.body.removeChild(floatingMessage);
+            this.activeFloatingMessages = this.activeFloatingMessages.filter(
+              (msg) => msg !== floatingMessage
+            );
+            this.reorganizeFloatingMessages();
+          }
+        }, 500); // Espera a que termine la animación antes de eliminar el mensaje
+      }, 5000); // El mensaje desaparece después de 20 segundos
     }
-}
-
+  }
 
   reorganizeFloatingMessages() {
     let bottomPosition = 120;
@@ -574,7 +571,7 @@ class Tab extends HTMLElement {
             <ul class="chatbox">
               <li class="chat incoming">
                 <img src="${this.imgSrc}">
-                <p>Hola, que tal? ­<br>Como puedo ayudarte?</p>
+                <p>Hola, ¿qué tal? <br>¿Cómo puedo ayudarte?</p>
               </li>
             </ul>
             <div class="chat-input">
