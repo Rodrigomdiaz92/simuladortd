@@ -215,7 +215,7 @@ class Tab extends HTMLElement {
             this.reorganizeFloatingMessages();
           }
         }, 500); // Espera a que termine la animación antes de eliminar el mensaje
-      }, 20000); // El mensaje desaparece después de 20 segundos
+      }, 5000); // El mensaje desaparece después de 20 segundos
     }
   }
 
@@ -447,6 +447,7 @@ class Tab extends HTMLElement {
           width: 50px;  /* Ancho fijo */
           height: 50px;  /* Altura fija */
           object-fit: cover;  
+          place-self:end;
         }
         .chatbox .incoming span {
           width: 32px;
