@@ -27,7 +27,9 @@ const BASE_SETTINGS = {
   ejeX: " ",
   serie: " ",
   funcion: " ",
-  escala:100,
+  escala:0,
+  etiqueta: "COMBUSTIBLE",
+  valorGrafico: "COUNTA_de_ID_AUTO",
 };
 let df;
 window.onload = pgEvent.getValues();
