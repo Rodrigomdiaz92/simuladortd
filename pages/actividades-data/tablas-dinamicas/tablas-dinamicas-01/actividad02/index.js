@@ -23,7 +23,7 @@ const BASE_SETTINGS = {
   graphEnabled: false,
   pivotEnabled: true,
   selectionRequirements: { minRows: 5, minCols: 5 },
-  filaSeleccionadaTD: ["AÑO_FABRICACION"],
+  filaSeleccionadaTD: ["AÑO_FABRICACIÓN"],
   columnaSeleccionadaTD: ["CAJA"],
   valorSeleccionadaTD: ["ID_AUTO"],
   funcionesSeleccionadasTD: ["count"],
